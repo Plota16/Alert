@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent">
+
+    <fragment
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:id="@+id/frg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:layout_gravity="bottom|end"
+            android:layout_marginBottom="135dp"
+            android:layout_marginRight="16dp"
+            android:clickable="true" app:srcCompat="@drawable/ic_filter" android:id="@+id/fiterbutton"
+            app:backgroundTint="@color/colorPrimary" android:tint="@color/white"
+    />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginBottom="70dp"
+            android:layout_marginRight="16dp"
+            android:clickable="true" app:srcCompat="@drawable/ic_plus" android:id="@+id/addbutton"
+            app:backgroundTint="@color/colorPrimary" android:tint="@color/white"/>
+</FrameLayout>
