@@ -3,11 +3,9 @@ package com.plocki.alert.activities
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.google.android.gms.location.LocationServices
@@ -15,7 +13,6 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.plocki.alert.models.Event
 import com.plocki.alert.models.Global
@@ -26,11 +23,8 @@ class Details : AppCompatActivity(), OnMapReadyCallback {
 
 
     lateinit var mMap : GoogleMap
-    lateinit var lastLocation: Location
     private lateinit var event : Event
     var inst = Global.getInstance()
-    var INTERNET = 101
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,10 +33,10 @@ class Details : AppCompatActivity(), OnMapReadyCallback {
         supportActionBar!!.title = "Dodawanie Wydarzenia"
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
-        var bundle :Bundle ?=intent.extras
+        val bundle :Bundle ?=intent.extras
 
-        var listMarker: String? = bundle!!.getString("pos")
-        var extraMarker : String? = bundle!!.getString("Marker")
+        val listMarker: String? = bundle!!.getString("pos")
+        val extraMarker : String? = bundle.getString("Marker")
 
 
         if(extraMarker == null){
@@ -53,9 +47,9 @@ class Details : AppCompatActivity(), OnMapReadyCallback {
         }
 
         Glide.with(this).load(event.image).into(details_image)
-        details_id.text = event!!.title
-        details_category.text = event!!.category
-        details_desc.text = event!!.desctription
+        details_id.text = event.title
+        details_category.text = event.category
+        details_desc.text = event.desctription
 
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.details_map) as SupportMapFragment
@@ -92,8 +86,6 @@ class Details : AppCompatActivity(), OnMapReadyCallback {
                 == PackageManager.PERMISSION_GRANTED) {
                 mMap.isMyLocationEnabled = true
 
-            } else {
-
             }
         }
         val fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
@@ -101,8 +93,6 @@ class Details : AppCompatActivity(), OnMapReadyCallback {
         fusedLocationClient.lastLocation.addOnSuccessListener {
             if (it != null) {
                 Add.lastLocation = it
-                val currentLatLng = LatLng(it.latitude, it.longitude)
-
             }
         }
 

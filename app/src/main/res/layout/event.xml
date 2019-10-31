@@ -4,7 +4,7 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:orientation="vertical">
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
                   xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
                   android:orientation="horizontal"
                   android:layout_width="match_parent"
@@ -14,28 +14,25 @@
                 android:layout_width="120dp"
                 android:layout_height="90dp" app:srcCompat="@drawable/ic_add_photo_alternate_24px"
                 android:id="@+id/imageView"
-                tools:srcCompat="@tools:sample/backgrounds/scenic[1]"/>
+                tools:srcCompat="@tools:sample/backgrounds/scenic[1]"
+                android:contentDescription="@string/Event_image_desc" />
         <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent" android:layout_weight="1">
             <TextView
                     android:layout_marginTop="20dp"
-                    android:text="TextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" android:id="@+id/list_category"
                     android:fontFamily="@font/roboto" android:textSize="18sp"/>
             <TextView
-
-                    android:text="TextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" android:id="@+id/list_title" android:textSize="30sp"
                     android:fontFamily="@font/roboto" android:textStyle="bold"/>
         </LinearLayout>
         <TextView
                 android:layout_marginTop="20dp"
-                android:layout_marginRight="16dp"
-                android:text="TextView"
+                android:layout_marginEnd="16dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" android:id="@+id/list_distance" android:layout_weight="1"
                 android:fontFamily="@font/roboto" android:textSize="18sp" android:textAlignment="textEnd"/>

@@ -31,6 +31,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.plocki.alert.R
 import kotlinx.android.synthetic.main.activity_add.*
 import com.plocki.alert.models.EventMethods.Companion.thumbnailFromUri
+import kotlinx.android.synthetic.main.activity_add.view.*
 
 
 class Add : AppCompatActivity(), OnMapReadyCallback {
@@ -63,6 +64,21 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.fragmini) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
+        add_title.setOnFocusChangeListener { _, b ->
+            if(!b){
+                validateTitle()
+            }
+
+        }
+
+        desc2.setOnFocusChangeListener { _, b ->
+            if(!b){
+                validateDesc()
+            }
+
+        }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -129,6 +145,7 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
                     .title("Lokalizacja")
             )
         }
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -285,6 +302,27 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
 
     }
 
+    private fun validateTitle(): Boolean {
+        val text = add_title.text.toString()
+        return if(text.isEmpty()){
+            lay_title.error = getString(R.string.add_title_error)
+            false
+        } else{
+            lay_title.error = null
+            true
+        }
+    }
+
+    private fun validateDesc(): Boolean {
+        val text = desc2.text.toString()
+        return if(text.isEmpty()){
+            lay.error = getString(R.string.add_desc_error)
+            false
+        } else{
+            lay.error = null
+            true
+        }
+    }
 }
 
 

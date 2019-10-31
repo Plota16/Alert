@@ -7,7 +7,7 @@
 
     <TextView
             android:layout_margin="30dp"
-            android:text="Zaloguj się"
+            android:text="@string/Login_textView_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" android:id="@+id/textView2" android:textAlignment="center"/>
 
@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="30dp"
             android:layout_marginStart="30dp"
-            android:hint="Email">
+            android:hint="@string/login_email_text">
 
         <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="30dp"
             android:layout_marginStart="30dp"
-            android:hint="Hasło">
+            android:hint="@string/Login_password_text">
 
         <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -43,7 +43,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="30dp"
             android:layout_marginStart="30dp"
-            android:text="Zaloguj"
+            android:text="@string/login_loginButton_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" android:id="@+id/login_login"
             android:layout_gravity="center"
@@ -54,7 +54,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="30dp"
             android:layout_marginStart="30dp"
-            android:text="Zarejestruj"
+            android:text="@string/Login_registerButton_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" android:id="@+id/login_register"
             android:layout_gravity="center"
@@ -64,7 +64,7 @@
 
     <com.facebook.login.widget.LoginButton
             xmlns:facebook="http://schemas.android.com/apk/res-auto"
-            facebook:com_facebook_login_text="Zaloguj przez facebooka"
+            facebook:com_facebook_login_text="@string/Login_facebookButton_text"
             android:layout_height="30dp"
             android:layout_width="wrap_content"
             android:id="@+id/face_login_button"

@@ -28,7 +28,7 @@ class LoginPanel : AppCompatActivity() {
 
 
 
-        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
+        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"))
 
         face_login_button.registerCallback(callbackManager, object : FacebookCallback<LoginResult>
         {
@@ -66,14 +66,13 @@ class LoginPanel : AppCompatActivity() {
         val request = GraphRequest.newMeRequest(token) { `object`, response ->
             try {
                 mail = response.getJSONObject().get("email").toString()
-                val tmp = ""
 
             } catch (e: JSONException){
                 e.printStackTrace()
             }
         }
 
-        var parameters = Bundle()
+        val parameters = Bundle()
         parameters.putString("fields","id,name,email,picture.width(200)")
         request.parameters = parameters
         request.executeAsync()

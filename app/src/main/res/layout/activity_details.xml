@@ -11,20 +11,18 @@
             android:layout_width="wrap_content"
             android:background="@drawable/ic_add_photo_alternate_24px"
             android:id="@+id/details_image"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/detail_image_desc" />
     <TextView
             android:layout_margin="16dp"
-            android:text="TextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" android:id="@+id/details_id" android:textSize="18sp"/>
     <TextView
             android:layout_margin="16dp"
-            android:text="TextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" android:id="@+id/details_category"/>
     <TextView
             android:layout_margin="16dp"
-            android:text="TextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" android:id="@+id/details_desc"/>
     <fragment

@@ -154,12 +154,6 @@ class MainActivity : AppCompatActivity() {
                 val permissions = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
                 ActivityCompat.requestPermissions(this, permissions, PERMISSION_LOCATION)
             }
-            else{
-
-            }
-        }
-        else{
-
         }
     }
 

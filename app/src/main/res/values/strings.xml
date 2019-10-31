@@ -2,4 +2,32 @@
     <string name="app_name">Alert</string>
     <string name="facebook_app_id">1290151271145918</string>
     <string name="fb_login_protocol_scheme">fb1290151271145918</string>
+
+
+    <string name="add_title_hint">Tytuł</string>
+    <string name="add_desc_hint">Opis</string>
+    <string name="add_localisation_text">Lokalizacja</string>
+    <string name="add_image_desc">Zdjęcie</string>
+    <string name="add_category_image_desc">Pokaż kategorię</string>
+    <string name="add_category_text">Kategoria</string>
+    <string name="add_title_error">Musisz podać tytuł</string>
+    <string name="add_desc_error">Musisz podać opis</string>
+    <string name="add_category_error">Musisz podać kategorię</string>
+    <string name="add_location_error">Musisz podać lokalizację</string>
+
+    <string name="detail_image_desc">Obraz wydarzenia</string>
+
+    <string name="LocationPicker_image_desc">Pinezka</string>
+    <string name="LocationPicker_button_text">Wybierz</string>
+
+    <string name="Event_image_desc">Obraz wydarzenia</string>
+
+    <string name="Login_textView_text">Zaloguj się</string>
+    <string name="login_email_text">Email</string>
+    <string name="Login_password_text">Hasło</string>
+    <string name="login_loginButton_text">Zaloguj</string>
+    <string name="Login_registerButton_text">Zarejestruj</string>
+    <string name="Login_facebookButton_text">Zarejestruj</string>
+    
+
 </resources>
