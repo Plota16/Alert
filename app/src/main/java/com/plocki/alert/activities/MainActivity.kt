@@ -24,8 +24,9 @@ import kotlinx.android.synthetic.main.map_fragment.*
 class MainActivity : AppCompatActivity() {
 
     companion object {
-        private const val  PERMISSION_LOCATION = 101
 
+
+        private const val  PERMISSION_LOCATION = 101
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,7 +36,9 @@ class MainActivity : AppCompatActivity() {
         supportActionBar!!.title = "Alert!"
         supportActionBar!!.setIcon(ResourcesCompat.getDrawable(resources, R.drawable.ic_more, null))
 
+
         getPermissionsLocation()
+
 
         addbutton.setOnClickListener {
             val intent = Intent(this@MainActivity, Add::class.java)
@@ -92,9 +95,7 @@ class MainActivity : AppCompatActivity() {
         val id = item.itemId
 
 
-        if (id == R.id.action_login){
-            Toast.makeText(this@MainActivity, "Login", Toast.LENGTH_LONG).show()
-        }
+
         if (id == R.id.action_refresh) {
             Toast.makeText(this@MainActivity, "Refresh App", Toast.LENGTH_LONG).show()
         }
@@ -106,7 +107,8 @@ class MainActivity : AppCompatActivity() {
             popupMenu.setOnMenuItemClickListener {
                 val moreMenuId = it.itemId
                 if (moreMenuId == R.id.action_login){
-                    Toast.makeText(this@MainActivity, "Login", Toast.LENGTH_LONG).show()
+                    val intent = Intent(this@MainActivity, LoginPanel::class.java)
+                    startActivity(intent)
                 }
                 if (moreMenuId == R.id.action_info){
                     Toast.makeText(this@MainActivity, "Info", Toast.LENGTH_LONG).show()
