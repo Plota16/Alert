@@ -20,7 +20,7 @@ class Global {
         Event(
             2,
             LatLng(53.39786111,17.92500000),
-            "https://e.allegroimg.com/original/0cae51/a3e07be24e8cbdc2cf251cedbe7e",
+            "https://e.allegroimg.com/original/0cae51/a3e07be24e8cbdc2cf251cedbe7",
             "Koncert",
             "opis2",
             "Zespół",

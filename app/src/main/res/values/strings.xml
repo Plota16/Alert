@@ -4,9 +4,11 @@
     <string name="fb_login_protocol_scheme">fb1290151271145918</string>
 
 
+    <string name="add_menu_title">Dodawanie wydarzenia</string>
+
     <string name="add_title_hint">Tytuł</string>
     <string name="add_desc_hint">Opis</string>
-    <string name="add_localisation_text">Lokalizacja</string>
+    <string name="add_location_text">Lokalizacja</string>
     <string name="add_image_desc">Zdjęcie</string>
     <string name="add_category_image_desc">Pokaż kategorię</string>
     <string name="add_category_text">Kategoria</string>
@@ -14,6 +16,11 @@
     <string name="add_desc_error">Musisz podać opis</string>
     <string name="add_category_error">Musisz podać kategorię</string>
     <string name="add_location_error">Musisz podać lokalizację</string>
+    <string name="add_location_pin_text">Lokalizacja</string>
+
+    <string name="add_dialog_title">Wybierz kategorię</string>
+    <string name="add_dialog_positive">OK</string>
+    <string name="add_dialog_negative">Anuluj</string>
 
     <string name="detail_image_desc">Obraz wydarzenia</string>
 

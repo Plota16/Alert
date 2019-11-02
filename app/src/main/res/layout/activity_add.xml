@@ -68,9 +68,9 @@
                 app:layout_constraintBottom_toBottomOf="@id/lay" app:layout_constraintHorizontal_bias="0.95"
                 android:contentDescription="@string/add_image_desc" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-    <androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent"
-                                                       android:layout_height="wrap_content"
-    >
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
         <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" app:srcCompat="@drawable/ic_expand_more_24px"
@@ -96,7 +96,7 @@
             android:layout_marginStart="24dp"
             android:layout_marginEnd="16dp"
             android:layout_marginTop="16dp"
-            android:text="@string/add_localisation_text"
+            android:text="@string/add_location_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" android:id="@+id/textView"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"/>

@@ -8,15 +8,18 @@
         tools:context=".activities.Details">
 
     <ImageView
-            android:layout_width="wrap_content"
-            android:background="@drawable/ic_add_photo_alternate_24px"
             android:id="@+id/details_image"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/detail_image_desc" />
+            android:layout_width="410dp"
+            android:layout_height="310dp"
+            android:contentDescription="@string/detail_image_desc"
+            app:srcCompat="@drawable/placeholder" />
+
     <TextView
-            android:layout_margin="16dp"
+            android:id="@+id/details_id"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:id="@+id/details_id" android:textSize="18sp"/>
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:textSize="18sp" />
     <TextView
             android:layout_margin="16dp"
             android:layout_width="match_parent"

@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.view.MenuItem
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
@@ -18,6 +19,8 @@ import com.plocki.alert.models.Event
 import com.plocki.alert.models.Global
 import com.plocki.alert.R
 import kotlinx.android.synthetic.main.activity_details.*
+import kotlin.math.roundToInt
+
 
 class Details : AppCompatActivity(), OnMapReadyCallback {
 
@@ -46,7 +49,18 @@ class Details : AppCompatActivity(), OnMapReadyCallback {
             this.event = inst!!.mapHashMap[extraMarker]!!
         }
 
-        Glide.with(this).load(event.image).into(details_image)
+        val display = windowManager.defaultDisplay
+        val outMetrics = DisplayMetrics()
+        display.getMetrics(outMetrics)
+
+        var dpWidth = outMetrics.widthPixels
+        val dpHeight = dpWidth.toDouble()/4*3
+
+        details_image.requestLayout()
+        details_image.layoutParams.width = dpWidth
+        details_image.layoutParams.height = dpHeight.roundToInt()
+
+        Glide.with(this).load(event.image).placeholder(R.drawable.placeholder).into(details_image)
         details_id.text = event.title
         details_category.text = event.category
         details_desc.text = event.desctription

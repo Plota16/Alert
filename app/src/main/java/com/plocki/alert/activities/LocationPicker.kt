@@ -23,21 +23,13 @@ class LocationPicker : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap :GoogleMap
     private lateinit var lastLocation: Location
-    private var hasInitLocation = false
-    private var lat = 0.0
-    private var long = 0.0
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_location_picker)
 
-        val extra = intent.getStringExtra("Coords")
-        if(extra.isNotEmpty()){
-            hasInitLocation = true
-            val tab = extra.split("+")
-            lat = tab[0].toDouble()
-            long = tab[1].toDouble()
-        }
 
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.fragpick) as SupportMapFragment
@@ -51,13 +43,6 @@ class LocationPicker : AppCompatActivity(), OnMapReadyCallback {
         mMap.mapType = GoogleMap.MAP_TYPE_NORMAL
 
         mMap.clear()
-        if(hasInitLocation){
-            mMap.addMarker(
-                MarkerOptions()
-                    .position(LatLng(lat,long))
-                    .title("Lokalizacja")
-            )
-        }
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
             == PackageManager.PERMISSION_GRANTED) {

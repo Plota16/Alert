@@ -80,6 +80,7 @@ RecyclerView.ViewHolder(inflater.inflate(R.layout.event, parent, false)),View.On
         if (con != null) {
             Glide.with(con)
                 .load(event.image)
+                .placeholder(R.drawable.placeholder)
                 .override(120,90)
                 .into(imageView)
         }

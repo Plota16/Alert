@@ -31,7 +31,6 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.plocki.alert.R
 import kotlinx.android.synthetic.main.activity_add.*
 import com.plocki.alert.models.EventMethods.Companion.thumbnailFromUri
-import kotlinx.android.synthetic.main.activity_add.view.*
 
 
 class Add : AppCompatActivity(), OnMapReadyCallback {
@@ -58,7 +57,7 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add)
 
-        supportActionBar!!.title = "Dodawanie Wydarzenia"
+        supportActionBar!!.title = this.getString(R.string.add_menu_title)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         val mapFragment = supportFragmentManager
@@ -142,9 +141,11 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
             mMap.addMarker(
                 MarkerOptions()
                     .position(LatLng(lat, long))
-                    .title("Lokalizacja")
+                    .title(this.getString(R.string.add_location_pin_text))
             )
         }
+
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(lat,long), 14f),1, null)
         super.onActivityResult(requestCode, resultCode, data)
     }
 
@@ -179,7 +180,7 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
             if (it != null) {
                 lastLocation = it
                 val currentLatLng = LatLng(it.latitude, it.longitude)
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 16f),1, null)
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 14f),1, null)
             }
         }
 
@@ -222,13 +223,13 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
 
         val itemSelected = choose
         val tmp = AlertDialog.Builder(this, R.style.CustomDialogTheme)
-            .setTitle("Wybierz kategorię")
+            .setTitle(this.getString(R.string.add_dialog_title))
             .setSingleChoiceItems(singleChoiceItems, itemSelected) {
                     dialogInterface, selectedIndex -> choose = selectedIndex}
-            .setPositiveButton("Ok") {
+            .setPositiveButton(this.getString(R.string.add_dialog_positive)) {
                     dialog, which ->
                          category.text = singleChoiceItems[choose] }
-            .setNegativeButton("ANULUJ", null)
+            .setNegativeButton(this.getString(R.string.add_dialog_negative), null)
             .show()
 
 
