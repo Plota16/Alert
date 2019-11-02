@@ -23,6 +23,7 @@
     <string name="add_dialog_negative">Anuluj</string>
 
     <string name="detail_image_desc">Obraz wydarzenia</string>
+    <string name="detail_menu_title">Szczegóły wydarzenia</string>
 
     <string name="LocationPicker_image_desc">Pinezka</string>
     <string name="LocationPicker_button_text">Wybierz</string>

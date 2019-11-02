@@ -33,7 +33,7 @@ class Details : AppCompatActivity(), OnMapReadyCallback {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_details)
 
-        supportActionBar!!.title = "Dodawanie Wydarzenia"
+        supportActionBar!!.title = getString(R.string.detail_menu_title)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         val bundle :Bundle ?=intent.extras
@@ -103,7 +103,7 @@ class Details : AppCompatActivity(), OnMapReadyCallback {
             }
         }
         val fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(event.coords, 16f),1, null)
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(event.coords, 14f),1, null)
         fusedLocationClient.lastLocation.addOnSuccessListener {
             if (it != null) {
                 Add.lastLocation = it
