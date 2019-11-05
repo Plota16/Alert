@@ -46,25 +46,28 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        val manager = supportFragmentManager
+        var transaction = manager.beginTransaction()
+        val textFragmentA = FragmentMap()
+        val textFragmentB = FragmentList()
+        transaction.add(R.id.details_fragment,textFragmentA)
+        transaction.add(R.id.details_fragment,textFragmentB)
+        transaction.hide(textFragmentB)
+        transaction.commit()
 
         bottom_navigation.setOnNavigationItemSelectedListener {
             when (it.itemId){
                 R.id.action_map -> {
-                    val textFragment = FragmentMap()
-                    val manager = supportFragmentManager
-                    val transaction = manager.beginTransaction()
-                    transaction.replace(R.id.details_fragment,textFragment)
-                    transaction.addToBackStack(null)
+                    transaction = manager.beginTransaction()
+                    transaction.hide(textFragmentB)
+                    transaction.show(textFragmentA)
                     transaction.commit()
                     return@setOnNavigationItemSelectedListener true
-
                 }
                 R.id.action_list -> {
-                    val textFragment = FragmentList()
-                    val manager = supportFragmentManager
-                    val transaction = manager.beginTransaction()
-                    transaction.replace(R.id.details_fragment,textFragment)
-                    transaction.addToBackStack(null)
+                    transaction = manager.beginTransaction()
+                    transaction.hide(textFragmentA)
+                    transaction.show(textFragmentB)
                     transaction.commit()
                     return@setOnNavigationItemSelectedListener true
                 }

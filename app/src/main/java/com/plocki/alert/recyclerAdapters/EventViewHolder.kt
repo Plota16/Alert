@@ -59,7 +59,7 @@ RecyclerView.ViewHolder(inflater.inflate(R.layout.event, parent, false)),View.On
     fun bind(event: Event) {
         inst!!.listHashMap.put(layoutPosition.toString(),event)
         eventTitle?.text = event.title
-        eventCategory?.text = event.category
+        eventCategory?.text = event.category.toString()
         var res = ""
         val dist = EventMethods.calcDistance(event.coords)
         if(dist < 1000){

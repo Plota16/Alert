@@ -62,7 +62,7 @@ class Details : AppCompatActivity(), OnMapReadyCallback {
 
         Glide.with(this).load(event.image).placeholder(R.drawable.placeholder).into(details_image)
         details_id.text = event.title
-        details_category.text = event.category
+        details_category.text = event.category.toString()
         details_desc.text = event.desctription
 
         val mapFragment = supportFragmentManager

@@ -16,62 +16,82 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import androidx.core.content.ContextCompat
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.Marker
 import com.plocki.alert.activities.Details
 import com.plocki.alert.models.Global
 import com.plocki.alert.R
 
 
-class FragmentMap : Fragment(), GoogleMap.OnInfoWindowClickListener {
+class FragmentMap : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
 
 
     private lateinit var mMap: GoogleMap
     private lateinit var lastLocation: Location
     private var inst = Global.getInstance()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        retainInstance = true
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        retainInstance = true
+        super.onActivityCreated(savedInstanceState)
+    }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+
 
         val rootView = inflater.inflate(R.layout.map_fragment, container, false)
 
-
         val mapFragment = childFragmentManager.findFragmentById(R.id.frg) as SupportMapFragment?
 
-        mapFragment!!.getMapAsync { map ->
-            mMap = map
-            mMap.setOnInfoWindowClickListener(this)
-            mMap.mapType = GoogleMap.MAP_TYPE_NORMAL
+        mapFragment!!.getMapAsync(this)
 
-            mMap.clear() //clear old markers
+        return rootView
+    }
 
-            if (ContextCompat.checkSelfPermission(this.context!!, Manifest.permission.ACCESS_FINE_LOCATION)
+    override fun onMapReady(p0: GoogleMap?) {
+        mMap = p0!!
+        mMap.setOnInfoWindowClickListener(this)
+        mMap.mapType = GoogleMap.MAP_TYPE_NORMAL
+
+        mMap.clear() //clear old markers
+
+        if (ContextCompat.checkSelfPermission(this.context!!, Manifest.permission.ACCESS_FINE_LOCATION)
+            == PackageManager.PERMISSION_GRANTED
+        ){
+            mMap.isMyLocationEnabled = true
+        } else {
+            if (ContextCompat.checkSelfPermission(this.context!!, Manifest.permission.ACCESS_COARSE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED
             ) {
                 mMap.isMyLocationEnabled = true
+
             } else {
-                if (ContextCompat.checkSelfPermission(this.context!!, Manifest.permission.ACCESS_COARSE_LOCATION)
-                    == PackageManager.PERMISSION_GRANTED
-                ) {
-                    mMap.isMyLocationEnabled = true
 
-                } else {
-
-                }
             }
+        }
 
-            val context = this.context
-            val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context!!)
-            fusedLocationClient.lastLocation.addOnSuccessListener {
-                if (it != null) {
-                    lastLocation = it
-                    inst!!.location = it
-                    val currentLatLng = LatLng(it.latitude, it.longitude)
+        val context = this.context
+
+        mMap.setOnCameraMoveListener {
+            inst!!.cameraPos = mMap.cameraPosition.target
+        }
+
+        val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context!!)
+        fusedLocationClient.lastLocation.addOnSuccessListener {
+            if (it != null) {
+                lastLocation = it
+                inst!!.location = it
+                val currentLatLng = LatLng(it.latitude, it.longitude)
+
+                if(inst!!.cameraPos == LatLng(0.0,0.0)){
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f), 1, null)
                 }
             }
-            addMarkers()
         }
-
-        return rootView
+        addMarkers()
     }
 
     override fun onInfoWindowClick(p0: Marker?) {
