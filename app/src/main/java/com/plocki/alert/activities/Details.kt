@@ -18,6 +18,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.plocki.alert.models.Event
 import com.plocki.alert.models.Global
 import com.plocki.alert.R
+import com.plocki.alert.models.EventMethods
 import kotlinx.android.synthetic.main.activity_details.*
 import kotlin.math.roundToInt
 
@@ -33,9 +34,6 @@ class Details : AppCompatActivity(), OnMapReadyCallback {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_details)
 
-        supportActionBar!!.title = getString(R.string.detail_menu_title)
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-
         val bundle :Bundle ?=intent.extras
 
         val listMarker: String? = bundle!!.getString("pos")
@@ -48,6 +46,10 @@ class Details : AppCompatActivity(), OnMapReadyCallback {
         else if(listMarker == null){
             this.event = inst!!.mapHashMap[extraMarker]!!
         }
+        details_category.text = EventMethods.getCategory(event.category)
+        details_desc.text = event.desctription
+        supportActionBar!!.title = event.title
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         val display = windowManager.defaultDisplay
         val outMetrics = DisplayMetrics()
@@ -56,14 +58,16 @@ class Details : AppCompatActivity(), OnMapReadyCallback {
         var dpWidth = outMetrics.widthPixels
         val dpHeight = dpWidth.toDouble()/4*3
 
-        details_image.requestLayout()
+
         details_image.layoutParams.width = dpWidth
         details_image.layoutParams.height = dpHeight.roundToInt()
-
-        Glide.with(this).load(event.image).placeholder(R.drawable.placeholder).into(details_image)
-        details_id.text = event.title
-        details_category.text = event.category.toString()
-        details_desc.text = event.desctription
+        details_image.requestLayout()
+        Glide.with(this)
+            .load(event.image)
+            .placeholder(R.drawable.placeholder)
+            .centerCrop()
+            .override(dpWidth ,dpHeight.roundToInt())
+            .into(details_image)
 
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.details_map) as SupportMapFragment
@@ -90,6 +94,7 @@ class Details : AppCompatActivity(), OnMapReadyCallback {
         mMap.uiSettings.isCompassEnabled = false
         mMap.uiSettings.isMyLocationButtonEnabled = false
         mMap.uiSettings.isZoomGesturesEnabled = false
+        mMap.uiSettings.isZoomControlsEnabled = true
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
             == PackageManager.PERMISSION_GRANTED) {
@@ -103,22 +108,14 @@ class Details : AppCompatActivity(), OnMapReadyCallback {
             }
         }
         val fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(event.coords, 14f),1, null)
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(event.coords, 15f),1, null)
         fusedLocationClient.lastLocation.addOnSuccessListener {
             if (it != null) {
                 Add.lastLocation = it
             }
         }
 
-        mMap.setOnMapClickListener {
-            val intent = Intent(this@Details, LocationPicker::class.java)
-            var tmp = ""
-            if(Add.hasLocation){
-                tmp = "${Add.lat}+${Add.long}"
-            }
-            intent.putExtra("Coords", tmp)
-            startActivityForResult(intent, Add.PICK_CODE)
-        }
+
         mMap.addMarker(
             MarkerOptions()
                 .position(event.coords)

@@ -68,5 +68,15 @@ class EventMethods {
 
             return distance.roundToInt()
         }
+
+        fun getCategory(Id: Int): String {
+            when(Id){
+                1 -> return "Wypadek"
+                2 -> return "Wydarzenie"
+                3 -> return "Impreza"
+                4 -> return ""
+            }
+            return ""
+        }
     }
 }

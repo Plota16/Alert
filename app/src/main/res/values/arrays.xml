@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="dialog_single_choice_array">
-        <item>Koncert</item>
+        <item>Wydarzenie</item>
         <item>Korek</item>
         <item>Wypadek</item>
         <item>Utrudnienia na drodze</item>

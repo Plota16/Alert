@@ -71,13 +71,6 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
 
         }
 
-        desc2.setOnFocusChangeListener { _, b ->
-            if(!b){
-                validateDesc()
-            }
-
-        }
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -314,16 +307,6 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    private fun validateDesc(): Boolean {
-        val text = desc2.text.toString()
-        return if(text.isEmpty()){
-            lay.error = getString(R.string.add_desc_error)
-            false
-        } else{
-            lay.error = null
-            true
-        }
-    }
 }
 
 

@@ -58,24 +58,36 @@ RecyclerView.ViewHolder(inflater.inflate(R.layout.event, parent, false)),View.On
 
     fun bind(event: Event) {
         inst!!.listHashMap.put(layoutPosition.toString(),event)
-        eventTitle?.text = event.title
-        eventCategory?.text = event.category.toString()
+
+
         var res = ""
         val dist = EventMethods.calcDistance(event.coords)
         if(dist < 1000){
-            var tmp = dist.toDouble()
-            tmp /= 10
-            var tmp2 = tmp.roundToInt()
-            tmp2 *= 10
-            res = "$tmp2 m"
+            var dintInDouble = dist.toDouble()
+            dintInDouble /= 10
+            var distInInt = dintInDouble.roundToInt()
+            distInInt *= 10
+            res = "$distInInt m"
         }
         else{
-            var tmp = dist.toDouble()
-            tmp /= 1000
-            val tmp2 = BigDecimal(tmp).setScale(1, RoundingMode.HALF_EVEN)
-            res = "$tmp2 km"
+            var dintInDouble = dist.toDouble()
+            dintInDouble /= 1000
+            val distInInt = BigDecimal(dintInDouble).setScale(1, RoundingMode.HALF_EVEN)
+            res = "$distInInt km"
         }
-        eventDistance?.text = res
+
+        val categoryContainer = EventMethods.getCategory(event.category).toUpperCase()  + " ($res)"
+        eventTitle?.text = event.title
+        eventCategory?.text = categoryContainer
+
+        if(event.desctription!!.length  > 77){
+            val descriptionContainer = event.desctription!!.substring(0,77) + "..."
+            eventDistance?.text = descriptionContainer
+        }
+        else{
+            eventDistance?.text = event.desctription
+        }
+
 
         if (con != null) {
             Glide.with(con)

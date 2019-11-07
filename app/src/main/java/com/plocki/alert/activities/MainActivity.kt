@@ -73,11 +73,9 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 else ->{
-                    val textFragment = FragmentList()
-                    val manager = supportFragmentManager
-                    val transaction = manager.beginTransaction()
-                    transaction.replace(R.id.details_fragment,textFragment)
-                    transaction.addToBackStack(null)
+                    transaction = manager.beginTransaction()
+                    transaction.hide(textFragmentB)
+                    transaction.show(textFragmentA)
                     transaction.commit()
                     return@setOnNavigationItemSelectedListener true
                 }
@@ -136,11 +134,13 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "Permission granted", Toast.LENGTH_SHORT).show()
                 if (grantResults.isNotEmpty() && grantResults[0] ==
                     PackageManager.PERMISSION_GRANTED){
-                    val textFragment = FragmentMap()
+                    val textFragmentA = FragmentMap()
+                    val textFragmentB = FragmentList()
                     val manager = supportFragmentManager
-                    val transaction = manager.beginTransaction()
-                    transaction.replace(R.id.details_fragment,textFragment)
-                    transaction.addToBackStack(null)
+                    var transaction = manager.beginTransaction()
+                    transaction = manager.beginTransaction()
+                    transaction.hide(textFragmentB)
+                    transaction.show(textFragmentA)
                     transaction.commit()
                 }
 
