@@ -1,73 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <TextView
-            android:layout_margin="30dp"
-            android:text="@string/Login_textView_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:id="@+id/textView2" android:textAlignment="center"/>
-
-    <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="30dp"
-            android:layout_marginStart="30dp"
-            android:hint="@string/login_email_text">
-
-        <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/login_email"/>
-
-    </com.google.android.material.textfield.TextInputLayout>
-    <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="30dp"
-            android:layout_marginStart="30dp"
-            android:hint="@string/Login_password_text">
-
-        <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/login_password" android:inputType="textPassword"/>
-
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <Button
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="30dp"
-            android:layout_marginStart="30dp"
-            android:text="@string/login_loginButton_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:id="@+id/login_login"
-            android:layout_gravity="center"
-            android:textAlignment="center"
-            android:background="@color/colorPrimary"
-            android:backgroundTint="@color/colorPrimary"/>
-    <Button
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="30dp"
-            android:layout_marginStart="30dp"
-            android:text="@string/Login_registerButton_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:id="@+id/login_register"
-            android:layout_gravity="center"
-            android:textAlignment="center"
-            android:background="@color/colorPrimaryDark"
-            android:backgroundTint="@color/colorPrimaryDark"/>
-
-    <com.facebook.login.widget.LoginButton
-            xmlns:facebook="http://schemas.android.com/apk/res-auto"
-            facebook:com_facebook_login_text="@string/Login_facebookButton_text"
-            android:layout_height="30dp"
+    <com.google.android.material.card.MaterialCardView
             android:layout_width="wrap_content"
-            android:id="@+id/face_login_button"
-            android:layout_gravity="center_horizontal"
-            android:layout_margin="50dp"/>
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/mtrl_card_spacing"
+            android:layout_marginTop="@dimen/mtrl_card_spacing"
+            android:layout_marginRight="@dimen/mtrl_card_spacing"
+            android:minHeight="200dp">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:padding="50dp"
+                >
+
+            <com.google.android.material.button.MaterialButton
+                    android:id="@+id/face_login_button"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:text="Facebook"
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    app:icon="@drawable/ic_facebook"
+                    android:layout_marginVertical="10dp" />
+            <com.google.android.material.button.MaterialButton
+                    android:id="@+id/google_login_button"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:text="Google"
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    app:icon="@drawable/ic_google"
+                    android:layout_marginVertical="10dp" />
+            <com.google.android.material.button.MaterialButton
+                    android:id="@+id/twitter_login_button"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:text="Twitter"
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    app:icon="@drawable/ic_twitter"
+                    android:layout_marginVertical="10dp" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 </LinearLayout>

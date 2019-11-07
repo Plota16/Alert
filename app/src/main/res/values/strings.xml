@@ -35,7 +35,8 @@
     <string name="Login_password_text">Hasło</string>
     <string name="login_loginButton_text">Zaloguj</string>
     <string name="Login_registerButton_text">Zarejestruj</string>
-    <string name="Login_facebookButton_text">Zarejestruj</string>
-    
+<!--    <string name="Login_facebookButton_text">Zarejestruj się</string>-->
+<!--    <string name="Login_googleButton_text">Zarejestruj się</string>-->
+
 
 </resources>
