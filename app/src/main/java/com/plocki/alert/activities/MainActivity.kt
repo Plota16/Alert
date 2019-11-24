@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.core.content.res.ResourcesCompat
 import kotlinx.android.synthetic.main.activity_main.*
 import android.view.Menu
@@ -15,11 +16,17 @@ import android.view.View
 import android.widget.PopupMenu
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.OnLifecycleEvent
+import androidx.lifecycle.ProcessLifecycleOwner
 import com.plocki.alert.fragments.FragmentList
 import com.plocki.alert.R
 import com.plocki.alert.fragments.FragmentMap
 import kotlinx.android.synthetic.main.map_fragment.*
-
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -29,16 +36,14 @@ class MainActivity : AppCompatActivity() {
         private const val  PERMISSION_LOCATION = 101
     }
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         supportActionBar!!.title = "Alert!"
         supportActionBar!!.setIcon(ResourcesCompat.getDrawable(resources, R.drawable.ic_more, null))
 
-
         getPermissionsLocation()
-
 
         addbutton.setOnClickListener {
             val intent = Intent(this@MainActivity, Add::class.java)

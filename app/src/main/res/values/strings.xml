@@ -1,9 +1,10 @@
 <resources>
     <string name="app_name">Alert</string>
-    <string name="facebook_app_id">1290151271145918</string>
-    <string name="fb_login_protocol_scheme">fb1290151271145918</string>
+<!--    <string name="facebook_app_id">1290151271145918</string>-->
+<!--    <string name="fb_login_protocol_scheme">fb1290151271145918</string>-->
 
-
+    <string name="facebook_app_id">3199087440133597</string>
+    <string name="fb_login_protocol_scheme">fb3199087440133597</string>
     <string name="add_menu_title">Dodawanie wydarzenia</string>
 
     <string name="add_title_hint">Tytuł</string>
@@ -37,6 +38,5 @@
     <string name="Login_registerButton_text">Zarejestruj</string>
 <!--    <string name="Login_facebookButton_text">Zarejestruj się</string>-->
 <!--    <string name="Login_googleButton_text">Zarejestruj się</string>-->
-
 
 </resources>
