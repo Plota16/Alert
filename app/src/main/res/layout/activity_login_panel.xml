@@ -1,53 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="64dp"
+        >
 
     <com.google.android.material.card.MaterialCardView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_gravity="center"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/mtrl_card_spacing"
-            android:layout_marginTop="@dimen/mtrl_card_spacing"
-            android:layout_marginRight="@dimen/mtrl_card_spacing"
-            android:minHeight="200dp">
+            app:cardElevation="8dp"
+            android:elevation="8dp"
+            >
 
         <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:gravity="center_horizontal"
                 android:orientation="vertical"
-                android:gravity="center"
-                android:padding="50dp"
+                android:paddingVertical="16dp"
+                android:paddingHorizontal="32dp"
                 >
+
+
+            <ImageView
+                    android:layout_width="24pt"
+                    android:layout_height="24pt"
+                    android:background="@drawable/circle_image"
+                    android:rotation="-40"
+                    android:src="@drawable/ic_notification"
+                    android:layout_marginBottom="16dp"
+                    />
 
             <com.google.android.material.button.MaterialButton
                     android:id="@+id/face_login_button"
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
+                    android:layout_marginBottom="8dp"
                     android:text="Facebook"
-                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:textAlignment="textStart"
+                    android:textAllCaps="false"
                     app:icon="@drawable/ic_facebook"
-                    android:layout_marginVertical="10dp" />
+                    app:iconPadding="24px"
+                    />
+
             <com.google.android.material.button.MaterialButton
                     android:id="@+id/google_login_button"
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
+                    android:layout_marginBottom="10dp"
                     android:text="Google"
-                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:textAlignment="textStart"
+                    android:textAllCaps="false"
                     app:icon="@drawable/ic_google"
-                    android:layout_marginVertical="10dp" />
+                    app:iconPadding="24px"
+                    />
+
             <com.google.android.material.button.MaterialButton
                     android:id="@+id/twitter_login_button"
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
+                    android:layout_marginBottom="10dp"
                     android:text="Twitter"
-                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:textAlignment="textStart"
+                    android:textAllCaps="false"
                     app:icon="@drawable/ic_twitter"
-                    android:layout_marginVertical="10dp" />
+                    app:iconPadding="24px"
+                    />
+
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 </LinearLayout>
