@@ -11,6 +11,7 @@ import kotlin.math.PI
 import kotlin.math.roundToInt
 import android.R.attr.src
 import android.location.Location
+import com.google.android.gms.location.LocationServices
 import java.io.IOException
 import java.net.HttpURLConnection
 import java.net.URL
@@ -54,7 +55,6 @@ class EventMethods {
         }
 
         fun calcDistance(point: LatLng) : Int{
-
             val inst = Global.getInstance()
 
             var pointLocation = Location("")

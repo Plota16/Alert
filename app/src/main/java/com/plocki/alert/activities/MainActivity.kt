@@ -22,6 +22,7 @@ import androidx.lifecycle.ProcessLifecycleOwner
 import com.plocki.alert.fragments.FragmentList
 import com.plocki.alert.R
 import com.plocki.alert.fragments.FragmentMap
+import com.plocki.alert.models.Global
 import kotlinx.android.synthetic.main.map_fragment.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -56,7 +57,7 @@ class MainActivity : AppCompatActivity() {
         val textFragmentA = FragmentMap()
         val textFragmentB = FragmentList()
         transaction.add(R.id.details_fragment,textFragmentA)
-        transaction.add(R.id.details_fragment,textFragmentB)
+
         transaction.hide(textFragmentB)
         transaction.commit()
 
@@ -71,6 +72,11 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.action_list -> {
                     transaction = manager.beginTransaction()
+                    if(inst!!.bool)
+                    {
+                        transaction.add(R.id.details_fragment,textFragmentB)
+                        inst.bool = false
+                    }
                     transaction.hide(textFragmentA)
                     transaction.show(textFragmentB)
                     transaction.commit()

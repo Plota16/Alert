@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.plocki.alert.EventViewHolder
 import com.plocki.alert.models.Event
+import com.plocki.alert.models.EventMethods
 
 class ListAdapter(private val list: List<Event>, act : FragmentActivity, cont : Context)
     : RecyclerView.Adapter<EventViewHolder>() {
@@ -24,6 +25,7 @@ class ListAdapter(private val list: List<Event>, act : FragmentActivity, cont : 
     }
 
     override fun onBindViewHolder(holder: EventViewHolder, position: Int) {
+
         val movie: Event = list[position]
         holder.bind(movie)
     }
