@@ -41,12 +41,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginBottom="8dp"
+                    android:onClick="connectFacebook"
                     android:text="Facebook"
                     android:textAlignment="textStart"
                     android:textAllCaps="false"
                     app:icon="@drawable/ic_facebook"
-                    app:iconPadding="24px"
-                    />
+                    app:iconPadding="24px" />
 
             <com.google.android.material.button.MaterialButton
                     android:id="@+id/google_login_button"
@@ -54,12 +54,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginBottom="10dp"
+                    android:onClick="connectGoogle"
                     android:text="Google"
                     android:textAlignment="textStart"
                     android:textAllCaps="false"
                     app:icon="@drawable/ic_google"
-                    app:iconPadding="24px"
-                    />
+                    app:iconPadding="24px" />
 
             <com.google.android.material.button.MaterialButton
                     android:id="@+id/twitter_login_button"
@@ -67,12 +67,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginBottom="10dp"
+                    android:onClick="connectTwitter"
                     android:text="Twitter"
                     android:textAlignment="textStart"
                     android:textAllCaps="false"
                     app:icon="@drawable/ic_twitter"
-                    app:iconPadding="24px"
-                    />
+                    app:iconPadding="24px" />
 
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>

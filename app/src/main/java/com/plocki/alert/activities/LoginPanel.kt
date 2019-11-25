@@ -60,39 +60,39 @@ class LoginPanel : AppCompatActivity() {
         setContentView(R.layout.activity_login_panel)
         //TWITTER
         mTwitterAuthClient = TwitterAuthClient()
-        twitter_login_button.setOnClickListener(View.OnClickListener {
-            if (getTwitterSession() == null) {
-                handleTwitterSignInResult()
-            } else {//if user is already authenticated direct call fetch twitter email api
-                fetchTwitterEmail(getTwitterSession())
-            }
-        })
-
-//        //GOOGLE
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestEmail()
-            .build()
-        val mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
-        google_login_button.setOnClickListener{
-            val signInIntent = mGoogleSignInClient.signInIntent
-            startActivityForResult(signInIntent, RC_SIGN_IN)
-
-        }
-        val acct = GoogleSignIn.getLastSignedInAccount(this)
-        if (acct != null) {
-            println(acct.idToken)
-        }
+//        twitter_login_button.setOnClickListener(View.OnClickListener {
+//            if (getTwitterSession() == null) {
+//                handleTwitterSignInResult()
+//            } else {//if user is already authenticated direct call fetch twitter email api
+//                fetchTwitterEmail(getTwitterSession())
+//            }
+//        })
 //
-//        //FACEBOOK
-        face_login_button.setOnClickListener(View.OnClickListener {
-            callbackManager = CallbackManager.Factory.create()
-            LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "email"))
-            handleFacebookSignInResult()
-            if(AccessToken.getCurrentAccessToken()!=null){
-                getUserProfile(AccessToken.getCurrentAccessToken())
-                Toast.makeText(this@LoginPanel, mail, Toast.LENGTH_LONG).show()
-            }
-        })
+////        //GOOGLE
+//        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+//            .requestEmail()
+//            .build()
+//        val mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
+//        google_login_button.setOnClickListener{
+//            val signInIntent = mGoogleSignInClient.signInIntent
+//            startActivityForResult(signInIntent, RC_SIGN_IN)
+//
+//        }
+//        val acct = GoogleSignIn.getLastSignedInAccount(this)
+//        if (acct != null) {
+//            println(acct.idToken)
+//        }
+////
+////        //FACEBOOK
+//        face_login_button.setOnClickListener(View.OnClickListener {
+//            callbackManager = CallbackManager.Factory.create()
+//            LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "email"))
+//            handleFacebookSignInResult()
+//            if(AccessToken.getCurrentAccessToken()!=null){
+//                getUserProfile(AccessToken.getCurrentAccessToken())
+//                Toast.makeText(this@LoginPanel, mail, Toast.LENGTH_LONG).show()
+//            }
+//        })
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -128,7 +128,12 @@ class LoginPanel : AppCompatActivity() {
         {
             override fun onSuccess(result: LoginResult?) {
                 mAccessToken = result!!.getAccessToken()
-                println(mAccessToken.token)
+                println(result.accessToken.expires)
+                println(result.accessToken.token)
+                println(result.accessToken.lastRefresh)
+                println(result.accessToken.userId)
+                println(result.accessToken.source)
+
                 println("LOGUJE FACE")
                 getUserProfile(mAccessToken)
             }
@@ -151,8 +156,20 @@ class LoginPanel : AppCompatActivity() {
                 }
                 completedTask.addOnSuccessListener {
                     Toast.makeText(this@LoginPanel, "Success", Toast.LENGTH_LONG).show()
-                    val account = completedTask.result
+            val account = completedTask.getResult()
+        val idToken = account!!.getIdToken()
+                    println(idToken)
+
+//                    logger.info(account!!.get)
                     logger.info(account!!.email)
+                    logger.info(account!!.displayName)
+                    logger.info(account!!.id)
+                    logger.info(account!!.account.toString())
+                    logger.info(account!!.isExpired.toString())
+
+
+
+
                 }
                 completedTask.addOnFailureListener {
                     Toast.makeText(this@LoginPanel, "Fail", Toast.LENGTH_LONG).show()
@@ -169,8 +186,9 @@ class LoginPanel : AppCompatActivity() {
         println("LOGUJEEEEE FACE")
         val request = GraphRequest.newMeRequest(accessToken) { `object`, response ->
             try {
+                logger.info(accessToken.toString())
                 //here is the data that you want
-                logger.info(`object`.get("email").toString())
+                logger.info(`object`.toString())
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -193,9 +211,10 @@ class LoginPanel : AppCompatActivity() {
             override fun success(result: Result<String>) {
                 //here it will give u only email and rest of other information u can get from TwitterSession
 
-                Log.d("a", "twitterLogin:userId" + twitterSession!!.userId)
+//                Log.d("a", result.response.toString())
                 Log.d("a", "twitterLogin:userName" + twitterSession!!.userName)
-                println("toks" + twitterSession.authToken.token)
+//                println("toks " + result.)
+
                 var userId = twitterSession!!.userId
                 var username = twitterSession!!.userName
                 var email = result.data
@@ -209,7 +228,7 @@ class LoginPanel : AppCompatActivity() {
                 if (username != null || username != "") {
                     usernameStr = "Username : " + username + "\n\n"
                 }
-                println("" + str + tokenStr + usernameStr)
+//                println("" + str + tokenStr + usernameStr)
 
             }
             override fun failure(exception: TwitterException) {
@@ -224,64 +243,69 @@ class LoginPanel : AppCompatActivity() {
     }
 
 
-    //    fun connectGoogle(view: View) {
-//        val scopes = Arrays.asList("email")
-//
-//        com.jaychang.sa.google.SimpleAuth.connectGoogle(scopes, object : AuthCallback {
-//            override fun onSuccess(socialUser: SocialUser) {
-//                println(socialUser.accessToken.toString())
-//                println(socialUser.fullName)
-//                println(socialUser.email)
-//            }
-//
-//            override fun onError(error: Throwable) {
-//                Toast.makeText(this@LoginPanel, "Błąd logowania", Toast.LENGTH_SHORT)
-//            }
-//
-//            override fun onCancel() {
-//                Toast.makeText(this@LoginPanel, "Błąd logowania", Toast.LENGTH_SHORT)
-//
-//            }
-//        })
-//    }
-//
-//    fun connectFacebook(view: View) {
-//        val scopes = Arrays.asList("user_birthday", "user_friends")
-//
-//        com.jaychang.sa.facebook.SimpleAuth.connectFacebook(scopes, object : AuthCallback {
-//            override fun onSuccess(socialUser: SocialUser) {
-//                println(socialUser.accessToken.toString())
-//                println(socialUser.fullName)
-//                println(socialUser.email)
-//            }
-//
-//            override fun onError(error: Throwable) {
-//                Toast.makeText(this@LoginPanel, "Błąd logowania", Toast.LENGTH_SHORT)
-//            }
-//
-//            override fun onCancel() {
-//                Toast.makeText(this@LoginPanel, "Błąd logowania", Toast.LENGTH_SHORT)
-//            }
-//        })
-//    }
-//
-//    fun connectTwitter(view: View) {
-//        com.jaychang.sa.twitter.SimpleAuth.connectTwitter(object : AuthCallback {
-//            override fun onSuccess(socialUser: SocialUser) {
-//                println(socialUser.accessToken.toString())
-//                println(socialUser.fullName)
-//                println(socialUser.email)
-//            }
-//
-//            override fun onError(error: Throwable) {
-//                Toast.makeText(this@LoginPanel, "Błąd logowania", Toast.LENGTH_SHORT)
-//            }
-//
-//            override fun onCancel() {
-//                Toast.makeText(this@LoginPanel, "Błąd logowania", Toast.LENGTH_SHORT)
-//            }
-//        })
-//    }
+        fun connectGoogle(view: View) {
+        val scopes = Arrays.asList("email")
+        com.jaychang.sa.google.SimpleAuth.connectGoogle(scopes, object : AuthCallback {
+            override fun onSuccess(socialUser: SocialUser) {
+                println(socialUser.accessToken.toString())
+                println(socialUser.fullName)
+                println(socialUser.userId)
+                println(socialUser.username)
+                println(socialUser.email)
+            }
+
+            override fun onError(error: Throwable) {
+                Toast.makeText(this@LoginPanel, "Błąd logowania", Toast.LENGTH_SHORT)
+            }
+
+            override fun onCancel() {
+                Toast.makeText(this@LoginPanel, "Błąd logowania", Toast.LENGTH_SHORT)
+
+            }
+        })
+    }
+
+    fun connectFacebook(view: View) {
+        val scopes = Arrays.asList("user_birthday", "user_friends")
+
+        com.jaychang.sa.facebook.SimpleAuth.connectFacebook(scopes, object : AuthCallback {
+            override fun onSuccess(socialUser: SocialUser) {
+                println(socialUser.accessToken.toString())
+                println(socialUser.fullName)
+                println(socialUser.userId)
+                println(socialUser.username)
+                println(socialUser.email)
+            }
+
+            override fun onError(error: Throwable) {
+                Toast.makeText(this@LoginPanel, "Błąd logowania", Toast.LENGTH_SHORT)
+            }
+
+            override fun onCancel() {
+                Toast.makeText(this@LoginPanel, "Błąd logowania", Toast.LENGTH_SHORT)
+            }
+        })
+    }
+
+    fun connectTwitter(view: View) {
+        com.jaychang.sa.twitter.SimpleAuth.connectTwitter(object : AuthCallback {
+            override fun onSuccess(socialUser: SocialUser) {
+                println(socialUser.accessToken.toString())
+                println(socialUser.fullName)
+                println(socialUser.userId)
+                println(socialUser.username)
+                println(socialUser.email)
+            }
+
+            override fun onError(error: Throwable) {
+                Toast.makeText(this@LoginPanel, "Błąd logowania", Toast.LENGTH_SHORT)
+            }
+
+            override fun onCancel() {
+                Toast.makeText(this@LoginPanel, "Błąd logowania", Toast.LENGTH_SHORT)
+            }
+        })
+    }
 
 
 }
