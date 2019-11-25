@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.plocki.alert.recyclerAdapters.ListAdapter
 import com.plocki.alert.R
+import com.plocki.alert.models.EventMethods
 import com.plocki.alert.models.Global
 import kotlinx.android.synthetic.main.list_fragment.*
 
@@ -28,7 +29,7 @@ class FragmentList : Fragment(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        glob!!.list = glob!!.list.sortedBy { EventMethods.calcDistance(it.coords) }
 
         // RecyclerView node initialized here
         recycler.apply {

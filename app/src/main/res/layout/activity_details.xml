@@ -34,7 +34,7 @@
                 android:id="@+id/details_category"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="#FFFFFFFF"
+                android:background="#77FFFFFF"
                 android:paddingStart="8dp"
                 android:paddingTop="4dp"
                 android:paddingEnd="8dp"

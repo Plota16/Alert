@@ -21,6 +21,7 @@ import com.google.android.gms.maps.model.Marker
 import com.plocki.alert.activities.Details
 import com.plocki.alert.models.Global
 import com.plocki.alert.R
+import com.plocki.alert.models.EventMethods
 
 
 class FragmentMap : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
@@ -79,7 +80,9 @@ class FragmentMap : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
             inst!!.cameraPos = mMap.cameraPosition.target
         }
 
+
         val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context!!)
+
         fusedLocationClient.lastLocation.addOnSuccessListener {
             if (it != null) {
                 lastLocation = it
@@ -101,6 +104,7 @@ class FragmentMap : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
     }
 
     private fun addMarkers() {
+
         for (event in inst!!.list) {
             val marker = mMap.addMarker(
                 MarkerOptions()
