@@ -147,6 +147,7 @@ class LoginPanel : AppCompatActivity() {
 
         })
     }
+
     private fun handleGoogleSignInResult(completedTask: Task<GoogleSignInAccount>) {
         try {
             if (completedTask.isComplete) {
@@ -201,10 +202,10 @@ class LoginPanel : AppCompatActivity() {
         request.executeAsync()
 
 }
+
     private fun getTwitterSession(): TwitterSession? {
         return TwitterCore.getInstance().sessionManager.activeSession
     }
-
 
     fun fetchTwitterEmail(twitterSession: TwitterSession?) {
         mTwitterAuthClient?.requestEmail(twitterSession, object : Callback<String>() {
@@ -242,8 +243,7 @@ class LoginPanel : AppCompatActivity() {
         })
     }
 
-
-        fun connectGoogle(view: View) {
+    fun connectGoogle(view: View) {
         val scopes = Arrays.asList("email")
         com.jaychang.sa.google.SimpleAuth.connectGoogle(scopes, object : AuthCallback {
             override fun onSuccess(socialUser: SocialUser) {
@@ -305,6 +305,16 @@ class LoginPanel : AppCompatActivity() {
                 Toast.makeText(this@LoginPanel, "Błąd logowania", Toast.LENGTH_SHORT)
             }
         })
+    }
+
+    fun logoClicked(v: View){
+        logIn()
+    }
+
+    fun logIn(){
+        val intent = Intent(this, MainActivity::class.java)
+        intent.putExtra("SHOW_WELCOME", true)
+        startActivity(intent)
     }
 
 

@@ -22,8 +22,9 @@ import androidx.lifecycle.ProcessLifecycleOwner
 import com.plocki.alert.fragments.FragmentList
 import com.plocki.alert.R
 import com.plocki.alert.fragments.FragmentMap
+import com.plocki.alert.fragments.FragmentProfile
 import com.plocki.alert.models.Global
-import kotlinx.android.synthetic.main.map_fragment.*
+import kotlinx.android.synthetic.main.fragment_map.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -37,6 +38,7 @@ class MainActivity : AppCompatActivity() {
         private const val  PERMISSION_LOCATION = 101
     }
 
+    private val inst = Global.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,37 +54,66 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        var currentFragment = 'A'
         val manager = supportFragmentManager
         var transaction = manager.beginTransaction()
         val textFragmentA = FragmentMap()
         val textFragmentB = FragmentList()
+        val textFragmentC = FragmentProfile()
         transaction.add(R.id.details_fragment,textFragmentA)
+        transaction.add(R.id.details_fragment,textFragmentC)
 
-        transaction.hide(textFragmentB)
+        transaction.hide(textFragmentC)
         transaction.commit()
 
         bottom_navigation.setOnNavigationItemSelectedListener {
             when (it.itemId){
                 R.id.action_map -> {
+                    addbutton.show()
+                    fiterbutton.show()
                     transaction = manager.beginTransaction()
-                    transaction.hide(textFragmentB)
+                    when(currentFragment){
+                        'B' -> transaction.hide(textFragmentB)
+                        'C' -> transaction.hide(textFragmentC)
+                    }
+
                     transaction.show(textFragmentA)
+                    currentFragment = 'A'
                     transaction.commit()
                     return@setOnNavigationItemSelectedListener true
                 }
                 R.id.action_list -> {
+                    addbutton.show()
+                    fiterbutton.show()
                     transaction = manager.beginTransaction()
                     if(inst!!.bool)
                     {
                         transaction.add(R.id.details_fragment,textFragmentB)
                         inst.bool = false
                     }
-                    transaction.hide(textFragmentA)
+                    when(currentFragment){
+                        'C' -> transaction.hide(textFragmentC)
+                        'A' -> transaction.hide(textFragmentA)
+                    }
                     transaction.show(textFragmentB)
+                    currentFragment = 'B'
                     transaction.commit()
                     return@setOnNavigationItemSelectedListener true
                 }
+                R.id.action_profile -> {
+                    addbutton.hide()
+                    fiterbutton.hide()
+                    transaction = manager.beginTransaction()
+                    when(currentFragment){
+                        'B' -> transaction.hide(textFragmentB)
+                        'A' -> transaction.hide(textFragmentA)
+                    }
 
+                    transaction.show(textFragmentC)
+                    currentFragment = 'C'
+                    transaction.commit()
+                    return@setOnNavigationItemSelectedListener true
+                }
                 else ->{
                     transaction = manager.beginTransaction()
                     transaction.hide(textFragmentB)
@@ -118,10 +149,6 @@ class MainActivity : AppCompatActivity() {
             popupMenu.inflate(R.menu.more_menu)
             popupMenu.setOnMenuItemClickListener {
                 val moreMenuId = it.itemId
-                if (moreMenuId == R.id.action_login){
-                    val intent = Intent(this@MainActivity, LoginPanel::class.java)
-                    startActivity(intent)
-                }
                 if (moreMenuId == R.id.action_info){
                     Toast.makeText(this@MainActivity, "Info", Toast.LENGTH_LONG).show()
                 }

@@ -71,6 +71,12 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
 
         }
 
+        category.setOnClickListener{
+            onChooseCategoryClick()
+        }
+        category_in.setOnClickListener{
+            onChooseCategoryClick()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -211,7 +217,9 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
         popupMenu.show()
     }
 
-    fun onChooseCategoryClick(v: View?) {
+
+
+    fun onChooseCategoryClick() {
         val singleChoiceItems = resources.getStringArray(R.array.dialog_single_choice_array)
 
         val itemSelected = choose
@@ -221,7 +229,7 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
                     dialogInterface, selectedIndex -> choose = selectedIndex}
             .setPositiveButton(this.getString(R.string.add_dialog_positive)) {
                     dialog, which ->
-                         category.text = singleChoiceItems[choose] }
+                         category_in.setText(singleChoiceItems[choose])  }
             .setNegativeButton(this.getString(R.string.add_dialog_negative), null)
             .show()
 

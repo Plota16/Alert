@@ -10,7 +10,7 @@ import com.plocki.alert.recyclerAdapters.ListAdapter
 import com.plocki.alert.R
 import com.plocki.alert.models.EventMethods
 import com.plocki.alert.models.Global
-import kotlinx.android.synthetic.main.list_fragment.*
+import kotlinx.android.synthetic.main.fragment_list.*
 
 
 
@@ -24,7 +24,7 @@ class FragmentList : Fragment(){
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-        return inflater.inflate(R.layout.list_fragment, container, false)
+        return inflater.inflate(R.layout.fragment_list, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

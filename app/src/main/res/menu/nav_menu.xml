@@ -8,4 +8,8 @@
         <item android:title="Lista"
              android:id="@+id/action_list"
              android:icon="@drawable/ic_list"></item>
+
+        <item android:title="Profil"
+                android:id="@+id/action_profile"
+                android:icon="@drawable/ic_prof"></item>
 </menu>

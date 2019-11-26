@@ -21,10 +21,12 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".activities.LoginPanel"></activity>
-        <activity android:name=".activities.Details"></activity>
-        <activity android:name=".activities.LocationPicker"></activity>
-        <activity android:name=".activities.Add"></activity>
+        <activity android:name=".activities.Filter"></activity>
+        <activity android:name=".fragments.FragmentProfile" />
+        <activity android:name=".activities.LoginPanel" />
+        <activity android:name=".activities.Details" />
+        <activity android:name=".activities.LocationPicker" />
+        <activity android:name=".activities.Add" />
 
         <meta-data
                 android:name="com.facebook.sdk.ApplicationId"
@@ -36,7 +38,8 @@
                 android:name="preloaded_fonts"
                 android:resource="@array/preloaded_fonts" />
 
-        <activity android:name=".activities.MainActivity">
+        <activity android:name=".activities.MainActivity" />
+        <activity android:name=".activities.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

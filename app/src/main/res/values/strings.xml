@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Alert</string>
-<!--    <string name="facebook_app_id">1290151271145918</string>-->
-<!--    <string name="fb_login_protocol_scheme">fb1290151271145918</string>-->
+    <!--    <string name="facebook_app_id">1290151271145918</string>-->
+    <!--    <string name="fb_login_protocol_scheme">fb1290151271145918</string>-->
 
     <string name="facebook_app_id">3199087440133597</string>
     <string name="fb_login_protocol_scheme">fb3199087440133597</string>
@@ -36,7 +36,11 @@
     <string name="Login_password_text">Hasło</string>
     <string name="login_loginButton_text">Zaloguj</string>
     <string name="Login_registerButton_text">Zarejestruj</string>
-<!--    <string name="Login_facebookButton_text">Zarejestruj się</string>-->
-<!--    <string name="Login_googleButton_text">Zarejestruj się</string>-->
+    <string name="detail_image_title">Opis</string>
+    <string name="detail_localisacion_title">Lokalizacja</string>
+    <string name="detail_bottombar_text">Czy informacja była pomocna?</string>
+    <string name="add_category_hint">Kategoria</string>
+    <!--    <string name="Login_facebookButton_text">Zarejestruj się</string>-->
+    <!--    <string name="Login_googleButton_text">Zarejestruj się</string>-->
 
 </resources>

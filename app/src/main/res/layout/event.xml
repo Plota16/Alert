@@ -5,11 +5,12 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardElevation="8dp"
-        android:layout_marginLeft="@dimen/mtrl_card_spacing"
-        android:layout_marginTop="@dimen/mtrl_card_spacing"
-        android:layout_marginRight="@dimen/mtrl_card_spacing"
-        android:layout_marginBottom="@dimen/mtrl_card_spacing"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="5dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="4dp"
+        android:layout_marginRight="16dp"
         >
 
     <LinearLayout
@@ -18,9 +19,9 @@
             android:orientation="horizontal">
 
         <LinearLayout
-                android:layout_marginStart="8dp"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:layout_weight="1"
                 android:orientation="vertical">
 
@@ -28,26 +29,30 @@
                     android:id="@+id/list_category"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="12dp"
                     android:fontFamily="@font/roboto"
-                    android:textSize="13sp" />
+                    android:textSize="12sp" />
 
             <TextView
                     android:id="@+id/list_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="12dp"
                     android:fontFamily="@font/roboto"
-                    android:textSize="18sp"
+                    android:textSize="20sp"
                     android:textStyle="bold" />
 
             <TextView
                     android:id="@+id/list_distance"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
                     android:fontFamily="@font/roboto"
-                    android:textColor="#C2C2C2"
+                    android:paddingBottom="32dp"
+                    android:textColor="#757575"
                     android:textSize="14sp" />
         </LinearLayout>
 

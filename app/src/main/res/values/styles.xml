@@ -10,6 +10,36 @@
         <item name="android:backgroundTint">@android:color/white</item>
     </style>
 
+    <style name="Theme2" parent="AppTheme">
+        <item name="colorPrimary">@android:color/holo_green_dark</item>
+    </style>
+
+    <style name="MyTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <item name="android:tint">@color/colorPrimary</item>
+        <item name="android:textColorHint">@color/colorPrimary</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="boxStrokeColor">@drawable/out_color</item>
+    </style>
+
+    <style name="MyTextInput">
+        <item name="boxStrokeWidth">@color/colorPrimary</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="boxStrokeColor">@drawable/out_color</item>
+    </style>
+
+    <style name="MyTextInputEditText" parent="ThemeOverlay.MaterialComponents.TextInputEditText.OutlinedBox.Dense">
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
+
+
+
+
+
+
+
+
+
 
 
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
@@ -18,8 +48,8 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="scrimBackground">@color/mtrl_scrim_color</item>
-        <item name="textAppearanceHeadline1">@style/TextAppearance.MaterialComponents.Headline1</item>
-        <item name="textAppearanceHeadline2">@style/TextAppearance.MaterialComponents.Headline2</item>
+        <item name="textAppearanceHeadline1">@color/colorPrimary</item>
+        <item name="textAppearanceHeadline2">@color/colorPrimary</item>
         <item name="textAppearanceHeadline3">@style/TextAppearance.MaterialComponents.Headline3</item>
         <item name="textAppearanceHeadline4">@style/TextAppearance.MaterialComponents.Headline4</item>
         <item name="textAppearanceHeadline5">@style/TextAppearance.MaterialComponents.Headline5</item>

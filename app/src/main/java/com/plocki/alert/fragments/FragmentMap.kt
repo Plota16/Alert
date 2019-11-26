@@ -21,7 +21,11 @@ import com.google.android.gms.maps.model.Marker
 import com.plocki.alert.activities.Details
 import com.plocki.alert.models.Global
 import com.plocki.alert.R
-import com.plocki.alert.models.EventMethods
+import kotlinx.android.synthetic.main.fragment_map.*
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+
+
+
 
 
 class FragmentMap : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
@@ -42,8 +46,7 @@ class FragmentMap : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
     }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-
-        val rootView = inflater.inflate(R.layout.map_fragment, container, false)
+        val rootView = inflater.inflate(R.layout.fragment_map, container, false)
 
         val mapFragment = childFragmentManager.findFragmentById(R.id.frg) as SupportMapFragment?
 

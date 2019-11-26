@@ -23,5 +23,33 @@
             app:menu="@menu/nav_menu"
             style="@style/Widget.MaterialComponents.BottomNavigationView"/>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fiterbutton"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="bottom|end"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="135dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="@drawable/ic_filter"
+            android:foregroundGravity="center_vertical|clip_horizontal|center"
+            android:foregroundTint="#FFFFFFFF"
+            android:hapticFeedbackEnabled="false"
+            android:scaleType="fitStart"
+            android:tint="@color/white"
+            app:backgroundTint="@color/colorPrimary" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/addbutton"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_gravity="bottom|end"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="70dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:tint="@color/white"
+            app:backgroundTint="@color/colorPrimary"
+            app:srcCompat="@drawable/ic_plus" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

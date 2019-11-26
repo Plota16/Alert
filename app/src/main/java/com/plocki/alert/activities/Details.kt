@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.MenuItem
+import android.view.View
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.google.android.gms.location.LocationServices
@@ -20,11 +21,14 @@ import com.plocki.alert.models.Global
 import com.plocki.alert.R
 import com.plocki.alert.models.EventMethods
 import kotlinx.android.synthetic.main.activity_details.*
+import kotlinx.android.synthetic.main.likebar.*
 import kotlin.math.roundToInt
 
 
 class Details : AppCompatActivity(), OnMapReadyCallback {
 
+    var like = false
+    var dislike = false
 
     lateinit var mMap : GoogleMap
     private lateinit var event : Event
@@ -120,6 +124,49 @@ class Details : AppCompatActivity(), OnMapReadyCallback {
             MarkerOptions()
                 .position(event.coords)
                 .title(event.title))
+    }
+
+    fun likeClicked(v: View){
+        if(!like && !dislike){
+            like = true
+        }
+        else if(like && !dislike){
+            like = false
+        }
+        else if(!like && dislike){
+            dislike = false
+            like = true
+        }
+        doColor()
+    }
+
+    fun dislikeClicked(v: View){
+        if(!like && !dislike){
+            dislike = true
+        }
+        else if(like && !dislike){
+            like = false
+            dislike = true
+        }
+        else if(!like && dislike){
+            dislike = false
+        }
+        doColor()
+    }
+
+    fun doColor(){
+        if(!like && !dislike){
+            thumb_down.foreground.alpha = 255
+            thump_up.foreground.alpha = 255
+        }
+        else if(like && !dislike){
+            thump_up.foreground.alpha = 255
+            thumb_down.foreground.alpha = 128
+        }
+        else if(!like && dislike){
+            thump_up.foreground.alpha = 128
+            thumb_down.foreground.alpha = 255
+        }
     }
 }
 

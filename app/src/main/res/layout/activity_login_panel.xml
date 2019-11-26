@@ -4,16 +4,20 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:paddingHorizontal="16dp"
         android:paddingTop="64dp"
         >
 
     <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.MaterialComponents.CardView"
             android:layout_width="match_parent"
             android:layout_gravity="center"
             android:layout_height="wrap_content"
-            app:cardElevation="8dp"
-            android:elevation="8dp"
+            app:cardCornerRadius="6dp"
+            app:cardElevation="5dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginTop="80dp"
+
             >
 
         <LinearLayout
@@ -21,19 +25,19 @@
                 android:layout_height="match_parent"
                 android:gravity="center_horizontal"
                 android:orientation="vertical"
-                android:paddingVertical="16dp"
-                android:paddingHorizontal="32dp"
                 >
 
 
-            <ImageView
+            <ImageButton
+                    android:id="@+id/logo"
                     android:layout_width="24pt"
                     android:layout_height="24pt"
-                    android:background="@drawable/circle_image"
-                    android:rotation="-40"
-                    android:src="@drawable/ic_notification"
+                    android:layout_marginTop="16dp"
                     android:layout_marginBottom="16dp"
-                    />
+                    android:background="@drawable/circle_image"
+                    android:onClick="logoClicked"
+                    android:rotation="-40"
+                    android:src="@drawable/ic_notification" />
 
             <com.google.android.material.button.MaterialButton
                     android:id="@+id/face_login_button"
@@ -41,38 +45,51 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginEnd="32dp"
                     android:onClick="connectFacebook"
-                    android:text="Facebook"
+                    android:text="Zaloguj się z Facebook"
                     android:textAlignment="textStart"
                     android:textAllCaps="false"
                     app:icon="@drawable/ic_facebook"
-                    app:iconPadding="24px" />
+                    app:iconPadding="16dp"
+
+                    />
 
             <com.google.android.material.button.MaterialButton
                     android:id="@+id/google_login_button"
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginEnd="32dp"
                     android:onClick="connectGoogle"
-                    android:text="Google"
+                    android:text="Zaloguj się z Google"
                     android:textAlignment="textStart"
                     android:textAllCaps="false"
                     app:icon="@drawable/ic_google"
-                    app:iconPadding="24px" />
+                    app:iconPadding="16dp"
+                    />
 
             <com.google.android.material.button.MaterialButton
                     android:id="@+id/twitter_login_button"
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginBottom="32dp"
                     android:onClick="connectTwitter"
-                    android:text="Twitter"
+                    android:text="Zaloguj się z Twitter"
                     android:textAlignment="textStart"
                     android:textAllCaps="false"
                     app:icon="@drawable/ic_twitter"
-                    app:iconPadding="24px" />
+                    app:iconPadding="16dp"
+                    />
 
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
