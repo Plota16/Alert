@@ -25,7 +25,7 @@
                 android:layout_weight="1"
                 android:text="@string/detail_bottombar_text"
                 android:textColor="@color/colorPrimary"
-                android:textSize="16sp" />
+                android:textSize="14sp" />
 
         <ImageButton
                 android:id="@+id/thump_up"

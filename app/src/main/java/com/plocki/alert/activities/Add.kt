@@ -71,6 +71,7 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
 
         }
 
+        category_in.keyListener = null;
         category.setOnClickListener{
             onChooseCategoryClick()
         }
