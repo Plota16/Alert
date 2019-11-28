@@ -118,7 +118,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:layout_marginBottom="50dp"
             android:orientation="horizontal">
 
         <Button
@@ -144,14 +143,4 @@
                 android:textColor="@color/colorPrimary" />
     </LinearLayout>
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottom_navigation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:background="@color/colorPrimary"
-            app:itemIconTint="@drawable/bottom_color_list"
-            app:itemTextColor="@drawable/bottom_color_list"
-            app:menu="@menu/nav_menu"
-            style="@style/Widget.MaterialComponents.BottomNavigationView"/>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
