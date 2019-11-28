@@ -21,15 +21,14 @@ import com.google.android.gms.maps.model.Marker
 import com.plocki.alert.activities.Details
 import com.plocki.alert.models.Global
 import com.plocki.alert.R
-import kotlinx.android.synthetic.main.fragment_map.*
-import androidx.coordinatorlayout.widget.CoordinatorLayout
-
-
-
+import com.plocki.alert.models.EventMethods
 
 
 class FragmentMap : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
 
+
+    var bool = false
+    var bool2 = false
 
     private lateinit var mMap: GoogleMap
     private lateinit var lastLocation: Location
@@ -44,6 +43,7 @@ class FragmentMap : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
         retainInstance = true
         super.onActivityCreated(savedInstanceState)
     }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         val rootView = inflater.inflate(R.layout.fragment_map, container, false)
@@ -72,8 +72,6 @@ class FragmentMap : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
             ) {
                 mMap.isMyLocationEnabled = true
 
-            } else {
-
             }
         }
 
@@ -97,7 +95,7 @@ class FragmentMap : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
                 }
             }
         }
-        addMarkers()
+        updateMap()
     }
 
     override fun onInfoWindowClick(p0: Marker?) {
@@ -106,16 +104,49 @@ class FragmentMap : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
         startActivity(intent)
     }
 
-    private fun addMarkers() {
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        updateMap()
+    }
 
-        for (event in inst!!.list) {
-            val marker = mMap.addMarker(
-                MarkerOptions()
-                    .position(event.coords)
-                    .title(event.title)
-            )
-            inst!!.mapHashMap[marker.id] = event
-
+    override fun onResume() {
+        super.onResume()
+        if(bool){
+            updateMap()
         }
+        else{
+            bool = true
+        }
+    }
+
+    private fun updateMap() {
+        mMap.clear()
+        for (event in inst!!.list) {
+
+            val index = inst!!.CategoryList.indexOf(EventMethods.getCategory(event.category))
+
+            if(bool2) {
+                if(inst!!.FilterList[index]){
+                    if(EventMethods.calcDistance(event.coords) < EventMethods.getMaxDistance(inst!!.filterdDistnance) || EventMethods.getMaxDistance(inst!!.filterdDistnance) == 0) {
+                        val marker = mMap.addMarker(
+                            MarkerOptions()
+                                .position(event.coords)
+                                .title(event.title)
+                        )
+                        inst!!.mapHashMap[marker.id] = event
+                    }
+                }
+            }
+            else{
+                val marker = mMap.addMarker(
+                    MarkerOptions()
+                        .position(event.coords)
+                        .title(event.title)
+                )
+                inst!!.mapHashMap[marker.id] = event
+
+            }
+        }
+        bool2 = true
     }
 }

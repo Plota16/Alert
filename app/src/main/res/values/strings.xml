@@ -40,6 +40,15 @@
     <string name="detail_localisacion_title">Lokalizacja</string>
     <string name="detail_bottombar_text">Czy informacja była pomocna?</string>
     <string name="add_category_hint">Kategoria</string>
+    <string name="add_addphoto_text">Dodaj zdjęcie</string>
+
+    <string name="filter_fitrcateegory">Filtruj Kategorię</string>
+    <string name="filter_maxdistance">Maksymalna odległość</string>
+    <string name="filter_resetbutton_text">Resetuj</string>
+    <string name="filter_confirm_button_text">Zatwierdź</string>
+    <string name="filter_title">Filtry</string>
+    <string name="filter_dostance_title">Podaj Maksymalną odległość</string>
+
     <!--    <string name="Login_facebookButton_text">Zarejestruj się</string>-->
     <!--    <string name="Login_googleButton_text">Zarejestruj się</string>-->
 

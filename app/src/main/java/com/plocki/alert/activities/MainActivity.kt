@@ -6,7 +6,6 @@ import android.content.pm.PackageManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import androidx.core.content.res.ResourcesCompat
 import kotlinx.android.synthetic.main.activity_main.*
 import android.view.Menu
@@ -16,19 +15,11 @@ import android.view.View
 import android.widget.PopupMenu
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.OnLifecycleEvent
-import androidx.lifecycle.ProcessLifecycleOwner
 import com.plocki.alert.fragments.FragmentList
 import com.plocki.alert.R
 import com.plocki.alert.fragments.FragmentMap
 import com.plocki.alert.fragments.FragmentProfile
 import com.plocki.alert.models.Global
-import kotlinx.android.synthetic.main.fragment_map.*
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -53,6 +44,11 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra("SHOW_WELCOME", true)
             startActivity(intent)
         }
+        filterbutton.setOnClickListener{
+            val intent = Intent(this@MainActivity, Filter::class.java)
+            intent.putExtra("SHOW_WELCOME", true)
+            startActivity(intent)
+        }
 
         var currentFragment = 'A'
         val manager = supportFragmentManager
@@ -70,7 +66,7 @@ class MainActivity : AppCompatActivity() {
             when (it.itemId){
                 R.id.action_map -> {
                     addbutton.show()
-                    fiterbutton.show()
+                    filterbutton.show()
                     transaction = manager.beginTransaction()
                     when(currentFragment){
                         'B' -> transaction.hide(textFragmentB)
@@ -84,7 +80,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.action_list -> {
                     addbutton.show()
-                    fiterbutton.show()
+                    filterbutton.show()
                     transaction = manager.beginTransaction()
                     if(inst!!.bool)
                     {
@@ -102,7 +98,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.action_profile -> {
                     addbutton.hide()
-                    fiterbutton.hide()
+                    filterbutton.hide()
                     transaction = manager.beginTransaction()
                     when(currentFragment){
                         'B' -> transaction.hide(textFragmentB)

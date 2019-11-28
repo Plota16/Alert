@@ -71,12 +71,27 @@ class EventMethods {
 
         fun getCategory(Id: Int): String {
             when(Id){
-                1 -> return "Wypadek"
-                2 -> return "Wydarzenie"
-                3 -> return "Impreza"
-                4 -> return ""
+                1 -> return "Wydarzenie"
+                2 -> return "Korek"
+                3 -> return "Wypadek"
+                4 -> return "Utrudnienia"
             }
             return ""
         }
+
+        fun getMaxDistance(dist : String): Int{
+            when(dist){
+                "Nielimitowane" -> return 0
+                "500 m" -> return 500
+                "1 km" -> return 1000
+                "3 km" -> return 3000
+                "5 km" -> return 5000
+                "10 km" -> return 10000
+                "20 km" -> return 20000
+                "100 km" -> return 100000
+            }
+            return 0
+        }
+
     }
 }

@@ -14,7 +14,7 @@ class Global {
     lateinit var view : View
     var cameraPos: LatLng = LatLng(0.0,0.0)
 
-    var list = listOf(
+    var list = arrayListOf(
         Event(
             1,
             UUID.randomUUID(),
@@ -77,12 +77,19 @@ class Global {
         )
     )
 
+    var CategoryList = arrayOf("Wydarzenie",
+    "Korek",
+    "Wypadek",
+    "Utrudnienia")
 
-   var mapHashMap = HashMap<String, Event>()
+    var FilterList = booleanArrayOf(true,true,true,true)
 
+    val distanceList = arrayOf("Nielimitowane", "500 m", "1 km", "3 km", "5 km", "10 km", "20 km", "100 km")
+
+    var mapHashMap = HashMap<String, Event>()
     var listHashMap = HashMap<String, Event>()
 
-
+    var filterdDistnance = "Nielimitowane"
 
     companion object {
         private var mInstance: Global? = null

@@ -31,11 +31,13 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.plocki.alert.R
 import kotlinx.android.synthetic.main.activity_add.*
 import com.plocki.alert.models.EventMethods.Companion.thumbnailFromUri
+import com.plocki.alert.models.Global
 
 
 class Add : AppCompatActivity(), OnMapReadyCallback {
 
 
+    val inst = Global.getInstance()
 
     companion object {
         var hasLocation = false
@@ -71,7 +73,7 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
 
         }
 
-        category_in.keyListener = null;
+        category_in.keyListener = null
         category.setOnClickListener{
             onChooseCategoryClick()
         }
@@ -126,9 +128,13 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
         if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE){
             val uri = data?.data
             image.background = thumbnailFromUri(this, uri)
+            add_photo_text.text = ""
+            imageButton.visibility = View.INVISIBLE
         }
         if (resultCode == Activity.RESULT_OK && requestCode == CAMERA_CODE){
             image.background = thumbnailFromUri(this, image_uri)
+            add_photo_text.text = ""
+            imageButton.visibility = View.INVISIBLE
         }
         if (resultCode == Activity.RESULT_OK && requestCode == PICK_CODE){
             hasLocation = true
@@ -169,8 +175,6 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
                 == PackageManager.PERMISSION_GRANTED) {
                 mMap.isMyLocationEnabled = true
 
-            } else {
-
             }
         }
 
@@ -186,11 +190,11 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
 
         mMap.setOnMapClickListener {
             val intent = Intent(this@Add, LocationPicker::class.java)
-            var tmp = ""
+            var locationTransformed = ""
             if(hasLocation){
-                tmp = "$lat+$long"
+                locationTransformed = "$lat+$long"
             }
-            intent.putExtra("Coords", tmp)
+            intent.putExtra("Coords", locationTransformed)
             startActivityForResult(intent, PICK_CODE)
         }
 
@@ -219,9 +223,8 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
     }
 
 
-
     fun onChooseCategoryClick() {
-        val singleChoiceItems = resources.getStringArray(R.array.dialog_single_choice_array)
+        val singleChoiceItems = inst!!.CategoryList
 
         val itemSelected = choose
         val tmp = AlertDialog.Builder(this, R.style.CustomDialogTheme)
