@@ -4,33 +4,32 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import androidx.core.content.res.ResourcesCompat
-import kotlinx.android.synthetic.main.activity_main.*
 import android.view.Menu
-import android.widget.Toast
 import android.view.MenuItem
 import android.view.View
 import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.OnLifecycleEvent
-import androidx.lifecycle.ProcessLifecycleOwner
-import com.plocki.alert.fragments.FragmentList
+import androidx.core.content.res.ResourcesCompat
+import com.apollographql.apollo.ApolloCall
+import com.apollographql.apollo.ApolloClient
+import com.apollographql.apollo.api.Response
+import com.apollographql.apollo.exception.ApolloException
+import com.plocki.alert.AllEventsQuery
 import com.plocki.alert.R
+import com.plocki.alert.fragments.FragmentList
 import com.plocki.alert.fragments.FragmentMap
 import com.plocki.alert.fragments.FragmentProfile
 import com.plocki.alert.models.Global
-import kotlinx.android.synthetic.main.fragment_map.*
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.*
+import kotlinx.android.synthetic.main.activity_main.*
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 
-class MainActivity : AppCompatActivity() {
+
+class MainActivity : BaseActivity() {
 
     companion object {
 
@@ -44,7 +43,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         supportActionBar!!.title = "Alert!"
-        supportActionBar!!.setIcon(ResourcesCompat.getDrawable(resources, R.drawable.ic_more, null))
+        supportActionBar!!.setIcon(ResourcesCompat.getDrawable(resources,
+            R.drawable.ic_more, null))
 
         getPermissionsLocation()
 
@@ -125,6 +125,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.top_menu, menu)
@@ -193,7 +194,9 @@ class MainActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_DENIED){
                 val permissions = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
-                ActivityCompat.requestPermissions(this, permissions, PERMISSION_LOCATION)
+                ActivityCompat.requestPermissions(this, permissions,
+                    PERMISSION_LOCATION
+                )
             }
         }
     }

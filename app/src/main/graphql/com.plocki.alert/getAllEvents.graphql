@@ -1,0 +1,12 @@
+query AllEventsQuery {
+  events {
+    uuid,
+    title,
+    coords {
+      x,
+      y
+    },
+    description,
+    image,
+  }
+}

@@ -29,7 +29,7 @@ class FragmentList : Fragment(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        glob!!.list = glob!!.list.sortedBy { EventMethods.calcDistance(it.coords) }
+//        glob!!.list = glob!!.list.sortBy { EventMethods.calcDistance(it.coords) }
 
         // RecyclerView node initialized here
         recycler.apply {

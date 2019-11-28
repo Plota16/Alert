@@ -31,6 +31,9 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.plocki.alert.R
 import kotlinx.android.synthetic.main.activity_add.*
 import com.plocki.alert.models.EventMethods.Companion.thumbnailFromUri
+import com.plocki.alert.utils.MyApolloClient
+import java.io.ByteArrayInputStream
+import java.io.File
 
 
 class Add : AppCompatActivity(), OnMapReadyCallback {
@@ -126,9 +129,12 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
         if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE){
             val uri = data?.data
             image.background = thumbnailFromUri(this, uri)
+            val apolloClient = MyApolloClient()
+            apolloClient.createEvent()
         }
         if (resultCode == Activity.RESULT_OK && requestCode == CAMERA_CODE){
             image.background = thumbnailFromUri(this, image_uri)
+
         }
         if (resultCode == Activity.RESULT_OK && requestCode == PICK_CODE){
             hasLocation = true

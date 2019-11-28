@@ -15,5 +15,11 @@ class Event (
     var creator : Int
 
 
-)
+
+
+) {
+    override fun toString(): String {
+        return "Event(Id=$Id, UUID=$UUID, coords=$coords, image='$image', title='$title', desctription=$desctription, category=$category, creator=$creator)"
+    }
+}
 

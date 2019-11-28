@@ -14,7 +14,7 @@ class Global {
     lateinit var view : View
     var cameraPos: LatLng = LatLng(0.0,0.0)
 
-    var list = listOf(
+    var list = arrayListOf(
         Event(
             1,
             UUID.randomUUID(),
