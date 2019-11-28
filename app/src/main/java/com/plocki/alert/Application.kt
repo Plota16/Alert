@@ -19,8 +19,8 @@ class MyApplication : Application() {
         val activeNetwork: NetworkInfo? = cm.activeNetworkInfo
         val isConnected: Boolean = activeNetwork?.isConnectedOrConnecting == true
         val myApolloClient = MyApolloClient()
-        myApolloClient.fetchEvents()
-
+//        myApolloClient.fetchEvents()
+        myApolloClient.createEvent()
     }
 
     override fun onTerminate() {

@@ -7,6 +7,7 @@ import android.util.Log
 import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.api.FileUpload
+import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
 import com.google.android.gms.maps.model.LatLng
@@ -47,31 +48,28 @@ class MyApolloClient() {
     }
 
     fun createEvent() {
-        println("NIE")
-
-        val file = File("")
-//        val mByte = ByteArrayInputStream(file.readBytes())
-        println("NIE" + file.exists())
+        val file = File("/storage/emulated/0/DCIM/Screenshots/Screenshot_20191128-172446_Alert.jpg")
         val createEventDto = CreateEventDto.builder()
-            .title("Nowy")
+            .title("Nowy4")
             .description("OPISIK")
-            .imageData(FileUpload("MOJ PLIK", File("")))
+            .imageData(file)
             .coords((PointInput.builder()
-                .x(52.306)
-                .y(16.925).build())
+                .x(52.303936)
+                .y(16.92335).build())
             ).build()
-//        apolloClient!!.mutate(CreateEventMutation.builder().eventData(createEventDto)
-//            .build())
-//            .enqueue(object : ApolloCall.Callback<CreateEventMutation.Data>() {
-//                override fun onFailure(e: ApolloException) {
-//                    Log.e("Źle", e.message)
-//                }
-//
-//                override fun onResponse(response: Response<CreateEventMutation.Data>) {
-//                    println(response.data()!!.createEvent().title())
-//                }
-//
-//            })
+
+        apolloClient!!.mutate(CreateEventMutation.builder().eventData(createEventDto)
+            .build())
+            .enqueue(object : ApolloCall.Callback<CreateEventMutation.Data>() {
+                override fun onFailure(e: ApolloException) {
+                    Log.e("ERROR", e.cause.toString())
+                }
+
+                override fun onResponse(response: Response<CreateEventMutation.Data>) {
+                    Log.d("SUCCESS", response.data().toString())
+                }
+
+            })
 
     }
 

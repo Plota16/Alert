@@ -129,8 +129,17 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
         if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE){
             val uri = data?.data
             image.background = thumbnailFromUri(this, uri)
-            val apolloClient = MyApolloClient()
-            apolloClient.createEvent()
+            var res = ""
+            val proj = arrayOf(MediaStore.Images.Media.DATA)
+            val cursor = contentResolver.query(uri, proj , null, null, null, null)
+            if (cursor.moveToFirst()) {
+                val column = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+                res = cursor.getString(column)
+            }
+            cursor.close()
+println(res)
+//            val apolloClient = MyApolloClient()
+//            apolloClient.createEvent(File(res))
         }
         if (resultCode == Activity.RESULT_OK && requestCode == CAMERA_CODE){
             image.background = thumbnailFromUri(this, image_uri)

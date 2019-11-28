@@ -14,7 +14,7 @@ class ForegroundRunnableCron : Runnable {
 //                    threadHandler.post(new Runnable() {
             println("Pobieram dane z serwera: $i" )
             val apolloClient = MyApolloClient()
-            apolloClient.fetchEvents()
+//            apolloClient.fetchEvents()
             try {
                 Thread.sleep(seconds)
             } catch (e: InterruptedException) {
