@@ -3,6 +3,7 @@ package com.plocki.alert.activities
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.DisplayMetrics
@@ -66,8 +67,9 @@ class Details : AppCompatActivity(), OnMapReadyCallback {
         details_image.layoutParams.width = dpWidth
         details_image.layoutParams.height = dpHeight.roundToInt()
         details_image.requestLayout()
+
         Glide.with(this)
-            .load(event.image)
+            .load("http:/192.168.1.56:3000/static/${event.image}.jpg")
             .placeholder(R.drawable.placeholder)
             .centerCrop()
             .override(dpWidth ,dpHeight.roundToInt())

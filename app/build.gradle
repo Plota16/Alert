@@ -32,6 +32,12 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
+    apollo {
+        customTypeMapping = [
+                "Upload" : "com.apollographql.apollo.api.FileUpload"
+        ]
+    }
 }
 
 dependencies {
@@ -71,4 +77,7 @@ dependencies {
     compileOnly("org.jetbrains:annotations:13.0")
     testCompileOnly("org.jetbrains:annotations:13.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.2.1")
+
+    implementation("io.coil-kt:coil:0.8.0")
+
 }

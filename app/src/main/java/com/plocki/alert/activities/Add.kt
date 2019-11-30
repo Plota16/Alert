@@ -29,16 +29,18 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.plocki.alert.R
+import com.plocki.alert.models.Event
 import kotlinx.android.synthetic.main.activity_add.*
 import com.plocki.alert.models.EventMethods.Companion.thumbnailFromUri
+import com.plocki.alert.models.Global
+import com.plocki.alert.utils.FileGetter
 import com.plocki.alert.utils.MyApolloClient
 import java.io.ByteArrayInputStream
 import java.io.File
+import java.util.*
 
 
 class Add : AppCompatActivity(), OnMapReadyCallback {
-
-
 
     companion object {
         var hasLocation = false
@@ -55,10 +57,13 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
         private const val PERMISSION_CAMERA= 1002
     }
 
+    private var event : Event?  = null
+
     //OVERRIDES
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add)
+
 
         supportActionBar!!.title = this.getString(R.string.add_menu_title)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
@@ -83,6 +88,7 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.add_menu, menu)
         return true
@@ -92,7 +98,7 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
         val id = item.itemId
 
         if (id == R.id.action_done) {
-            Toast.makeText(this@Add, "Dodaj", Toast.LENGTH_LONG).show()
+            addEvent()
         }
         if (id == android.R.id.home) {
             finish()
@@ -127,17 +133,11 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE){
-            val uri = data?.data
-            image.background = thumbnailFromUri(this, uri)
-            var res = ""
-            val proj = arrayOf(MediaStore.Images.Media.DATA)
-            val cursor = contentResolver.query(uri, proj , null, null, null, null)
-            if (cursor.moveToFirst()) {
-                val column = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
-                res = cursor.getString(column)
+            if (data?.data != null) {
+                image_uri = data?.data
             }
-            cursor.close()
-println(res)
+            image.background = thumbnailFromUri(this, data?.data)
+
 //            val apolloClient = MyApolloClient()
 //            apolloClient.createEvent(File(res))
         }
@@ -330,6 +330,15 @@ println(res)
             true
         }
     }
+
+    fun addEvent() {
+        val path = FileGetter.getRealPath(image_uri, contentResolver)
+        val event = Event(Global.getInstance()!!.list.size, UUID.randomUUID(), LatLng(lat, long), path, add_title.text.toString(), desc2.text.toString(), 1, 1 )
+        val apolloClient = MyApolloClient()
+        apolloClient.createEvent(event)
+
+    }
+
 
 }
 
