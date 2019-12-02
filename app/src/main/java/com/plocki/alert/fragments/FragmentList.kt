@@ -38,10 +38,7 @@ class FragmentList : Fragment(){
         updateList()
     }
 
-    override fun onHiddenChanged(hidden: Boolean) {
-        super.onHiddenChanged(hidden)
-        updateList()
-    }
+
 
     private fun updateList(){
         val filteredList = ArrayList<Event>()
