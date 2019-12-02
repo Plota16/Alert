@@ -24,7 +24,7 @@
             style="@style/Widget.MaterialComponents.BottomNavigationView"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fiterbutton"
+            android:id="@+id/filterbutton"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_gravity="bottom|end"

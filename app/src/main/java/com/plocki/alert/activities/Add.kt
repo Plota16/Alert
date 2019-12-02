@@ -19,10 +19,8 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.PopupMenu
 import android.widget.Toast
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.bumptech.glide.load.engine.Resource
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -30,11 +28,11 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.material.snackbar.Snackbar
 import com.plocki.alert.R
 import com.plocki.alert.models.Event
 import kotlinx.android.synthetic.main.activity_add.*
 import com.plocki.alert.models.EventMethods.Companion.thumbnailFromUri
+import com.plocki.alert.models.Global
 import com.plocki.alert.models.Global
 import com.plocki.alert.utils.FileGetter
 import com.plocki.alert.utils.MyApolloClient
@@ -44,6 +42,9 @@ import java.util.*
 
 
 class Add : AppCompatActivity(), OnMapReadyCallback {
+
+
+    val inst = Global.getInstance()
 
     companion object {
         var hasLocation = false
@@ -60,13 +61,10 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
         private const val PERMISSION_CAMERA= 1002
     }
 
-    private var event : Event?  = null
-
     //OVERRIDES
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add)
-
 
         supportActionBar!!.title = this.getString(R.string.add_menu_title)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
@@ -82,7 +80,7 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
 
         }
 
-        category_in.keyListener = null;
+        category_in.keyListener = null
         category.setOnClickListener{
             onChooseCategoryClick()
         }
@@ -136,17 +134,23 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE){
-            if (data?.data != null) {
+            val uri = data?.data
+
+            if (uri != null) {
                 image_uri = data?.data
             }
-            image.background = thumbnailFromUri(this, data?.data)
 
 //            val apolloClient = MyApolloClient()
 //            apolloClient.createEvent(File(res))
+            image.background = thumbnailFromUri(this, uri)
+            add_photo_text.text = ""
+            imageButton.visibility = View.INVISIBLE
         }
         if (resultCode == Activity.RESULT_OK && requestCode == CAMERA_CODE){
             image.background = thumbnailFromUri(this, image_uri)
 
+            add_photo_text.text = ""
+            imageButton.visibility = View.INVISIBLE
         }
         if (resultCode == Activity.RESULT_OK && requestCode == PICK_CODE){
             hasLocation = true
@@ -187,8 +191,6 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
                 == PackageManager.PERMISSION_GRANTED) {
                 mMap.isMyLocationEnabled = true
 
-            } else {
-
             }
         }
 
@@ -204,11 +206,11 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
 
         mMap.setOnMapClickListener {
             val intent = Intent(this@Add, LocationPicker::class.java)
-            var tmp = ""
+            var locationTransformed = ""
             if(hasLocation){
-                tmp = "$lat+$long"
+                locationTransformed = "$lat+$long"
             }
-            intent.putExtra("Coords", tmp)
+            intent.putExtra("Coords", locationTransformed)
             startActivityForResult(intent, PICK_CODE)
         }
 
@@ -237,9 +239,8 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
     }
 
 
-
     fun onChooseCategoryClick() {
-        val singleChoiceItems = resources.getStringArray(R.array.dialog_single_choice_array)
+        val singleChoiceItems = inst!!.CategoryList
 
         val itemSelected = choose
         val tmp = AlertDialog.Builder(this, R.style.CustomDialogTheme)

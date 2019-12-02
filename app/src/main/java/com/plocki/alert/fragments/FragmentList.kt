@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.plocki.alert.recyclerAdapters.ListAdapter
 import com.plocki.alert.R
+import com.plocki.alert.models.Event
 import com.plocki.alert.models.EventMethods
 import com.plocki.alert.models.Global
 import kotlinx.android.synthetic.main.fragment_list.*
@@ -16,7 +17,7 @@ import kotlinx.android.synthetic.main.fragment_list.*
 
 class FragmentList : Fragment(){
 
-    val glob = Global.getInstance()
+    val inst = Global.getInstance()
 
 
 
@@ -29,18 +30,37 @@ class FragmentList : Fragment(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        glob!!.list = glob!!.list.sortBy { EventMethods.calcDistance(it.coords) }
+        updateList()
+    }
 
+    override fun onResume() {
+        super.onResume()
+        updateList()
+    }
+
+
+
+    private fun updateList(){
+        val filteredList = ArrayList<Event>()
+        for (event in inst!!.list) {
+            val index = inst.CategoryList.indexOf(EventMethods.getCategory(event.category))
+            if (inst.FilterList[index]) {
+                if (EventMethods.calcDistance(event.coords) < EventMethods.getMaxDistance(inst.filterdDistnance) || EventMethods.getMaxDistance(
+                        inst.filterdDistnance
+                    ) == 0
+                ) {
+                    filteredList.add(event)
+                }
+            }
+        }
+        val sortedList = filteredList.sortedBy { EventMethods.calcDistance(it.coords) }
         // RecyclerView node initialized here
         recycler.apply {
             // set a LinearLayoutManager to handle Android
             // RecyclerView behavior
             layoutManager = LinearLayoutManager(activity)
             // set the custom adapter to the RecyclerView
-            adapter = ListAdapter(glob!!.list, activity!!, context)
+            adapter = ListAdapter(sortedList, activity!!, context)
         }
-
-
-
     }
 }

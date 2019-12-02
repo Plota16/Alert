@@ -5,6 +5,8 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import androidx.core.content.res.ResourcesCompat
+import kotlinx.android.synthetic.main.activity_main.*
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -13,6 +15,7 @@ import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.plocki.alert.fragments.FragmentList
 import androidx.core.content.res.ResourcesCompat
 import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.ApolloClient
@@ -20,7 +23,6 @@ import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
 import com.plocki.alert.AllEventsQuery
 import com.plocki.alert.R
-import com.plocki.alert.fragments.FragmentList
 import com.plocki.alert.fragments.FragmentMap
 import com.plocki.alert.fragments.FragmentProfile
 import com.plocki.alert.models.Global
@@ -43,8 +45,7 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         supportActionBar!!.title = "Alert!"
-        supportActionBar!!.setIcon(ResourcesCompat.getDrawable(resources,
-            R.drawable.ic_more, null))
+        supportActionBar!!.setIcon(ResourcesCompat.getDrawable(resources, R.drawable.ic_more, null))
 
         getPermissionsLocation()
 
@@ -53,78 +54,101 @@ class MainActivity : BaseActivity() {
             intent.putExtra("SHOW_WELCOME", true)
             startActivity(intent)
         }
+        filterbutton.setOnClickListener{
+            val intent = Intent(this@MainActivity, Filter::class.java)
+            intent.putExtra("SHOW_WELCOME", true)
+            startActivity(intent)
+        }
 
-        var currentFragment = 'A'
+        var currentFragment = "Map"
         val manager = supportFragmentManager
         var transaction = manager.beginTransaction()
-        val textFragmentA = FragmentMap()
-        val textFragmentB = FragmentList()
-        val textFragmentC = FragmentProfile()
-        transaction.add(R.id.details_fragment,textFragmentA)
-        transaction.add(R.id.details_fragment,textFragmentC)
+        val textFragmentMap = FragmentMap()
+        val textFragmentList = FragmentList()
+        val textFragmentProfile = FragmentProfile()
 
-        transaction.hide(textFragmentC)
+        transaction.add(R.id.details_fragment,textFragmentMap)
+        transaction.add(R.id.details_fragment,textFragmentProfile)
+        transaction.hide(textFragmentProfile)
         transaction.commit()
 
         bottom_navigation.setOnNavigationItemSelectedListener {
             when (it.itemId){
                 R.id.action_map -> {
                     addbutton.show()
-                    fiterbutton.show()
+                    filterbutton.show()
                     transaction = manager.beginTransaction()
+
                     when(currentFragment){
-                        'B' -> transaction.hide(textFragmentB)
-                        'C' -> transaction.hide(textFragmentC)
+                        "List" -> {
+                            transaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
+                            transaction.hide(textFragmentList)
+                        }
+                        "Profile" -> {
+                            transaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
+                            transaction.hide(textFragmentProfile)
+                        }
                     }
 
-                    transaction.show(textFragmentA)
-                    currentFragment = 'A'
+                    transaction.show(textFragmentMap)
+                    currentFragment = "Map"
                     transaction.commit()
                     return@setOnNavigationItemSelectedListener true
                 }
                 R.id.action_list -> {
                     addbutton.show()
-                    fiterbutton.show()
+                    filterbutton.show()
                     transaction = manager.beginTransaction()
                     if(inst!!.bool)
                     {
-                        transaction.add(R.id.details_fragment,textFragmentB)
+                        transaction.add(R.id.details_fragment,textFragmentList)
                         inst.bool = false
                     }
                     when(currentFragment){
-                        'C' -> transaction.hide(textFragmentC)
-                        'A' -> transaction.hide(textFragmentA)
+                        "Profile" -> {
+                            transaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
+                            transaction.hide(textFragmentProfile)
+                        }
+                        "Map" -> {
+                            transaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
+                            transaction.hide(textFragmentMap)
+                        }
                     }
-                    transaction.show(textFragmentB)
-                    currentFragment = 'B'
+                    transaction.show(textFragmentList)
+                    currentFragment = "List"
                     transaction.commit()
                     return@setOnNavigationItemSelectedListener true
                 }
                 R.id.action_profile -> {
                     addbutton.hide()
-                    fiterbutton.hide()
+                    filterbutton.hide()
                     transaction = manager.beginTransaction()
                     when(currentFragment){
-                        'B' -> transaction.hide(textFragmentB)
-                        'A' -> transaction.hide(textFragmentA)
+                        "List" -> {
+                            transaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
+                            transaction.hide(textFragmentList)
+                        }
+                        "Map" -> {
+                            transaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
+                            transaction.hide(textFragmentMap)
+                        }
                     }
 
-                    transaction.show(textFragmentC)
-                    currentFragment = 'C'
+                    transaction.show(textFragmentProfile)
+                    currentFragment = "Profile"
                     transaction.commit()
                     return@setOnNavigationItemSelectedListener true
                 }
                 else ->{
                     transaction = manager.beginTransaction()
-                    transaction.hide(textFragmentB)
-                    transaction.show(textFragmentA)
+                    transaction.hide(textFragmentList)
+                    transaction.show(textFragmentMap)
                     transaction.commit()
                     return@setOnNavigationItemSelectedListener true
                 }
             }
         }
     }
-
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -194,9 +218,7 @@ class MainActivity : BaseActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_DENIED){
                 val permissions = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
-                ActivityCompat.requestPermissions(this, permissions,
-                    PERMISSION_LOCATION
-                )
+                ActivityCompat.requestPermissions(this, permissions, PERMISSION_LOCATION)
             }
         }
     }
