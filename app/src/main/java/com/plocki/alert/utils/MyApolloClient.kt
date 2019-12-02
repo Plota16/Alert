@@ -20,6 +20,7 @@ import com.plocki.alert.type.CreateEventDto
 import com.plocki.alert.type.PointInput
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import okhttp3.internal.wait
 import okhttp3.logging.HttpLoggingInterceptor
 import java.io.ByteArrayInputStream
 import java.io.File
@@ -29,7 +30,7 @@ class MyApolloClient {
 
     var apolloClient: ApolloClient? = null
     var token: String = ""
-    var BASE_URL = "http://192.168.1.56:3000/graphql"
+    var BASE_URL = "http://192.168.0.100:3000/graphql"
 
     init {
         setToken()
@@ -57,8 +58,9 @@ class MyApolloClient {
             "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiZGY4NTkzZmMtZWE2OC00ZmU4LTkzNzAtZDAzYzM3NWRjMjZlIiwidG9rZW5JZCI6MjUzMTk4OSwiaWF0IjoxNTc0ODgwNTE1LCJleHAiOjE1NzYxNzY1MTV9.K_JyrZI0nKUGOPYMfSs5SAXoVTzXXEjeL0s4CxAxTzg"
     }
 
-    fun createEvent(event: Event) {
+    fun createEvent(event: Event): Boolean {
         println(event)
+        var createEventResult = false
         val image = File(event.image)
         val createEventDto = CreateEventDto.builder()
             .title(event.title)
@@ -80,10 +82,11 @@ class MyApolloClient {
                 }
 
                 override fun onResponse(response: Response<CreateEventMutation.Data>) {
+                    createEventResult = true
                     Log.d("SUCCESS", response.data().toString())
                 }
-
             })
+        return createEventResult
     }
 
     fun fetchEvents() {

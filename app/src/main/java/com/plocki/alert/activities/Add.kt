@@ -33,7 +33,6 @@ import com.plocki.alert.models.Event
 import kotlinx.android.synthetic.main.activity_add.*
 import com.plocki.alert.models.EventMethods.Companion.thumbnailFromUri
 import com.plocki.alert.models.Global
-import com.plocki.alert.models.Global
 import com.plocki.alert.utils.FileGetter
 import com.plocki.alert.utils.MyApolloClient
 import java.io.ByteArrayInputStream
@@ -348,7 +347,8 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
             1
         )
         val apolloClient = MyApolloClient()
-        val responeStatus = apolloClient.createEvent(event)
+        val createEventResult = apolloClient.createEvent(event)
+        println(createEventResult)
 
     }
 

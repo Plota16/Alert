@@ -9,7 +9,7 @@ import com.plocki.alert.EventViewHolder
 import com.plocki.alert.models.Event
 import com.plocki.alert.models.EventMethods
 
-class ListAdapter(private val list: ArrayList<Event>, act : FragmentActivity, cont : Context)
+class ListAdapter(private val list: List<Event>, act : FragmentActivity, cont : Context)
     : RecyclerView.Adapter<EventViewHolder>() {
 
     var ac: FragmentActivity? = null
