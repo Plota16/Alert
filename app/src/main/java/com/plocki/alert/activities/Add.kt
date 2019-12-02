@@ -19,8 +19,10 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.PopupMenu
 import android.widget.Toast
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.bumptech.glide.load.engine.Resource
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -28,6 +30,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.snackbar.Snackbar
 import com.plocki.alert.R
 import com.plocki.alert.models.Event
 import kotlinx.android.synthetic.main.activity_add.*
@@ -333,12 +336,20 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
 
     fun addEvent() {
         val path = FileGetter.getRealPath(image_uri, contentResolver)
-        val event = Event(Global.getInstance()!!.list.size, UUID.randomUUID(), LatLng(lat, long), path, add_title.text.toString(), desc2.text.toString(), 1, 1 )
+        val event = Event(
+            Global.getInstance()!!.list.size,
+            UUID.randomUUID(),
+            LatLng(lat, long),
+            path,
+            add_title.text.toString(),
+            desc2.text.toString(),
+            1,
+            1
+        )
         val apolloClient = MyApolloClient()
-        apolloClient.createEvent(event)
+        val responeStatus = apolloClient.createEvent(event)
 
     }
-
 
 }
 
