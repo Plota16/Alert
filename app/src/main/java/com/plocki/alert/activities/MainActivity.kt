@@ -7,7 +7,6 @@ import android.os.Build
 import android.os.Bundle
 import androidx.core.content.res.ResourcesCompat
 import kotlinx.android.synthetic.main.activity_main.*
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -16,19 +15,10 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.plocki.alert.fragments.FragmentList
-import com.apollographql.apollo.ApolloCall
-import com.apollographql.apollo.ApolloClient
-import com.apollographql.apollo.api.Response
-import com.apollographql.apollo.exception.ApolloException
-import com.plocki.alert.AllEventsQuery
 import com.plocki.alert.R
 import com.plocki.alert.fragments.FragmentMap
 import com.plocki.alert.fragments.FragmentProfile
 import com.plocki.alert.models.Global
-import com.plocki.alert.utils.MyApolloClient
-import kotlinx.android.synthetic.main.activity_main.*
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 
 
 class MainActivity : BaseActivity() {
@@ -67,7 +57,6 @@ class MainActivity : BaseActivity() {
         val textFragmentList = FragmentList()
         val textFragmentProfile = FragmentProfile()
 
-        val apollo = MyApolloClient()
 
         transaction.add(R.id.details_fragment,textFragmentMap)
         transaction.add(R.id.details_fragment,textFragmentProfile)
@@ -77,7 +66,6 @@ class MainActivity : BaseActivity() {
         bottom_navigation.setOnNavigationItemSelectedListener {
             when (it.itemId){
                 R.id.action_map -> {
-                    apollo.fetchEvents()
                     addbutton.show()
                     filterbutton.show()
                     transaction = manager.beginTransaction()
@@ -99,7 +87,6 @@ class MainActivity : BaseActivity() {
                     return@setOnNavigationItemSelectedListener true
                 }
                 R.id.action_list -> {
-                    apollo.fetchEvents()
                     addbutton.show()
                     filterbutton.show()
                     transaction = manager.beginTransaction()
@@ -124,7 +111,6 @@ class MainActivity : BaseActivity() {
                     return@setOnNavigationItemSelectedListener true
                 }
                 R.id.action_profile -> {
-                    apollo.fetchEvents()
                     addbutton.hide()
                     filterbutton.hide()
                     transaction = manager.beginTransaction()

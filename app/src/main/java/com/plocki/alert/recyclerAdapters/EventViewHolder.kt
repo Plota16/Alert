@@ -2,8 +2,6 @@ package com.plocki.alert
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.BitmapFactory
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,7 +22,7 @@ import java.net.URL
 import kotlin.math.roundToInt
 
 class EventViewHolder(inflater: LayoutInflater, parent: ViewGroup, act: FragmentActivity, cont : Context) :
-RecyclerView.ViewHolder(inflater.inflate(R.layout.event, parent, false)),View.OnClickListener {
+    RecyclerView.ViewHolder(inflater.inflate(R.layout.event, parent, false)),View.OnClickListener {
 
     private var inst = Global.getInstance()
     private var con : Context? = null
@@ -94,7 +92,7 @@ RecyclerView.ViewHolder(inflater.inflate(R.layout.event, parent, false)),View.On
         }
         if (con != null) {
             Glide.with(con)
-                .load("http://192.168.1.229:3000/static/${event.image}.jpg")
+                .load("http:/${Global.ip}:3000/static/${event.image}.jpg")
                 .placeholder(R.drawable.placeholder)
                 .override(120,90)
                 .into(imageView)

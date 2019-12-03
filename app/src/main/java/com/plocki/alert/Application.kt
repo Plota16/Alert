@@ -36,6 +36,7 @@ class MyApplication : Application() {
                     "AA",
                     "RESPONSE" + response.data()!!.events()
                 )
+                val eventContainer = ArrayList<Event>()
                 val instance = Global.getInstance()
                 for (event in events) {
                     val currentEvent = Event.fromResponse(
@@ -47,12 +48,15 @@ class MyApplication : Application() {
                         1,
                         1
                     )
-                    if (!instance!!.list.contains(currentEvent)) {
-                        Global.getInstance()!!.list.add(currentEvent)
-                    }
+                    eventContainer.add(currentEvent)
                 }
+                Global.getInstance()!!.list = eventContainer
+                val addContainer = eventContainer.minus(Global.getInstance()!!.list)
+                Global.getInstance()!!.toAdd = addContainer as ArrayList<Event>
+                val removeContainer = Global.getInstance()!!.list.minus(eventContainer)
+                Global.getInstance()!!.toRemove = removeContainer as ArrayList<Event>
             }
-        });
+        })
     }
 
     override fun onTerminate() {

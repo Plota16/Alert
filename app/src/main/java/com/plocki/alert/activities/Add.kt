@@ -32,6 +32,8 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.plocki.alert.API.modules.EventsApi
+import com.plocki.alert.AllEventsQuery
 import com.plocki.alert.CreateEventMutation
 import com.plocki.alert.R
 import com.plocki.alert.models.Event
@@ -39,7 +41,6 @@ import kotlinx.android.synthetic.main.activity_add.*
 import com.plocki.alert.models.EventMethods.Companion.thumbnailFromUri
 import com.plocki.alert.models.Global
 import com.plocki.alert.utils.FileGetter
-import com.plocki.alert.utils.MyApolloClient
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -345,18 +346,60 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
     fun addEvent() {
         val path = FileGetter.getRealPath(image_uri, contentResolver)
         val event = Event(
-            Global.getInstance()!!.list.size,
-            UUID.randomUUID(),
-            LatLng(lat, long),
-            path,
-            add_title.text.toString(),
-            desc2.text.toString(),
-            1,
-            1
+            UUID = UUID.randomUUID(),
+            coords = LatLng(lat, long),
+            image = path,
+            title = add_title.text.toString(),
+            description = desc2.text.toString(),
+            category = 1,
+            creator = 1
         )
-        val apolloClient = MyApolloClient()
         progressBar.visibility = View.VISIBLE
-        GlobalScope.launch {val createEventResult = apolloClient.createEvent(event)  }
+        GlobalScope.launch {
+            val createEventResult = EventsApi.createEvent(
+                event,
+                object : ApolloCall.Callback<CreateEventMutation.Data>() {
+                    override fun onFailure(e: ApolloException) {
+                        Log.e("ERROR", e.cause.toString())
+                    }
+
+                    override fun onResponse(response: Response<CreateEventMutation.Data>) {
+                        Log.d("SUCCESS", response.data().toString())
+                        EventsApi.fetchEvents(object : ApolloCall.Callback<AllEventsQuery.Data>() {
+                            override fun onFailure(e: ApolloException) {
+                                Log.e("Źle", e.cause.toString())
+                            }
+
+                            override fun onResponse(response: Response<AllEventsQuery.Data>) {
+                                val events = response.data()!!.events()
+                                Log.d(
+                                    "AA",
+                                    "RESPONSE" + response.data()!!.events()
+                                )
+                                val eventContainer = ArrayList<Event>()
+                                val instance = Global.getInstance()
+                                for (event in events) {
+                                    val currentEvent = Event.fromResponse(
+                                        event.uuid().toString(),
+                                        event.coords(),
+                                        event.title(),
+                                        event.image(),
+                                        "opis",
+                                        1,
+                                        1
+                                    )
+                                    eventContainer.add(currentEvent)
+                                }
+                                Global.getInstance()!!.list = eventContainer
+                            }
+                        })
+                    }
+                }
+            )
+
+
+
+        }
         GlobalScope.launch {
 
             delay(2000)

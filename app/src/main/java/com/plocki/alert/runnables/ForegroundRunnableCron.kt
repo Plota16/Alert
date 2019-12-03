@@ -42,9 +42,6 @@ class ForegroundRunnableCron : Runnable {
                             1,
                             1
                         )
-                        if (!instance!!.list.contains(currentEvent)) {
-                            Global.getInstance()!!.list.add(currentEvent)
-                        }
                     }
                 }
             })

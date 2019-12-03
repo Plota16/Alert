@@ -14,15 +14,7 @@ import com.plocki.alert.R
 import com.plocki.alert.models.Event
 import com.plocki.alert.models.EventMethods
 import com.plocki.alert.models.Global
-import com.plocki.alert.utils.MyApolloClient
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_list.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import okhttp3.internal.wait
-import kotlin.properties.Delegates
-import kotlin.properties.ObservableProperty
 
 
 class FragmentList : Fragment(){
@@ -39,7 +31,6 @@ class FragmentList : Fragment(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val apolloClient = MyApolloClient()
 
         newEventsList.setOnClickListener{
             updateList()
