@@ -85,12 +85,12 @@ RecyclerView.ViewHolder(inflater.inflate(R.layout.event, parent, false)),View.On
         eventTitle?.text = event.title
         eventCategory?.text = categoryContainer
 
-        if(event.desctription!!.length  > 77){
-            val descriptionContainer = event.desctription!!.substring(0,77) + "..."
+        if(event.description!!.length  > 77){
+            val descriptionContainer = event.description!!.substring(0,77) + "..."
             eventDistance?.text = descriptionContainer
         }
         else{
-            eventDistance?.text = event.desctription
+            eventDistance?.text = event.description
         }
         if (con != null) {
             Glide.with(con)
