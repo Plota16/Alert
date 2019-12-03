@@ -25,6 +25,7 @@ import com.plocki.alert.R
 import com.plocki.alert.fragments.FragmentMap
 import com.plocki.alert.fragments.FragmentProfile
 import com.plocki.alert.models.Global
+import com.plocki.alert.utils.MyApolloClient
 import kotlinx.android.synthetic.main.activity_main.*
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -66,6 +67,8 @@ class MainActivity : BaseActivity() {
         val textFragmentList = FragmentList()
         val textFragmentProfile = FragmentProfile()
 
+        val apollo = MyApolloClient()
+
         transaction.add(R.id.details_fragment,textFragmentMap)
         transaction.add(R.id.details_fragment,textFragmentProfile)
         transaction.hide(textFragmentProfile)
@@ -74,6 +77,7 @@ class MainActivity : BaseActivity() {
         bottom_navigation.setOnNavigationItemSelectedListener {
             when (it.itemId){
                 R.id.action_map -> {
+                    apollo.fetchEvents()
                     addbutton.show()
                     filterbutton.show()
                     transaction = manager.beginTransaction()
@@ -95,6 +99,7 @@ class MainActivity : BaseActivity() {
                     return@setOnNavigationItemSelectedListener true
                 }
                 R.id.action_list -> {
+                    apollo.fetchEvents()
                     addbutton.show()
                     filterbutton.show()
                     transaction = manager.beginTransaction()
@@ -119,6 +124,7 @@ class MainActivity : BaseActivity() {
                     return@setOnNavigationItemSelectedListener true
                 }
                 R.id.action_profile -> {
+                    apollo.fetchEvents()
                     addbutton.hide()
                     filterbutton.hide()
                     transaction = manager.beginTransaction()
@@ -164,7 +170,7 @@ class MainActivity : BaseActivity() {
 
 
         if (id == R.id.action_refresh) {
-            Toast.makeText(this@MainActivity, "Refresh App", Toast.LENGTH_LONG).show()
+
         }
 
         if (id == R.id.action_more) {

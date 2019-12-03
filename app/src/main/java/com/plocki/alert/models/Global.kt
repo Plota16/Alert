@@ -4,16 +4,23 @@ import android.location.Location
 import android.view.View
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
+import kotlinx.android.synthetic.main.fragment_list.*
 import java.util.*
+import java.util.concurrent.locks.ReentrantLock
+import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
+import kotlin.properties.Delegates
 
 class Global {
 
+    var changed = false
     var bool = true
     lateinit var location: Location
     lateinit var view : View
-    var cameraPos: LatLng = LatLng(0.0,0.0)
 
+    var cameraPos: LatLng = LatLng(0.0,0.0)
+    var toAdd = ArrayList<Event>()
+    var toRemove = ArrayList<Event>()
     var list = arrayListOf(
         Event(
             1,
@@ -101,4 +108,5 @@ class Global {
                 return mInstance
             }
     }
+
 }

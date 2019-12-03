@@ -22,6 +22,7 @@ import com.plocki.alert.activities.Details
 import com.plocki.alert.models.Global
 import com.plocki.alert.R
 import com.plocki.alert.models.EventMethods
+import kotlinx.android.synthetic.main.fragment_list.*
 
 
 class FragmentMap : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
@@ -37,6 +38,7 @@ class FragmentMap : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         retainInstance = true
+
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -47,6 +49,7 @@ class FragmentMap : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         val rootView = inflater.inflate(R.layout.fragment_map, container, false)
+
 
         val mapFragment = childFragmentManager.findFragmentById(R.id.frg) as SupportMapFragment?
 

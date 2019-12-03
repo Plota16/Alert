@@ -24,13 +24,15 @@ import okhttp3.internal.wait
 import okhttp3.logging.HttpLoggingInterceptor
 import java.io.ByteArrayInputStream
 import java.io.File
+import java.lang.reflect.Array
 import java.util.*
+import kotlin.collections.ArrayList
 
 class MyApolloClient {
 
     var apolloClient: ApolloClient? = null
     var token: String = ""
-    var BASE_URL = "http://192.168.0.100:3000/graphql"
+    var BASE_URL = "http://192.168.1.229:3000/graphql"
 
     init {
         setToken()
@@ -55,7 +57,7 @@ class MyApolloClient {
 
     fun setToken() {
         this.token =
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiZGY4NTkzZmMtZWE2OC00ZmU4LTkzNzAtZDAzYzM3NWRjMjZlIiwidG9rZW5JZCI6MjUzMTk4OSwiaWF0IjoxNTc0ODgwNTE1LCJleHAiOjE1NzYxNzY1MTV9.K_JyrZI0nKUGOPYMfSs5SAXoVTzXXEjeL0s4CxAxTzg"
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiYzk0ZjRjNDAtZjFkYy00OTVhLTkxZmItY2E4ZTRkZDFhNjllIiwidG9rZW5JZCI6NTI0ODc0MCwiaWF0IjoxNTc1MzIwMDYyLCJleHAiOjE1NzY2MTYwNjJ9.gTx6Q16Z7exlNOASOIrm5AfuINPXk3uxFzJp_SWYsEw"
     }
 
     fun createEvent(event: Event): Boolean {
@@ -83,13 +85,14 @@ class MyApolloClient {
 
                 override fun onResponse(response: Response<CreateEventMutation.Data>) {
                     createEventResult = true
+                    fetchEvents()
                     Log.d("SUCCESS", response.data().toString())
                 }
             })
         return createEventResult
     }
 
-    fun fetchEvents() {
+    fun fetchEvents(){
         apolloClient!!.query(
             AllEventsQuery.builder().build()
         ).enqueue(object : ApolloCall.Callback<AllEventsQuery.Data>() {
@@ -104,24 +107,42 @@ class MyApolloClient {
                     "AA",
                     "RESPONSE" + response.data()!!.events()
                 )
-                val instance = Global.getInstance()
+                var result = ArrayList<Event>()
+                val global = Global.getInstance()
+                global!!.toAdd.clear()
+                global.toRemove.clear()
+
+                var i = 0
                 for (event in events) {
+
                     val currentEvent = Event(
-                        instance!!.list.size,
+                        i,
                         UUID.fromString(event.uuid().toString()),
                         LatLng(event.coords().x(), event.coords().y()),
                         event.image().orEmpty().plus(""),
                         event.title(),
-                        event.description() as String,
+                        "opis",
                         1,
                         1
                     )
-                    if (!instance.list.contains(currentEvent)) {
-                        Global.getInstance()!!.list.add(currentEvent)
-                    }
+                    i++
+                       result.add(currentEvent)
+
                 }
+
+                val addContainer = result.minus(global!!.list)
+                global.toAdd = addContainer as ArrayList<Event>
+
+                val removeContainer = global.list.minus(result)
+                global.toRemove = removeContainer as ArrayList<Event>
+
+
+                global.list = result
+
             }
 
+
         })
+
     }
 }

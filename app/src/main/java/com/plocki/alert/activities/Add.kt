@@ -35,9 +35,13 @@ import com.plocki.alert.models.EventMethods.Companion.thumbnailFromUri
 import com.plocki.alert.models.Global
 import com.plocki.alert.utils.FileGetter
 import com.plocki.alert.utils.MyApolloClient
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.io.ByteArrayInputStream
 import java.io.File
 import java.util.*
+import kotlin.properties.Delegates
 
 
 class Add : AppCompatActivity(), OnMapReadyCallback {
@@ -76,16 +80,13 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
             if(!b){
                 validateTitle()
             }
-
         }
 
         category_in.keyListener = null
-        category.setOnClickListener{
-            onChooseCategoryClick()
-        }
-        category_in.setOnClickListener{
-            onChooseCategoryClick()
-        }
+        category.setOnClickListener{ onChooseCategoryClick() }
+        category_in.setOnClickListener{ onChooseCategoryClick() }
+
+        imageclick.setOnClickListener{ onAddImageClick() }
     }
 
 
@@ -99,6 +100,7 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
 
         if (id == R.id.action_done) {
             addEvent()
+
         }
         if (id == android.R.id.home) {
             finish()
@@ -216,7 +218,7 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
     }
 
     //ON CLICKS
-    fun onAddImageClick(v: View?) {
+    fun onAddImageClick() {
         val menuItemView = findViewById<View>(R.id.image) // SAME ID AS MENU ID
         val context = applicationContext
         val popupMenu = PopupMenu(context, menuItemView)
@@ -347,10 +349,17 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
             1
         )
         val apolloClient = MyApolloClient()
-        val createEventResult = apolloClient.createEvent(event)
-        println(createEventResult)
+        progressBar.visibility = View.VISIBLE
+        GlobalScope.launch {val createEventResult = apolloClient.createEvent(event)  }
+        GlobalScope.launch {
 
+            delay(2000)
+            finish()
+        }
     }
+
+
+
 
 }
 

@@ -1,16 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
              android:layout_height="match_parent"
              android:background="#FFFFFF" android:id="@+id/fl"
         android:layout_marginBottom="55dp">
 
 
     <androidx.recyclerview.widget.RecyclerView
+            android:foreground="?android:attr/selectableItemBackground"
+            android:clickable="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" android:id="@+id/recycler"
 
     />
 
-
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/newEventsList"
+            style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|top"
+            android:layout_marginTop="20dp"
+            android:backgroundTint="@color/colorPrimary"
+            android:text="Nowe Wydarzenia"
+            android:visibility="visible"
+            app:cornerRadius="20dp"
+            android:textColor="@color/white"/>
 </FrameLayout>

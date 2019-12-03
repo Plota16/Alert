@@ -17,7 +17,7 @@ android {
                 twitterConsumerSecret: "Yczx4FBpVhmXrhfdLFhbJ2gSFgo2mAY1OmofM9lnyljxkWDuXY",
         ]
         applicationId "com.plocki.alert"
-        minSdkVersion 23
+        minSdkVersion 24
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -70,7 +70,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-extensions:2.0.0"
     annotationProcessor "androidx.lifecycle:lifecycle-compiler:2.0.0"
     implementation 'com.android.support:design:28.1.0'
-
+    implementation 'com.google.android.material:material:1.1.0-alpha04'
     implementation("com.apollographql.apollo:apollo-runtime:1.2.1")
 
     // If not already on your classpath, you might need the jetbrains annotations

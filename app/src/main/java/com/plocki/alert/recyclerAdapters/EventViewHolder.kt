@@ -94,7 +94,7 @@ RecyclerView.ViewHolder(inflater.inflate(R.layout.event, parent, false)),View.On
         }
         if (con != null) {
             Glide.with(con)
-                .load("http:/192.168.1.56:3000/static/${event.image}.jpg")
+                .load("http://192.168.1.229:3000/static/${event.image}.jpg")
                 .placeholder(R.drawable.placeholder)
                 .override(120,90)
                 .into(imageView)

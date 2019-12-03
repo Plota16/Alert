@@ -54,9 +54,10 @@
                     android:text="Zaloguj się z Facebook"
                     android:textAlignment="textStart"
                     android:textAllCaps="false"
+                    android:textColor="@color/colorAccent"
                     android:textSize="13sp"
-                    app:icon="@drawable/ic_facebook"
 
+                    app:icon="@drawable/ic_facebook"
                     app:iconPadding="16dp" />
 
             <com.google.android.material.button.MaterialButton
@@ -72,6 +73,7 @@
                     android:text="Zaloguj się z Google"
                     android:textAlignment="textStart"
                     android:textAllCaps="false"
+                    android:textColor="@color/colorAccent"
                     android:textSize="13sp"
                     app:icon="@drawable/ic_google"
                     app:iconPadding="16dp" />
@@ -89,6 +91,7 @@
                     android:text="Zaloguj się z Twitter"
                     android:textAlignment="textStart"
                     android:textAllCaps="false"
+                    android:textColor="@color/colorAccent"
                     android:textSize="13sp"
                     app:icon="@drawable/ic_twitter"
                     app:iconPadding="16dp" />
