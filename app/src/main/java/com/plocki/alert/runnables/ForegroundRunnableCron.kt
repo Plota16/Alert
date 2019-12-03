@@ -31,6 +31,7 @@ class ForegroundRunnableCron : Runnable {
                         "AA",
                         "RESPONSE" + response.data()!!.events()
                     )
+                    val eventContainer = ArrayList<Event>()
                     val instance = Global.getInstance()
                     for (event in events) {
                         val currentEvent = Event.fromResponse(
@@ -42,7 +43,13 @@ class ForegroundRunnableCron : Runnable {
                             1,
                             1
                         )
+                        eventContainer.add(currentEvent)
                     }
+                    Global.getInstance()!!.list = eventContainer
+                    val addContainer = eventContainer.minus(Global.getInstance()!!.list)
+                    Global.getInstance()!!.toAdd = addContainer as ArrayList<Event>
+                    val removeContainer = Global.getInstance()!!.list.minus(eventContainer)
+                    Global.getInstance()!!.toRemove = removeContainer as ArrayList<Event>
                 }
             })
             try {
