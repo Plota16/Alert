@@ -16,7 +16,6 @@ class Global {
 
     var list = arrayListOf(
         Event(
-            1,
             UUID.randomUUID(),
             LatLng(52.39786111,16.92500000),
             "https://6.allegroimg.com/original/0cf9f4/7082cd20499c8374de45a7de79e6",

@@ -1,25 +1,60 @@
 package com.plocki.alert.models
 
-import android.graphics.drawable.BitmapDrawable
+import com.apollographql.apollo.api.FileUpload
 import com.google.android.gms.maps.model.LatLng
+import com.plocki.alert.AllEventsQuery
+import com.plocki.alert.type.CreateEventDto
+import com.plocki.alert.type.PointInput
+import java.io.File
 import java.util.*
 
 class Event (
-    var Id : Int,
     var UUID : UUID,
     var coords: LatLng,
-    var image: String,
     var title: String,
-    var desctription : String?,
+    var image: String?,
+    var description : String?,
     var category: Int,
     var creator : Int
-
-
-
-
 ) {
+    companion object {
+        fun fromResponse(
+            uuid: String,
+            coords: AllEventsQuery.Coords, // TODO: Make class for Coords
+            title: String,
+            image: String?,
+            description: String?,
+            category: Int,
+            creator: Int
+        ): Event {
+            return Event(
+                UUID.fromString(uuid),
+                LatLng(coords.x(), coords.y()),
+                title, image, description, category, creator
+            )
+        }
+    }
+
+    fun createEventDto(): CreateEventDto {
+        var eventBuilder = CreateEventDto.builder()
+            .title(this.title)
+            .description(this.description)
+            .coords(
+                (PointInput.builder()
+                    .x(this.coords.latitude)
+                    .y(this.coords.longitude).build())
+            )
+
+        if (this.image != null) {
+            val image = File(this.image)
+            eventBuilder
+                .imageData(FileUpload("image/jpg", image))
+        }
+
+        return eventBuilder.build();
+    }
+
     override fun toString(): String {
-        return "Event(Id=$Id, UUID=$UUID, coords=$coords, image='$image', title='$title', desctription=$desctription, category=$category, creator=$creator)"
+        return "Event(UUID=$UUID, coords=$coords, image='$image', title='$title', desctription=$description, category=$category, creator=$creator)"
     }
 }
-
