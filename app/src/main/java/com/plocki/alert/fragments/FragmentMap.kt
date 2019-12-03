@@ -22,7 +22,11 @@ import com.plocki.alert.activities.Details
 import com.plocki.alert.models.Global
 import com.plocki.alert.R
 import com.plocki.alert.models.EventMethods
-import kotlinx.android.synthetic.main.fragment_list.*
+import kotlinx.android.synthetic.main.fragment_map.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 class FragmentMap : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
@@ -46,6 +50,26 @@ class FragmentMap : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
         super.onActivityCreated(savedInstanceState)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        newEventsMap.setOnClickListener{
+            updateMap()
+            Global.getInstance()!!.changed = false
+            newEventsMap.visibility = View.GONE
+        }
+        GlobalScope.launch(context = Dispatchers.Main) {
+            while (true){
+                if(Global.getInstance()!!.changed){
+                    newEventsMap.visibility = View.VISIBLE
+                }
+                else{
+                    newEventsMap.visibility = View.GONE
+                }
+                delay(2500)
+            }
+        }
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         val rootView = inflater.inflate(R.layout.fragment_map, container, false)
@@ -53,7 +77,11 @@ class FragmentMap : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
 
         val mapFragment = childFragmentManager.findFragmentById(R.id.frg) as SupportMapFragment?
 
+
+
         mapFragment!!.getMapAsync(this)
+
+
 
         return rootView
     }

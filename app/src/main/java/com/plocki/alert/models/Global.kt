@@ -12,7 +12,6 @@ import kotlin.collections.HashMap
 import kotlin.properties.Delegates
 
 class Global {
-
     var changed = false
     var bool = true
     lateinit var location: Location

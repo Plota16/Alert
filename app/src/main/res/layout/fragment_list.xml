@@ -24,7 +24,7 @@
             android:layout_marginTop="20dp"
             android:backgroundTint="@color/colorPrimary"
             android:text="Nowe Wydarzenia"
-            android:visibility="visible"
-            app:cornerRadius="20dp"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white"
+            android:visibility="gone"
+            app:cornerRadius="20dp" />
 </FrameLayout>

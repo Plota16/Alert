@@ -3,6 +3,9 @@ package com.plocki.alert.fragments
 import android.opengl.Visibility
 import androidx.fragment.app.Fragment
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.provider.Contacts
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -15,6 +18,11 @@ import com.plocki.alert.models.Event
 import com.plocki.alert.models.EventMethods
 import com.plocki.alert.models.Global
 import kotlinx.android.synthetic.main.fragment_list.*
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import okhttp3.internal.wait
 
 
 class FragmentList : Fragment(){
@@ -34,18 +42,29 @@ class FragmentList : Fragment(){
 
         newEventsList.setOnClickListener{
             updateList()
+            Global.getInstance()!!.changed = false
             newEventsList.visibility = View.GONE
         }
+
+
+        GlobalScope.launch(context = Main) {
+            while (true){
+                if(Global.getInstance()!!.changed){
+                    newEventsList.visibility = View.VISIBLE
+                }
+                else{
+                    newEventsList.visibility = View.GONE
+                }
+                delay(2500)
+            }
+        }
+
 
         updateList()
 
     }
 
 
-    fun showhidden(){
-        Toast.makeText(this.activity, "Ustawienia", Toast.LENGTH_LONG).show()
-//        newEventsList.visibility = View.VISIBLE
-    }
 
     override fun onResume() {
         super.onResume()

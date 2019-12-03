@@ -8,6 +8,7 @@ import com.plocki.alert.API.modules.EventsApi
 import com.plocki.alert.AllEventsQuery
 import com.plocki.alert.models.Event
 import com.plocki.alert.models.Global
+import java.lang.Integer.max
 
 class ForegroundRunnableCron : Runnable {
     var isAppClose: Boolean = false
@@ -45,11 +46,25 @@ class ForegroundRunnableCron : Runnable {
                         )
                         eventContainer.add(currentEvent)
                     }
+
+                    if (Global.getInstance()!!.list.size != eventContainer.size) {
+                        Global.getInstance()!!.changed = true
+                    }
+                    else{
+                        for(i in 0 until max(Global.getInstance()!!.list.size,eventContainer.size)){
+                            val event1 = Global.getInstance()!!.list[i].UUID
+                            val event2 = eventContainer[i].UUID
+                            if(event1 != event2){
+                                Global.getInstance()!!.changed = true
+                            }
+                        }
+
+                    }
+
+
+
                     Global.getInstance()!!.list = eventContainer
-                    val addContainer = eventContainer.minus(Global.getInstance()!!.list)
-                    Global.getInstance()!!.toAdd = addContainer as ArrayList<Event>
-                    val removeContainer = Global.getInstance()!!.list.minus(eventContainer)
-                    Global.getInstance()!!.toRemove = removeContainer as ArrayList<Event>
+
                 }
             })
             try {
