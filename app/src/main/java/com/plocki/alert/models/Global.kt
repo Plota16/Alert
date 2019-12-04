@@ -17,6 +17,8 @@ class Global {
     lateinit var location: Location
     lateinit var view : View
 
+    lateinit var token: String
+
     var cameraPos: LatLng = LatLng(0.0,0.0)
     var toAdd = ArrayList<Event>()
     var toRemove = ArrayList<Event>()
@@ -48,7 +50,7 @@ class Global {
     var filterdDistnance = "Nielimitowane"
 
     companion object {
-        val ip = "192.168.1.104"
+        val ip = "192.168.0.100"
         private var mInstance: Global? = null
 
             @Synchronized fun getInstance(): Global? {

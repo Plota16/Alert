@@ -17,7 +17,7 @@ class ApplicationObserver : LifecycleObserver {
     fun onForeground() {
         backgroundRunnable.isAppClose = false
         foregroundRunnable.isAppClose = false
-        foregroundRunnable.seconds = 1000
+        foregroundRunnable.seconds = 60000
         val thread = Thread(foregroundRunnable)
         thread.start()
     }

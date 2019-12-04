@@ -51,7 +51,7 @@ class Event (
                 .imageData(FileUpload("image/jpg", image))
         }
 
-        return eventBuilder.build();
+        return eventBuilder.build()
     }
 
     override fun toString(): String {

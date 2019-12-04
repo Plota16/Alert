@@ -1,0 +1,11 @@
+mutation createUser($userData: CreateOAuthUserDto!) {
+    createUser(userData : $userData) {
+        data {
+            username,
+            uuid
+        }
+        token {
+            accessToken
+        }
+    }
+}

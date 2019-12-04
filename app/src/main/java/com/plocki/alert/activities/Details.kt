@@ -69,7 +69,7 @@ class Details : AppCompatActivity(), OnMapReadyCallback {
         details_image.requestLayout()
 
         Glide.with(this)
-            .load("http:/192.168.1.56:3000/static/${event.image}.jpg")
+            .load("http://${Global.ip}:3000/static/${event.image}.jpg")
             .placeholder(R.drawable.placeholder)
             .centerCrop()
             .override(dpWidth ,dpHeight.roundToInt())

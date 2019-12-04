@@ -41,6 +41,8 @@ import kotlinx.android.synthetic.main.activity_add.*
 import com.plocki.alert.models.EventMethods.Companion.thumbnailFromUri
 import com.plocki.alert.models.Global
 import com.plocki.alert.utils.FileGetter
+import kotlinx.android.synthetic.main.activity_add.progressBar
+import kotlinx.android.synthetic.main.activity_login_panel.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -355,55 +357,50 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
             creator = 1
         )
         progressBar.visibility = View.VISIBLE
-        GlobalScope.launch {
-            val createEventResult = EventsApi.createEvent(
-                event,
-                object : ApolloCall.Callback<CreateEventMutation.Data>() {
-                    override fun onFailure(e: ApolloException) {
-                        Log.e("ERROR", e.cause.toString())
-                    }
+            GlobalScope.launch {
+                val createEventResult = EventsApi.createEvent(
+                    event,
+                    object : ApolloCall.Callback<CreateEventMutation.Data>() {
+                        override fun onFailure(e: ApolloException) {
+                            Log.e("ERROR", e.cause.toString())
+                        }
 
-                    override fun onResponse(response: Response<CreateEventMutation.Data>) {
-                        Log.d("SUCCESS", response.data().toString())
-                        EventsApi.fetchEvents(object : ApolloCall.Callback<AllEventsQuery.Data>() {
-                            override fun onFailure(e: ApolloException) {
-                                Log.e("Źle", e.cause.toString())
-                            }
-
-                            override fun onResponse(response: Response<AllEventsQuery.Data>) {
-                                val events = response.data()!!.events()
-                                Log.d(
-                                    "AA",
-                                    "RESPONSE" + response.data()!!.events()
-                                )
-                                val eventContainer = ArrayList<Event>()
-                                val instance = Global.getInstance()
-                                for (event in events) {
-                                    val currentEvent = Event.fromResponse(
-                                        event.uuid().toString(),
-                                        event.coords(),
-                                        event.title(),
-                                        event.image(),
-                                        "opis",
-                                        1,
-                                        1
-                                    )
-                                    eventContainer.add(currentEvent)
+                        override fun onResponse(response: Response<CreateEventMutation.Data>) {
+                            Log.d("SUCCESS", response.data().toString())
+                            EventsApi.fetchEvents(object : ApolloCall.Callback<AllEventsQuery.Data>() {
+                                override fun onFailure(e: ApolloException) {
+                                    Log.e("Źle", e.cause.toString())
+                                    progressBar.visibility = View.INVISIBLE
                                 }
-                                Global.getInstance()!!.list = eventContainer
-                            }
-                        })
+
+                                override fun onResponse(response: Response<AllEventsQuery.Data>) {
+                                    val events = response.data()!!.events()
+                                    Log.d(
+                                        "AA",
+                                        "RESPONSE" + response.data()!!.events()
+                                    )
+                                    val eventContainer = ArrayList<Event>()
+                                    val instance = Global.getInstance()
+                                    for (event in events) {
+                                        val currentEvent = Event.fromResponse(
+                                            event.uuid().toString(),
+                                            event.coords(),
+                                            event.title(),
+                                            event.image(),
+                                            "opis",
+                                            1,
+                                            1
+                                        )
+                                        eventContainer.add(currentEvent)
+                                    }
+                                    Global.getInstance()!!.list = eventContainer
+                                    progressBar.visibility = View.INVISIBLE
+                                    finish()
+                                }
+                            })
+                        }
                     }
-                }
-            )
-
-
-
-        }
-        GlobalScope.launch {
-
-            delay(2000)
-            finish()
+                )
         }
     }
 
