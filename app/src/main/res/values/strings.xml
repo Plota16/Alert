@@ -49,6 +49,7 @@
     <string name="filter_title">Filtry</string>
     <string name="filter_dostance_title">Podaj Maksymalną odległość</string>
     <string name="progres_text">Proszę czekać ...</string>
+    <string name="sign_out">Wyloguj się</string>
 
     <!--    <string name="Login_facebookButton_text">Zarejestruj się</string>-->
     <!--    <string name="Login_googleButton_text">Zarejestruj się</string>-->

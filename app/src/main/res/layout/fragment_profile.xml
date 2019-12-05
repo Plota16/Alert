@@ -7,18 +7,14 @@
         tools:context=".fragments.FragmentProfile"
         android:background="@color/white">
 
-    <TextView
-            android:id="@+id/likebar_title"
+    <com.google.android.material.button.MaterialButton
+            android:id="@+id/siqn_out_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_weight="1"
-            android:text="Work in progress"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="@string/sign_out" />
 </androidx.constraintlayout.widget.ConstraintLayout>

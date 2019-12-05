@@ -2,6 +2,6 @@ package com.plocki.alert.models
 
 enum class ProviderType(val provider: String) {
     GOOGLE("GOOGLE"),
-    FACOBOOK("FACEBOOK"),
+    FACEBOOK("FACEBOOK"),
     TWITTER("TWITTER")
 }

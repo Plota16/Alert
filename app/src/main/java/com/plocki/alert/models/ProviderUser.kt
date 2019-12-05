@@ -16,4 +16,9 @@ class ProviderUser (
         return createOAuthUserDto
     }
 
+    override fun toString(): String {
+        return "ProviderUser(providerType=$providerType, tokenId='$tokenId')"
+    }
+
+
 }

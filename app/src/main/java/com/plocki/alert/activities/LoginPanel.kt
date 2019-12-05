@@ -1,129 +1,77 @@
 package com.plocki.alert.activities
 
 import android.content.Intent
-import android.os.Bundle
-import android.util.Log
-import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.apollographql.apollo.ApolloCall
-import com.apollographql.apollo.api.Response
-import com.apollographql.apollo.exception.ApolloException
-import com.jaychang.sa.AuthCallback
-import com.jaychang.sa.SocialUser
-import com.plocki.alert.API.modules.UserApi
-import com.plocki.alert.CreateUserMutation
-import com.plocki.alert.R
-import com.plocki.alert.models.ProviderType
-import com.plocki.alert.models.ProviderUser
+import android.os.Bundle
+import android.view.View
 import kotlinx.android.synthetic.main.activity_login_panel.*
-import java.util.*
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.plocki.alert.services.FacebookService
+import com.plocki.alert.services.GoogleService
+import com.plocki.alert.services.TwitterService
+import com.twitter.sdk.android.core.*
+import android.content.pm.PackageManager
+import android.util.Base64
+import android.util.Log
+import com.plocki.alert.R
+import java.security.MessageDigest
+import java.security.NoSuchAlgorithmException
 
 
 class LoginPanel : AppCompatActivity() {
 
+    lateinit var googleService: GoogleService
+    lateinit var twitterService: TwitterService
+    lateinit var facebookService: FacebookService
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        googleService = GoogleService(this)
+        twitterService = TwitterService(this)
+        facebookService = FacebookService(this)
+
+        Twitter.initialize(twitterService.buildConfiguration())
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login_panel)
-    }
 
-    fun connectGoogle(view: View) {
-        com.jaychang.sa.google.SimpleAuth.disconnectGoogle()
-        val scopes = Arrays.asList("email")
-        com.jaychang.sa.google.SimpleAuth.connectGoogle(scopes, object : AuthCallback {
-            override fun onSuccess(socialUser: SocialUser) {
-                println(socialUser.accessToken.toString())
-                println(socialUser.fullName)
-                println(socialUser.userId)
-                println(socialUser.username)
-                println(socialUser.email)
-                loginToApp(ProviderUser(ProviderType.GOOGLE, socialUser.accessToken))
-            }
+        //TWITTER
+        twitter_login_button.setOnClickListener {
+            twitterService.signIn()
+        }
 
-            override fun onError(error: Throwable) {
-            }
+        //GOOGLE
+        google_login_button.setOnClickListener {
+            val signInIntent = googleService.mGoogleSignInClient.signInIntent
+            startActivityForResult(signInIntent, 9002)
+        }
 
-            override fun onCancel() {
+        //FACEBOOK
+        face_login_button.setOnClickListener(View.OnClickListener {
+            facebookService.signIn()
 
-            }
         })
+
     }
 
-    fun connectFacebook(view: View) {
-        val scopes = Arrays.asList("user_birthday", "user_friends")
-        com.jaychang.sa.facebook.SimpleAuth.connectFacebook(scopes, object : AuthCallback {
-            override fun onSuccess(socialUser: SocialUser) {
-                println(socialUser.accessToken.toString())
-                println(socialUser.fullName)
-                println(socialUser.userId)
-                println(socialUser.username)
-                println(socialUser.email)
-                loginToApp(ProviderUser(ProviderType.FACOBOOK, socialUser.accessToken))
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
 
-            }
+        facebookService.callbackManager?.onActivityResult(requestCode, resultCode, data)
+        twitterService.mTwitterAuthClient.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 9002) {
+            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+            googleService.handleGoogleSignInResult(task)
+        }
 
-            override fun onError(error: Throwable) {
-                Toast.makeText(this@LoginPanel, "Błąd logowania", Toast.LENGTH_SHORT)
-            }
-
-            override fun onCancel() {
-                Toast.makeText(this@LoginPanel, "Błąd logowania", Toast.LENGTH_SHORT)
-            }
-        })
     }
 
-    fun connectTwitter(view: View) {
-        com.jaychang.sa.twitter.SimpleAuth.connectTwitter(object : AuthCallback {
-            override fun onSuccess(socialUser: SocialUser) {
-                println(socialUser.accessToken.toString())
-                println(socialUser.fullName)
-                println(socialUser.userId)
-                println(socialUser.username)
-                println(socialUser.email)
-                loginToApp(ProviderUser(ProviderType.TWITTER, socialUser.accessToken))
 
-            }
 
-            override fun onError(error: Throwable) {
-                Toast.makeText(this@LoginPanel, "Błąd logowania", Toast.LENGTH_SHORT)
-            }
 
-            override fun onCancel() {
-                Toast.makeText(this@LoginPanel, "Błąd logowania", Toast.LENGTH_SHORT)
-            }
-        })
-    }
 
-    fun logoClicked(v: View){
-        logIn()
-    }
 
-    fun logIn(){
-        val intent = Intent(this, MainActivity::class.java)
-        intent.putExtra("SHOW_WELCOME", true)
-        startActivity(intent)
-    }
 
-    fun loginToApp(providerUser: ProviderUser) {
-        runOnUiThread { progressBar.visibility = View.VISIBLE }
-            val createUser = UserApi.createUser(
-                providerUser,
-                object : ApolloCall.Callback<CreateUserMutation.Data>() {
-                    override fun onFailure(e: ApolloException) {
-                        progressBar.visibility = View.INVISIBLE
-                        Log.e("ERROR", e.cause.toString())
-                    }
 
-                    override fun onResponse(response: Response<CreateUserMutation.Data>) {
-                        Log.d("SUCCESS", response.data().toString())
-                        runOnUiThread { progressBar.visibility = View.INVISIBLE }
-                        logIn()
-                        finish()
-                    }
-                }
-            )
-
-}
 
 
 }
