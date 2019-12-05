@@ -62,16 +62,13 @@ class LoginPanel : AppCompatActivity() {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             googleService.handleGoogleSignInResult(task)
         }
-
     }
 
-
-
-
-
-
-
-
+    fun logoClicked(view: View) {
+        val intent = Intent(this, MainActivity::class.java)
+        intent.putExtra("SHOW_WELCOME", true)
+        this.startActivity(intent)
+    }
 
 
 }
