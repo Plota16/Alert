@@ -55,7 +55,7 @@ class FragmentList : Fragment(){
                 else{
                     newEventsList.visibility = View.GONE
                 }
-                delay(2500)
+                delay(2000)
             }
         }
 

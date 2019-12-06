@@ -12,6 +12,9 @@ import kotlin.collections.HashMap
 import kotlin.properties.Delegates
 
 class Global {
+
+    var errorActivityOpen = false
+
     var changed = false
     var bool = true
     lateinit var location: Location
@@ -22,6 +25,7 @@ class Global {
     var cameraPos: LatLng = LatLng(0.0,0.0)
     var toAdd = ArrayList<Event>()
     var toRemove = ArrayList<Event>()
+
     var list = arrayListOf(
         Event(
             UUID.randomUUID(),
@@ -50,7 +54,7 @@ class Global {
     var filterdDistnance = "Nielimitowane"
 
     companion object {
-        val ip = "192.168.0.100"
+        val ip = "192.168.1.200"
         private var mInstance: Global? = null
 
             @Synchronized fun getInstance(): Global? {

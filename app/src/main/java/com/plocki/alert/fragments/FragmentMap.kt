@@ -65,7 +65,7 @@ class FragmentMap : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
                 else{
                     newEventsMap.visibility = View.GONE
                 }
-                delay(2500)
+                delay(2000)
             }
         }
     }

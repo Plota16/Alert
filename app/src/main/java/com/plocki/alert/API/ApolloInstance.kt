@@ -8,8 +8,7 @@ import okhttp3.OkHttpClient
 
 object ApolloInstance {
     var apolloClient: ApolloClient? = null
-    var token: String? = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiZGY4NTkzZmMtZWE2OC00ZmU4LTkzNzAtZDAzYzM3NWRjMjZlIiwidG9rZW5JZCI6MjUzMTk4OSwiaWF0IjoxNTc0ODgwNTE1LCJleHAiOjE1NzYxNzY1MTV9.K_JyrZI0nKUGOPYMfSs5SAXoVTzXXEjeL0s4CxAxTzg"
-
+    var token: String? = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiYzk0ZjRjNDAtZjFkYy00OTVhLTkxZmItY2E4ZTRkZDFhNjllIiwidG9rZW5JZCI6NTI0ODc0MCwiaWF0IjoxNTc1NDAwODU3LCJleHAiOjE1NzY2OTY4NTd9.yfoAei97Lf431grJRTtR3gm0x3MBET-kK_3bSINdm_U"
     var BASE_URL = "http://${Global.ip}:3000/graphql"
 
     init {
@@ -23,10 +22,10 @@ object ApolloInstance {
 
     private fun getTokenIfExists(): String? {
         if (this.token != null) {
-            return this.token;
+            return this.token
         }
 //        TODO implement getting token from store or returning null
-        return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiZGY4NTkzZmMtZWE2OC00ZmU4LTkzNzAtZDAzYzM3NWRjMjZlIiwidG9rZW5JZCI6MjUzMTk4OSwiaWF0IjoxNTc0ODgwNTE1LCJleHAiOjE1NzYxNzY1MTV9.K_JyrZI0nKUGOPYMfSs5SAXoVTzXXEjeL0s4CxAxTzg"
+        return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiYzk0ZjRjNDAtZjFkYy00OTVhLTkxZmItY2E4ZTRkZDFhNjllIiwidG9rZW5JZCI6NTI0ODc0MCwiaWF0IjoxNTc1NDAwODU3LCJleHAiOjE1NzY2OTY4NTd9.yfoAei97Lf431grJRTtR3gm0x3MBET-kK_3bSINdm_U"
     }
     private fun buildOkHttpClient(token: String?): OkHttpClient {
         val okHttpClient = OkHttpClient.Builder()

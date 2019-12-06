@@ -35,7 +35,7 @@ android {
 
     apollo {
         customTypeMapping = [
-                "Upload" : "com.apollographql.apollo.api.FileUpload"
+                "Upload": "com.apollographql.apollo.api.FileUpload"
         ]
     }
 }

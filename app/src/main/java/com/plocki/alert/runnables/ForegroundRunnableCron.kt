@@ -21,52 +21,54 @@ class ForegroundRunnableCron : Runnable {
 //                    Handler threadHandler = new Handler(Looper.getMainLooper());
 //                    threadHandler.post(new Runnable() {
             println("Pobieram dane z serwera: $i" )
-            EventsApi.fetchEvents(object : ApolloCall.Callback<AllEventsQuery.Data>() {
-                override fun onFailure(e: ApolloException) {
-                    Log.e("Źle", e.cause.toString())
-                }
+            if(!Global.getInstance()!!.errorActivityOpen){
+                EventsApi.fetchEvents(object : ApolloCall.Callback<AllEventsQuery.Data>() {
+                    override fun onFailure(e: ApolloException) {
+                        Log.e("Źle", e.cause.toString())
+                    }
 
-                override fun onResponse(response: Response<AllEventsQuery.Data>) {
-                    val events = response.data()!!.events()
-                    Log.d(
-                        "AA",
-                        "RESPONSE" + response.data()!!.events()
-                    )
-                    val eventContainer = ArrayList<Event>()
-                    val instance = Global.getInstance()
-                    for (event in events) {
-                        val currentEvent = Event.fromResponse(
-                            event.uuid().toString(),
-                            event.coords(),
-                            event.title(),
-                            event.image(),
-                            event.description(),
-                            1,
-                            1
+                    override fun onResponse(response: Response<AllEventsQuery.Data>) {
+                        val events = response.data()!!.events()
+                        Log.d(
+                            "AA",
+                            "RESPONSE" + response.data()!!.events()
                         )
-                        eventContainer.add(currentEvent)
-                    }
-
-                    if (Global.getInstance()!!.list.size != eventContainer.size) {
-                        Global.getInstance()!!.changed = true
-                    }
-                    else{
-                        for(i in 0 until max(Global.getInstance()!!.list.size,eventContainer.size)){
-                            val event1 = Global.getInstance()!!.list[i].UUID
-                            val event2 = eventContainer[i].UUID
-                            if(event1 != event2){
-                                Global.getInstance()!!.changed = true
-                            }
+                        val eventContainer = ArrayList<Event>()
+                        val instance = Global.getInstance()
+                        for (event in events) {
+                            val currentEvent = Event.fromResponse(
+                                event.uuid().toString(),
+                                event.coords(),
+                                event.title(),
+                                event.image(),
+                                event.description(),
+                                1,
+                                1
+                            )
+                            eventContainer.add(currentEvent)
                         }
 
+                        if (Global.getInstance()!!.list.size != eventContainer.size) {
+                            Global.getInstance()!!.changed = true
+                        }
+                        else{
+                            for(i in 0 until max(Global.getInstance()!!.list.size,eventContainer.size)){
+                                val event1 = Global.getInstance()!!.list[i].UUID
+                                val event2 = eventContainer[i].UUID
+                                if(event1 != event2){
+                                    Global.getInstance()!!.changed = true
+                                }
+                            }
+
+                        }
+
+
+
+                        Global.getInstance()!!.list = eventContainer
+
                     }
-
-
-
-                    Global.getInstance()!!.list = eventContainer
-
-                }
-            })
+                })
+            }
             try {
                 Thread.sleep(seconds)
             } catch (e: InterruptedException) {

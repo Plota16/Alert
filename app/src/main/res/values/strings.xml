@@ -51,6 +51,8 @@
     <string name="progres_text">Proszę czekać ...</string>
     <string name="sign_out">Wyloguj się</string>
 
+    <string name="internet_dialog_title">"Brak Połączenia z Internetem"</string>
+    <string name="internet_dialog_text">"Nie wykryto połączenia z Internetem. Czy chesz je włączyć?"</string>
     <!--    <string name="Login_facebookButton_text">Zarejestruj się</string>-->
     <!--    <string name="Login_googleButton_text">Zarejestruj się</string>-->
 

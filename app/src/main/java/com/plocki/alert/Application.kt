@@ -13,14 +13,30 @@ import com.plocki.alert.API.modules.EventsApi
 import com.plocki.alert.models.Event
 import com.plocki.alert.models.Global
 import com.plocki.alert.utils.ApplicationObserver
+import androidx.core.content.ContextCompat.getSystemService
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+
+
+
+
 
 class MyApplication : Application() {
+
+    companion object{
+        var context : Context? = null
+
+        fun getAppContext(): Context {
+            return MyApplication.context!!
+        }
+    }
     override fun onCreate() {
         super.onCreate()
         ProcessLifecycleOwner
             .get()
             .lifecycle
             .addObserver(ApplicationObserver())
+        MyApplication.context = getApplicationContext();
+
         val cm = applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetwork: NetworkInfo? = cm.activeNetworkInfo
         val isConnected: Boolean = activeNetwork?.isConnectedOrConnecting == true

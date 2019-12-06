@@ -4,6 +4,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import com.plocki.alert.runnables.BackgroundRunnableCron
+import com.plocki.alert.runnables.ConnectionObserver
 import com.plocki.alert.runnables.ForegroundRunnableCron
 
 class ApplicationObserver : LifecycleObserver {
@@ -11,7 +12,9 @@ class ApplicationObserver : LifecycleObserver {
     private val foregroundRunnable: ForegroundRunnableCron =
         ForegroundRunnableCron()
     private val backgroundRunnable: BackgroundRunnableCron =
-        BackgroundRunnableCron()
+            BackgroundRunnableCron()
+
+    private val connectionObserver: ConnectionObserver = ConnectionObserver()
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     fun onForeground() {
@@ -19,7 +22,9 @@ class ApplicationObserver : LifecycleObserver {
         foregroundRunnable.isAppClose = false
         foregroundRunnable.seconds = 60000
         val thread = Thread(foregroundRunnable)
+        val connectionThread = Thread(connectionObserver)
         thread.start()
+        connectionThread.start()
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)

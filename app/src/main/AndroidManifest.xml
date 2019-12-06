@@ -19,10 +19,12 @@
             android:allowBackup="true"
             android:icon="@mipmap/ic_icon"
             android:label="@string/app_name"
+            android:networkSecurityConfig="@xml/network_security_config"
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
-            android:networkSecurityConfig="@xml/network_security_config"
             android:theme="@style/AppTheme">
+        <activity android:name=".activities.ConnectionError"></activity>
+
         <receiver
                 android:name=".utils.ConnectivityReceiver"
                 android:enabled="true">
@@ -30,7 +32,8 @@
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
-        <activity android:name=".activities.Filter"></activity>
+
+        <activity android:name=".activities.Filter" />
         <activity android:name=".fragments.FragmentProfile" />
         <activity android:name=".activities.LoginPanel" />
         <activity android:name=".activities.Details" />

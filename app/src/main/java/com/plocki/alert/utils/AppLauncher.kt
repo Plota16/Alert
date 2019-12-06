@@ -11,7 +11,8 @@ import com.plocki.alert.CreateUserMutation
 import com.plocki.alert.activities.MainActivity
 import com.plocki.alert.models.ProviderUser
 
-object AppLauncher {
+object
+AppLauncher {
     fun launchApp(activity:  Activity, providerUser: ProviderUser) {
         val createUser = UserApi.createUser(
             providerUser,

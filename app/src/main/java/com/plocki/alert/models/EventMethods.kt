@@ -11,7 +11,10 @@ import kotlin.math.PI
 import kotlin.math.roundToInt
 import android.R.attr.src
 import android.location.Location
+import android.location.LocationManager
+import android.net.ConnectivityManager
 import com.google.android.gms.location.LocationServices
+import com.jaychang.sa.Initializer
 import java.io.IOException
 import java.net.HttpURLConnection
 import java.net.URL
@@ -20,6 +23,20 @@ import java.net.URL
 class EventMethods {
 
     companion object {
+
+        fun isGpsOn(): Boolean {
+            var locationManager = Initializer.context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+            return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+        }
+        fun isNetworkOn(context: Context): Boolean {
+            val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            val networkInfo = connectivityManager.activeNetworkInfo
+            return networkInfo != null && networkInfo.isConnected
+        }
+
+
+
+
         fun thumbnailFromUri(context: Context, uri : Uri?): BitmapDrawable {
             val filePathColumn = arrayOf(MediaStore.Images.Media.DATA)
             val cursor = context.contentResolver.query(uri!!, filePathColumn, null, null, null)
