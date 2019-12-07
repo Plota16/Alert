@@ -1,6 +1,7 @@
 package com.plocki.alert.services
 
 import android.app.Activity
+import android.content.Context
 import android.os.Bundle
 import android.widget.Toast
 import com.facebook.*
@@ -13,7 +14,8 @@ import com.plocki.alert.utils.AppLauncher
 import java.util.*
 import java.util.logging.Logger
 
-class FacebookService(activity: Activity) {
+class FacebookService(context: Context,activity: Activity) {
+    var context = context
     var mActivity = activity
     var callbackManager : CallbackManager? = null
     private val logger = Logger.getLogger(LoginPanel::class.java.toString())
@@ -35,7 +37,7 @@ class FacebookService(activity: Activity) {
             FacebookCallback<LoginResult> {
             override fun onSuccess(result: LoginResult?) {
                 val providerUser = ProviderUser(ProviderType.FACEBOOK, result!!.accessToken.token)
-                AppLauncher.launchApp(mActivity, providerUser)
+                AppLauncher.launchApp(context, mActivity, providerUser)
                 getUserProfile(result.accessToken)
             }
             override fun onCancel() {

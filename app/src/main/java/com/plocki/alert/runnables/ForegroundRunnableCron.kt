@@ -8,6 +8,7 @@ import com.plocki.alert.API.modules.EventsApi
 import com.plocki.alert.AllEventsQuery
 import com.plocki.alert.models.Event
 import com.plocki.alert.models.Global
+import java.lang.Exception
 import java.lang.Integer.max
 
 class ForegroundRunnableCron : Runnable {
@@ -21,7 +22,8 @@ class ForegroundRunnableCron : Runnable {
 //                    Handler threadHandler = new Handler(Looper.getMainLooper());
 //                    threadHandler.post(new Runnable() {
             println("Pobieram dane z serwera: $i" )
-            if(!Global.getInstance()!!.errorActivityOpen){
+
+            if(!Global.getInstance()!!.errorActivityOpen && Global.getInstance()!!.logged){
                 EventsApi.fetchEvents(object : ApolloCall.Callback<AllEventsQuery.Data>() {
                     override fun onFailure(e: ApolloException) {
                         Log.e("Źle", e.cause.toString())

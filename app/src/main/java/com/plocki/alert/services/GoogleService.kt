@@ -1,6 +1,7 @@
 package com.plocki.alert.services
 
 import android.app.Activity
+import android.content.Context
 import android.widget.Toast
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -14,7 +15,8 @@ import com.plocki.alert.models.ProviderUser
 import com.plocki.alert.utils.AppLauncher
 import java.util.logging.Logger
 
-class GoogleService(activity: Activity) {
+class GoogleService(context: Context, activity: Activity) {
+    var context = context
     var acct: GoogleSignInAccount?
     var mGoogleSignInClient: GoogleSignInClient
     private val logger = Logger.getLogger(LoginPanel::class.java.toString())
@@ -66,8 +68,8 @@ class GoogleService(activity: Activity) {
                     logger.info(account.id)
                     logger.info(account.account.toString())
                     logger.info(account.isExpired.toString())
-                    val providerUser = ProviderUser(ProviderType.GOOGLE, idToken!!)
-                    AppLauncher.launchApp(mActivity, providerUser)
+                    val providerUser = ProviderUser(ProviderType.GOOGLE, idToken!!.substring(0,249))
+                    AppLauncher.launchApp(context, mActivity, providerUser)
                 }
                 task.addOnFailureListener {
                     println("ERRR" + it.message)

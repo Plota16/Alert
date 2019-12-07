@@ -15,16 +15,16 @@ class Global {
 
     var errorActivityOpen = false
 
+    var logged = false
     var changed = false
     var bool = true
     lateinit var location: Location
     lateinit var view : View
 
-    lateinit var token: String
-
+    var token: String? = null
+        //"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiYzk0ZjRjNDAtZjFkYy00OTVhLTkxZmItY2E4ZTRkZDFhNjllIiwidG9rZW5JZCI6NTI0ODc0MCwiaWF0IjoxNTc1NDAwODU3LCJleHAiOjE1NzY2OTY4NTd9.yfoAei97Lf431grJRTtR3gm0x3MBET-kK_3bSINdm_U"
+    var username: String = ""
     var cameraPos: LatLng = LatLng(0.0,0.0)
-    var toAdd = ArrayList<Event>()
-    var toRemove = ArrayList<Event>()
 
     var list = arrayListOf(
         Event(
@@ -48,13 +48,13 @@ class Global {
 
     val distanceList = arrayOf("Nielimitowane", "500 m", "1 km", "3 km", "5 km", "10 km", "20 km", "100 km")
 
+    var filterdDistnance = "Nielimitowane"
+
     var mapHashMap = HashMap<String, Event>()
     var listHashMap = HashMap<String, Event>()
 
-    var filterdDistnance = "Nielimitowane"
-
     companion object {
-        val ip = "192.168.1.200"
+        val ip = "192.168.1.74"
         private var mInstance: Global? = null
 
             @Synchronized fun getInstance(): Global? {
