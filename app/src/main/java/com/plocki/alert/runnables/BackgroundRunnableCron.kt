@@ -1,5 +1,7 @@
 package com.plocki.alert.runnables
 
+import com.plocki.alert.API.modules.FetchEventsHandler
+
 class BackgroundRunnableCron : Runnable {
     var isAppClose: Boolean = false
 
@@ -10,7 +12,8 @@ class BackgroundRunnableCron : Runnable {
         while (isAppClose) {
 //                    Handler threadHandler = new Handler(Looper.getMainLooper());
 //                    threadHandler.post(new Runnable() {
-            println("Pobieram dane z serwera: $i" )
+            println("Pobieram back dane z serwera: $i" )
+            FetchEventsHandler.fetchEvents()
             try {
                 Thread.sleep(seconds)
             } catch (e: InterruptedException) {

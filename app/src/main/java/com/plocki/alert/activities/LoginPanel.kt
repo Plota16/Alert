@@ -1,26 +1,25 @@
 package com.plocki.alert.activities
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
-import kotlinx.android.synthetic.main.activity_login_panel.*
 import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.plocki.alert.API.modules.FetchEventsHandler
 import com.plocki.alert.API.modules.UserApi
 import com.plocki.alert.MyApplication
-import com.plocki.alert.services.FacebookService
-import com.plocki.alert.services.GoogleService
-import com.plocki.alert.services.TwitterService
-import com.twitter.sdk.android.core.*
 import com.plocki.alert.R
 import com.plocki.alert.WhoAmIQuery
 import com.plocki.alert.models.Global
+import com.plocki.alert.services.FacebookService
+import com.plocki.alert.services.GoogleService
+import com.plocki.alert.services.TwitterService
 import com.plocki.alert.utils.Store
-import java.lang.Exception
+import com.twitter.sdk.android.core.Twitter
+import kotlinx.android.synthetic.main.activity_login_panel.*
 
 
 class LoginPanel : AppCompatActivity() {
@@ -33,11 +32,11 @@ class LoginPanel : AppCompatActivity() {
         val store = Store(this)
         try {
             Global.getInstance()!!.token = store.retrieveValue("token")
+//            ApolloInstance.token = store.retrieveValue("token")
         }catch (ex : Exception){
             ex.printStackTrace()
         }
-
-        if(Global.getInstance()!!.token != null){
+        if(Global.getInstance()!!.token != ""){
             UserApi.whoAmI(object : ApolloCall.Callback<WhoAmIQuery.Data>(){
                 override fun onResponse(response: Response<WhoAmIQuery.Data>) {
                     val whoAmI = response.data()!!.whoAmI()
@@ -46,11 +45,13 @@ class LoginPanel : AppCompatActivity() {
                     intent.putExtra("SHOW_WELCOME", true)
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     Global.getInstance()!!.logged = true
+                    FetchEventsHandler.fetchEvents(this@LoginPanel)
                     MyApplication.context!!.startActivity(intent)
+                    finish()
                 }
 
                 override fun onFailure(e: ApolloException) {
-                    Global.getInstance()!!.token = null
+                    Global.getInstance()!!.token = ""
                     val sharedstore = Store(this@LoginPanel)
                     sharedstore.removeValue("token")
                 }

@@ -5,30 +5,32 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import androidx.core.content.res.ResourcesCompat
-import kotlinx.android.synthetic.main.activity_main.*
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.PopupMenu
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.plocki.alert.fragments.FragmentList
+import androidx.core.content.res.ResourcesCompat
+import com.plocki.alert.API.modules.FetchEventsHandler
 import com.plocki.alert.R
+import com.plocki.alert.fragments.FragmentList
 import com.plocki.alert.fragments.FragmentMap
 import com.plocki.alert.fragments.FragmentProfile
 import com.plocki.alert.models.Global
+import kotlinx.android.synthetic.main.activity_main.*
 
 
-class MainActivity : BaseActivity() {
+class MainActivity : AppCompatActivity() {
 
     companion object {
-
 
         private const val  PERMISSION_LOCATION = 101
     }
 
+    val mainActivity = this
     private val inst = Global.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -156,7 +158,7 @@ class MainActivity : BaseActivity() {
 
 
         if (id == R.id.action_refresh) {
-
+            FetchEventsHandler.fetchEvents(this)
         }
 
         if (id == R.id.action_more) {

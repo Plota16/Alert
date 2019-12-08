@@ -21,8 +21,8 @@ class Global {
     lateinit var location: Location
     lateinit var view : View
 
-    var token: String? = null
-        //"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiYzk0ZjRjNDAtZjFkYy00OTVhLTkxZmItY2E4ZTRkZDFhNjllIiwidG9rZW5JZCI6NTI0ODc0MCwiaWF0IjoxNTc1NDAwODU3LCJleHAiOjE1NzY2OTY4NTd9.yfoAei97Lf431grJRTtR3gm0x3MBET-kK_3bSINdm_U"
+    var token: String = ""
+    //"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiYzk0ZjRjNDAtZjFkYy00OTVhLTkxZmItY2E4ZTRkZDFhNjllIiwidG9rZW5JZCI6NTI0ODc0MCwiaWF0IjoxNTc1NDAwODU3LCJleHAiOjE1NzY2OTY4NTd9.yfoAei97Lf431grJRTtR3gm0x3MBET-kK_3bSINdm_U"
     var username: String = ""
     var cameraPos: LatLng = LatLng(0.0,0.0)
 
@@ -40,9 +40,9 @@ class Global {
     )
 
     var CategoryList = arrayOf("Wydarzenie",
-    "Korek",
-    "Wypadek",
-    "Utrudnienia")
+        "Korek",
+        "Wypadek",
+        "Utrudnienia")
 
     var FilterList = booleanArrayOf(true,true,true,true)
 
@@ -54,15 +54,15 @@ class Global {
     var listHashMap = HashMap<String, Event>()
 
     companion object {
-        val ip = "192.168.1.74"
+        val ip = "192.168.0.102"
         private var mInstance: Global? = null
 
-            @Synchronized fun getInstance(): Global? {
-                if (null == mInstance) {
-                    mInstance = Global()
-                }
-                return mInstance
+        @Synchronized fun getInstance(): Global? {
+            if (null == mInstance) {
+                mInstance = Global()
             }
+            return mInstance
+        }
     }
 
 }
