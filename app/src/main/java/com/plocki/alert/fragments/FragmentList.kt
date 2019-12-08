@@ -49,13 +49,16 @@ class FragmentList : Fragment(){
 
         GlobalScope.launch(context = Main) {
             while (true){
-                if(Global.getInstance()!!.changed){
-                    newEventsList.visibility = View.VISIBLE
-                }
-                else{
-                    newEventsList.visibility = View.GONE
+                if (newEventsList != null) {
+                    if(Global.getInstance()!!.changed){
+                        newEventsList.visibility = View.VISIBLE
+                    }
+                    else{
+                        newEventsList.visibility = View.GONE
+                    }
                 }
                 delay(2000)
+
             }
         }
 

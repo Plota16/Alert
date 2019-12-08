@@ -22,6 +22,7 @@ import com.plocki.alert.activities.Details
 import com.plocki.alert.models.Global
 import com.plocki.alert.R
 import com.plocki.alert.models.EventMethods
+import kotlinx.android.synthetic.main.fragment_list.*
 import kotlinx.android.synthetic.main.fragment_map.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -59,11 +60,13 @@ class FragmentMap : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
         }
         GlobalScope.launch(context = Dispatchers.Main) {
             while (true){
-                if(Global.getInstance()!!.changed){
-                    newEventsMap.visibility = View.VISIBLE
-                }
-                else{
-                    newEventsMap.visibility = View.GONE
+                if (newEventsList != null) {
+                    if(Global.getInstance()!!.changed){
+                        newEventsList.visibility = View.VISIBLE
+                    }
+                    else{
+                        newEventsList.visibility = View.GONE
+                    }
                 }
                 delay(2000)
             }
