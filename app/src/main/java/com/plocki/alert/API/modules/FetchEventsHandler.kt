@@ -19,22 +19,14 @@ object FetchEventsHandler {
             EventsApi.fetchEvents(object : ApolloCall.Callback<AllEventsQuery.Data>() {
                 override fun onFailure(e: ApolloException) {
                     if (activity != null) {
-                        Toast.makeText(activity, "Nie udało się pobrać danych z serwera", Toast.LENGTH_SHORT).show()
+                        activity.runOnUiThread { Toast.makeText(activity, "Nie udało się pobrać danych z serwera", Toast.LENGTH_SHORT).show() }
                     }
                     Log.e("ERROR FETCH", e.cause.toString())
                 }
 
                 override fun onResponse(response: Response<AllEventsQuery.Data>) {
-                    if (activity != null) {
-                        activity.runOnUiThread {
-                            Toast.makeText(
-                                activity,
-                                "Pobrano dane z serwera",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                    }
-                    try {
+
+                    if (response.data() != null) {
                         val events = response.data()!!.events()
                         Log.d("EVENTS", response.data()!!.events().toString())
                         val eventContainer = ArrayList<Event>()
@@ -70,16 +62,22 @@ object FetchEventsHandler {
 
 
                         Global.getInstance()!!.list = eventContainer
-                        if (isLoginPanel && activity != null) {
-                            val intent = Intent(activity, MainActivity::class.java)
-                            intent.putExtra("SHOW_WELCOME", true)
-                            activity.startActivity(intent)
-                            activity.finish()
+                        if (activity != null) {
+                            activity.runOnUiThread { Toast.makeText(activity, "Pobrano danych z serwera", Toast.LENGTH_SHORT).show() }
                         }
-
-                    } catch (e: Exception) {
-                        Toast.makeText(activity, "Nie udało się pobrać danych z serwera", Toast.LENGTH_SHORT).show()
+                    } else {
+                        if (activity != null) {
+                            activity.runOnUiThread { Toast.makeText(activity, "Nie udało się pobrać danych z serwera", Toast.LENGTH_SHORT).show()}
+                        }
                     }
+
+                    if (isLoginPanel && activity != null) {
+                        val intent = Intent(activity, MainActivity::class.java)
+                        intent.putExtra("SHOW_WELCOME", true)
+                        activity.startActivity(intent)
+                        activity.finish()
+                    }
+
                 }
 
             })
