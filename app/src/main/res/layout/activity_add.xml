@@ -171,11 +171,18 @@
             </com.google.android.material.textfield.TextInputLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/localization_lay"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent">
         <TextView
+
+                app:errorEnabled="true"
                 android:id="@+id/textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:text="@string/add_location_text"
@@ -193,6 +200,7 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+        </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
 </ScrollView>

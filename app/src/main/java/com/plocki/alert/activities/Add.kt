@@ -44,6 +44,7 @@ import com.plocki.alert.utils.FileGetter
 import kotlinx.android.synthetic.main.activity_add.progressBar
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.lang.Exception
 import java.util.*
 
 
@@ -158,12 +159,13 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
             imageButton.visibility = View.INVISIBLE
         }
         if (resultCode == Activity.RESULT_OK && requestCode == PICK_CODE){
+
             hasLocation = true
             val coords = data?.data
             val tab = coords.toString().split('+')
             lat = tab[0].toDouble()
             long = tab[1].toDouble()
-
+            validateLocation()
             mMap.clear()
             mMap.addMarker(
                 MarkerOptions()
@@ -251,10 +253,13 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
         val tmp = AlertDialog.Builder(this, R.style.CustomDialogTheme)
             .setTitle(this.getString(R.string.add_dialog_title))
             .setSingleChoiceItems(singleChoiceItems, itemSelected) {
-                    dialogInterface, selectedIndex -> choose = selectedIndex}
+                    dialogInterface, selectedIndex ->
+                choose = selectedIndex
+            }
             .setPositiveButton(this.getString(R.string.add_dialog_positive)) {
                     dialog, which ->
-                         category_in.setText(singleChoiceItems[choose])  }
+                category_in.setText(singleChoiceItems[choose])
+                validateCategory() }
             .setNegativeButton(this.getString(R.string.add_dialog_negative), null)
             .show()
 
@@ -340,18 +345,48 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
+    private fun validateLocation() : Boolean {
+        return if(lat != 0.0 && long != 0.0){
+            localization_lay.error = null
+            true
+        } else{
+            localization_lay.error = getString(R.string.add_location_error)
+            false
+        }
+    }
+
+    private fun validateCategory(): Boolean {
+        var temp = category_in.text.toString()
+        return if(temp != ""){
+            category.error = null
+            true
+        } else{
+            category.error = getString(R.string.add_category_error)
+            false
+        }
+    }
+
     fun addEvent() {
-        val path = FileGetter.getRealPath(image_uri, contentResolver)
-        val event = Event(
-            UUID = UUID.randomUUID(),
-            coords = LatLng(lat, long),
-            image = path,
-            title = add_title.text.toString(),
-            description = desc2.text.toString(),
-            category = 1,
-            creator = 1
-        )
-        progressBar.visibility = View.VISIBLE
+
+        val titleValidation = validateTitle()
+        val categoryValidation = validateCategory()
+        val locationValidation = validateLocation()
+
+        if(titleValidation && categoryValidation && locationValidation){
+            var path = ""
+            try{
+                path = FileGetter.getRealPath(image_uri, contentResolver)
+            }catch (ex : Exception){}
+            val event = Event(
+                UUID = UUID.randomUUID(),
+                coords = LatLng(lat, long),
+                image = path,
+                title = add_title.text.toString(),
+                description = desc2.text.toString(),
+                category = 1,
+                creator = 1
+            )
+            progressBar.visibility = View.VISIBLE
             GlobalScope.launch {
                 val createEventResult = EventsApi.createEvent(
                     event,
@@ -396,7 +431,9 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
                         }
                     }
                 )
+            }
         }
+
     }
 
 
