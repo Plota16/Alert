@@ -45,7 +45,7 @@ class Event (
                     .y(this.coords.longitude).build())
             )
 
-        if (this.image != null) {
+        if (this.image != "") {
             val image = File(this.image)
             eventBuilder
                 .imageData(FileUpload("image/jpg", image))

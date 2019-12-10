@@ -375,7 +375,9 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
         if(titleValidation && categoryValidation && locationValidation){
             var path = ""
             try{
-                path = FileGetter.getRealPath(image_uri, contentResolver)
+                if (image_uri != Uri.EMPTY) {
+                    path = FileGetter.getRealPath(image_uri, contentResolver)
+                }
             }catch (ex : Exception){}
             val event = Event(
                 UUID = UUID.randomUUID(),
