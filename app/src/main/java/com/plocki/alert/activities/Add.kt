@@ -42,14 +42,9 @@ import com.plocki.alert.models.EventMethods.Companion.thumbnailFromUri
 import com.plocki.alert.models.Global
 import com.plocki.alert.utils.FileGetter
 import kotlinx.android.synthetic.main.activity_add.progressBar
-import kotlinx.android.synthetic.main.activity_login_panel.*
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.io.ByteArrayInputStream
-import java.io.File
 import java.util.*
-import kotlin.properties.Delegates
 
 
 class Add : AppCompatActivity(), OnMapReadyCallback {
@@ -250,7 +245,7 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
 
 
     fun onChooseCategoryClick() {
-        val singleChoiceItems = inst!!.CategoryList
+        val singleChoiceItems = inst!!.categoryList
 
         val itemSelected = choose
         val tmp = AlertDialog.Builder(this, R.style.CustomDialogTheme)
@@ -393,7 +388,7 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
                                         )
                                         eventContainer.add(currentEvent)
                                     }
-                                    Global.getInstance()!!.list = eventContainer
+                                    Global.getInstance()!!.eventList = eventContainer
                                     progressBar.visibility = View.INVISIBLE
                                     finish()
                                 }

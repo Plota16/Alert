@@ -7,13 +7,10 @@ import android.media.ThumbnailUtils
 import android.net.Uri
 import android.provider.MediaStore
 import com.google.android.gms.maps.model.LatLng
-import kotlin.math.PI
 import kotlin.math.roundToInt
-import android.R.attr.src
 import android.location.Location
 import android.location.LocationManager
 import android.net.ConnectivityManager
-import com.google.android.gms.location.LocationServices
 import com.jaychang.sa.Initializer
 import java.io.IOException
 import java.net.HttpURLConnection
@@ -77,7 +74,7 @@ class EventMethods {
             var pointLocation = Location("")
             pointLocation.longitude = point.longitude
             pointLocation.latitude = point.latitude
-            var currLocation = inst!!.location
+            var currLocation = inst!!.userLocation
 
             var distance = currLocation.distanceTo(pointLocation)
 

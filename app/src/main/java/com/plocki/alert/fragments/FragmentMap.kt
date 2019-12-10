@@ -24,7 +24,7 @@ import com.plocki.alert.R
 import com.plocki.alert.models.EventMethods
 import kotlinx.android.synthetic.main.fragment_list.*
 import kotlinx.android.synthetic.main.fragment_map.*
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -33,8 +33,8 @@ import kotlinx.coroutines.launch
 class FragmentMap : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
 
 
-    var bool = false
-    var bool2 = false
+    private var hasMapBeenCreated = false
+    private var isFilteringPossible = false
 
     private lateinit var mMap: GoogleMap
     private lateinit var lastLocation: Location
@@ -55,37 +55,28 @@ class FragmentMap : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
         super.onViewCreated(view, savedInstanceState)
         newEventsMap.setOnClickListener{
             updateMap()
-            Global.getInstance()!!.changed = false
+            Global.getInstance()!!.isDataChanged = false
             newEventsMap.visibility = View.GONE
         }
-        GlobalScope.launch(context = Dispatchers.Main) {
+
+        GlobalScope.launch(context = Main) {
             while (true){
-                if (newEventsList != null) {
-                    if(Global.getInstance()!!.changed){
-                        newEventsList.visibility = View.VISIBLE
+                    if(Global.getInstance()!!.isDataChanged){
+                        newEventsMap.visibility = View.VISIBLE
                     }
                     else{
-                        newEventsList.visibility = View.GONE
+                        newEventsMap.visibility = View.GONE
                     }
-                }
+
                 delay(2000)
             }
         }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-
         val rootView = inflater.inflate(R.layout.fragment_map, container, false)
-
-
         val mapFragment = childFragmentManager.findFragmentById(R.id.frg) as SupportMapFragment?
-
-
-
         mapFragment!!.getMapAsync(this)
-
-
-
         return rootView
     }
 
@@ -93,7 +84,7 @@ class FragmentMap : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
         mMap = p0!!
         mMap.setOnInfoWindowClickListener(this)
         mMap.mapType = GoogleMap.MAP_TYPE_NORMAL
-
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(inst!!.userCameraPosition, 12f), 1, null)
         mMap.clear() //clear old markers
 
         if (ContextCompat.checkSelfPermission(this.context!!, Manifest.permission.ACCESS_FINE_LOCATION)
@@ -112,7 +103,7 @@ class FragmentMap : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
         val context = this.context
 
         mMap.setOnCameraMoveListener {
-            inst!!.cameraPos = mMap.cameraPosition.target
+            inst!!.userCameraPosition = mMap.cameraPosition.target
         }
 
 
@@ -121,10 +112,10 @@ class FragmentMap : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
         fusedLocationClient.lastLocation.addOnSuccessListener {
             if (it != null) {
                 lastLocation = it
-                inst!!.location = it
+                inst!!.userLocation = it
                 val currentLatLng = LatLng(it.latitude, it.longitude)
 
-                if(inst!!.cameraPos == LatLng(0.0,0.0)){
+                if(inst!!.userCameraPosition == LatLng(52.39786111,16.92500000)){
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f), 1, null)
                 }
             }
@@ -145,23 +136,23 @@ class FragmentMap : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
 
     override fun onResume() {
         super.onResume()
-        if(bool){
+        if(hasMapBeenCreated){
             updateMap()
         }
         else{
-            bool = true
+            hasMapBeenCreated = true
         }
     }
 
     private fun updateMap() {
         mMap.clear()
-        for (event in inst!!.list) {
+        for (event in inst!!.eventList) {
 
-            val index = inst!!.CategoryList.indexOf(EventMethods.getCategory(event.category))
+            val index = inst!!.categoryList.indexOf(EventMethods.getCategory(event.category))
 
-            if(bool2) {
-                if(inst!!.FilterList[index]){
-                    if(EventMethods.calcDistance(event.coords) < EventMethods.getMaxDistance(inst!!.filterdDistnance) || EventMethods.getMaxDistance(inst!!.filterdDistnance) == 0) {
+            if(isFilteringPossible) {
+                if(inst!!.filterList[index]){
+                    if(EventMethods.calcDistance(event.coords) < EventMethods.getMaxDistance(inst!!.currentDistanceFilter) || EventMethods.getMaxDistance(inst!!.currentDistanceFilter) == 0) {
                         val marker = mMap.addMarker(
                             MarkerOptions()
                                 .position(event.coords)
@@ -181,6 +172,6 @@ class FragmentMap : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
 
             }
         }
-        bool2 = true
+        isFilteringPossible = true
     }
 }

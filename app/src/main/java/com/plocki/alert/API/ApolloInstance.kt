@@ -33,7 +33,7 @@ object ApolloInstance {
     }
 
     fun buildApolloClient() {
-        val token = Global.getInstance()!!.token
+        val token = Global.getInstance()!!.userToken
         val okHttpClient = buildOkHttpClient(token)
 
         apolloClient = ApolloClient.builder()

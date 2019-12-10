@@ -29,8 +29,8 @@ class Filter : AppCompatActivity() {
         filter_distance.keyListener = null
         filter_category.keyListener = null
 
-        distance = inst!!.distanceList.indexOf(inst.filterdDistnance)
-        checkedList = inst.FilterList
+        distance = inst!!.distanceList.indexOf(inst.currentDistanceFilter)
+        checkedList = inst.filterList
         if(distance != 0){
             filter_distance.setText(inst.distanceList[distance])
         }
@@ -72,7 +72,7 @@ class Filter : AppCompatActivity() {
 
         val tmp = AlertDialog.Builder(this, R.style.CustomDialogTheme)
             .setTitle(this.getString(R.string.add_dialog_title))
-            .setMultiChoiceItems(inst!!.CategoryList, checkedList) {
+            .setMultiChoiceItems(inst!!.categoryList, checkedList) {
                 dialog : DialogInterface, which : Int, isChecked : Boolean ->
 
                 checkedList[which] = isChecked
@@ -98,12 +98,12 @@ class Filter : AppCompatActivity() {
     }
 
     private fun generateChips(){
-        for(i in inst!!.CategoryList.indices){
-            if(inst.FilterList[i]){
+        for(i in inst!!.categoryList.indices){
+            if(inst.filterList[i]){
                 val chip = Chip(this)
                 val id = 1000 + i
 
-                chip.text = inst.CategoryList[i]
+                chip.text = inst.categoryList[i]
                 chip.isCloseIconVisible = true
 
                 chip.setOnCloseIconClickListener{
@@ -118,15 +118,15 @@ class Filter : AppCompatActivity() {
     }
 
     fun confirm(v: View){
-        inst!!.filterdDistnance = inst.distanceList[distance]
-        inst.FilterList = checkedList
+        inst!!.currentDistanceFilter = inst.distanceList[distance]
+        inst.filterList = checkedList
         finish()
     }
 
     fun reset(v: View){
         distance = 0
         filter_distance.setText("")
-        for(i in inst!!.FilterList.indices){
+        for(i in inst!!.filterList.indices){
             checkedList[i] = true
         }
         for(i in checkedList.indices)

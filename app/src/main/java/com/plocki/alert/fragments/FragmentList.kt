@@ -1,16 +1,11 @@
 package com.plocki.alert.fragments
 
-import android.opengl.Visibility
 import androidx.fragment.app.Fragment
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.provider.Contacts
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.plocki.alert.recyclerAdapters.ListAdapter
 import com.plocki.alert.R
@@ -22,7 +17,6 @@ import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import okhttp3.internal.wait
 
 
 class FragmentList : Fragment(){
@@ -42,21 +36,19 @@ class FragmentList : Fragment(){
 
         newEventsList.setOnClickListener{
             updateList()
-            Global.getInstance()!!.changed = false
+            Global.getInstance()!!.isDataChanged = false
             newEventsList.visibility = View.GONE
         }
 
 
         GlobalScope.launch(context = Main) {
             while (true){
-                if (newEventsList != null) {
-                    if(Global.getInstance()!!.changed){
+                    if(Global.getInstance()!!.isDataChanged){
                         newEventsList.visibility = View.VISIBLE
                     }
                     else{
                         newEventsList.visibility = View.GONE
                     }
-                }
                 delay(2000)
 
             }
@@ -96,11 +88,11 @@ class FragmentList : Fragment(){
     private fun updateList(){
 
         val filteredList = ArrayList<Event>()
-        for (event in inst!!.list) {
-            val index = inst.CategoryList.indexOf(EventMethods.getCategory(event.category))
-            if (inst.FilterList[index]) {
-                if (EventMethods.calcDistance(event.coords) < EventMethods.getMaxDistance(inst.filterdDistnance) || EventMethods.getMaxDistance(
-                        inst.filterdDistnance
+        for (event in inst!!.eventList) {
+            val index = inst.categoryList.indexOf(EventMethods.getCategory(event.category))
+            if (inst.filterList[index]) {
+                if (EventMethods.calcDistance(event.coords) < EventMethods.getMaxDistance(inst.currentDistanceFilter) || EventMethods.getMaxDistance(
+                        inst.currentDistanceFilter
                     ) == 0
                 ) {
                     filteredList.add(event)

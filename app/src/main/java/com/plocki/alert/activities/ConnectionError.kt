@@ -2,7 +2,6 @@ package com.plocki.alert.activities
 
 import android.content.Context
 import android.location.LocationManager
-import android.net.ConnectivityManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -21,7 +20,6 @@ import com.google.android.gms.location.LocationSettingsStatusCodes
 import android.content.IntentSender
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.common.api.ApiException
-import androidx.annotation.NonNull
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.location.LocationSettingsResponse
 import com.google.android.gms.tasks.OnSuccessListener
@@ -29,8 +27,6 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationSettingsRequest
 import android.util.Log
-import android.content.DialogInterface
-import android.provider.Settings.ACTION_WIRELESS_SETTINGS
 import android.content.Intent
 import android.provider.Settings
 import androidx.appcompat.app.AlertDialog
@@ -55,7 +51,7 @@ class ConnectionError : AppCompatActivity() {
                 }catch (ex: Exception ){}
 
                 if(gpsEnabled && networkEnabled){
-                    Global.getInstance()!!.errorActivityOpen = false
+                    Global.getInstance()!!.isErrorActivityOpen = false
                     finish()
                 }
 

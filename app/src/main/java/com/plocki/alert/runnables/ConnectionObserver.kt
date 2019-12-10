@@ -1,10 +1,6 @@
 package com.plocki.alert.runnables
 
-import android.content.Context
 import android.content.Intent
-import android.location.LocationManager
-import android.net.ConnectivityManager
-import com.jaychang.sa.Initializer.context
 import com.plocki.alert.MyApplication
 import com.plocki.alert.activities.ConnectionError
 import com.plocki.alert.models.EventMethods.Companion.isGpsOn
@@ -21,14 +17,14 @@ class ConnectionObserver : Runnable {
     override fun run() {
         Thread.sleep(1000)
         while (true){
-            if (!Global.getInstance()!!.errorActivityOpen){
+            if (!Global.getInstance()!!.isErrorActivityOpen){
                 try{
                     gpsEnabled = isGpsOn()
                     networkEnabled = isNetworkOn(MyApplication.getAppContext())
                 }catch (ex: Exception ){}
 
                 if(!gpsEnabled || !networkEnabled ){
-                    Global.getInstance()!!.errorActivityOpen = true
+                    Global.getInstance()!!.isErrorActivityOpen = true
                     val context = MyApplication.getAppContext()
                     val intent = Intent(context, ConnectionError::class.java)
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)

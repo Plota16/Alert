@@ -2,7 +2,6 @@ package com.plocki.alert.ciphers
 
 import android.security.keystore.KeyProperties
 import android.security.keystore.KeyGenParameterSpec
-import androidx.annotation.NonNull
 import java.io.IOException
 import java.security.*
 import javax.crypto.*
@@ -28,7 +27,7 @@ class Encryptor {
         BadPaddingException::class,
         IllegalBlockSizeException::class
     )
-    fun encryptText(alias: String, textToEncrypt: String): CipherClass {
+    fun encryptText(alias: String, textToEncrypt: String): EncryptionResult {
 
         val cipher = Cipher.getInstance(TRANSFORMATION)
         cipher.init(Cipher.ENCRYPT_MODE, getSecretKey(alias))
@@ -36,7 +35,7 @@ class Encryptor {
         iv = cipher.iv
         encryption = cipher.doFinal(textToEncrypt.toByteArray(charset("UTF-8")))
 
-        return CipherClass(encryption!!,iv!!)
+        return EncryptionResult(encryption!!,iv!!)
     }
 
     @Throws(

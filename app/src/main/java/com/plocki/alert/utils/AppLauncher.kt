@@ -25,10 +25,10 @@ AppLauncher {
                 override fun onResponse(response: Response<CreateUserMutation.Data>) {
                     Log.d("Apollo SUCCESS", response.data().toString())
                     val store = Store(context)
-                    Global.getInstance()!!.username = response.data()!!.createUser().data().username()
-                    Global.getInstance()!!.token = response.data()!!.createUser().token().accessToken()
-                    store.storeValue("token",Global.getInstance()!!.token)
-                    Global.getInstance()!!.logged = true
+                    Global.getInstance()!!.userName = response.data()!!.createUser().data().username()
+                    Global.getInstance()!!.userToken = response.data()!!.createUser().token().accessToken()
+                    store.storeValue("userToken",Global.getInstance()!!.userToken)
+                    Global.getInstance()!!.isUserSigned = true
 
                     FetchEventsHandler.fetchEvents(activity, true)
                 }

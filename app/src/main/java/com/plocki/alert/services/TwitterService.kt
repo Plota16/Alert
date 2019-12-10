@@ -52,7 +52,7 @@ class TwitterService(context: Context, activity: Activity) {
         //TODO Na serwerze nie ma Twittera, więc później trzeba zmienić
         mTwitterAuthClient.requestEmail(twitterSession, object : Callback<String>() {
             override fun success(result: Result<String>) {
-                Log.d("TWITTER", "twitterLogin:token" + twitterSession!!.authToken.token)
+                Log.d("TWITTER", "twitterLogin:userToken" + twitterSession!!.authToken.token)
                 Log.d("TWITTER", "twitterLogin:secret" + twitterSession.authToken.secret)
                 Log.d("TWITTER", "twitterLogin:secret" + twitterSession.userId)
                 val providerUser = ProviderUser(ProviderType.GOOGLE, twitterSession.authToken.token)

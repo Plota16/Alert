@@ -3,7 +3,6 @@ package com.plocki.alert.activities
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -30,7 +29,6 @@ class MainActivity : AppCompatActivity() {
         private const val  PERMISSION_LOCATION = 101
     }
 
-    val mainActivity = this
     private val inst = Global.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -92,10 +90,10 @@ class MainActivity : AppCompatActivity() {
                     addbutton.show()
                     filterbutton.show()
                     transaction = manager.beginTransaction()
-                    if(inst!!.bool)
+                    if(inst!!.isMapCreated)
                     {
                         transaction.add(R.id.details_fragment,textFragmentList)
-                        inst.bool = false
+                        inst.isMapCreated = false
                     }
                     when(currentFragment){
                         "Profile" -> {
@@ -208,11 +206,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getPermissionsLocation(){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_DENIED){
-                val permissions = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_DENIED){
+            val permissions = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
                 ActivityCompat.requestPermissions(this, permissions, PERMISSION_LOCATION)
-            }
         }
     }
 

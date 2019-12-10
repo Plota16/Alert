@@ -31,29 +31,29 @@ class LoginPanel : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         val store = Store(this)
         try {
-            Global.getInstance()!!.token = store.retrieveValue("token")
-//            ApolloInstance.token = store.retrieveValue("token")
+            Global.getInstance()!!.userToken = store.retrieveValue("userToken")
+//            ApolloInstance.userToken = store.retrieveValue("userToken")
         }catch (ex : Exception){
             ex.printStackTrace()
         }
-        if(Global.getInstance()!!.token != ""){
+        if(Global.getInstance()!!.userToken != ""){
             UserApi.whoAmI(object : ApolloCall.Callback<WhoAmIQuery.Data>(){
                 override fun onResponse(response: Response<WhoAmIQuery.Data>) {
                     val whoAmI = response.data()!!.whoAmI()
-                    Global.getInstance()!!.username = whoAmI.username()
+                    Global.getInstance()!!.userName = whoAmI.username()
                     val intent = Intent(MyApplication.context, MainActivity::class.java)
                     intent.putExtra("SHOW_WELCOME", true)
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    Global.getInstance()!!.logged = true
+                    Global.getInstance()!!.isUserSigned = true
                     FetchEventsHandler.fetchEvents(this@LoginPanel)
                     MyApplication.context!!.startActivity(intent)
                     finish()
                 }
 
                 override fun onFailure(e: ApolloException) {
-                    Global.getInstance()!!.token = ""
+                    Global.getInstance()!!.userToken = ""
                     val sharedstore = Store(this@LoginPanel)
-                    sharedstore.removeValue("token")
+                    sharedstore.removeValue("userToken")
                 }
 
             })

@@ -6,20 +6,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.facebook.internal.LoginAuthorizationType
-import com.plocki.alert.API.ApolloInstance
-import com.plocki.alert.API.modules.FetchEventsHandler
 import com.plocki.alert.MyApplication
 import com.plocki.alert.R
 import com.plocki.alert.activities.LoginPanel
-import com.plocki.alert.activities.MainActivity
 import com.plocki.alert.models.Global
+import com.plocki.alert.services.FacebookService
+import com.plocki.alert.services.GoogleService
+import com.plocki.alert.services.TwitterService
 import com.plocki.alert.utils.Store
-import kotlinx.android.synthetic.main.fragment_map.*
 import kotlinx.android.synthetic.main.fragment_profile.*
-import org.jetbrains.anko.coroutines.experimental.asReference
 
 class FragmentProfile : Fragment() {
+
+    private lateinit var googleService: GoogleService
+    private lateinit var twitterService: TwitterService
+    private lateinit var facebookService: FacebookService
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
@@ -29,15 +30,28 @@ class FragmentProfile : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        username.text = Global.getInstance()!!.username
+        username.text = Global.getInstance()!!.userName
 
         siqn_out_button.setOnClickListener{
-            val sharedstore = Store(MyApplication.getAppContext())
-            sharedstore.removeValue("token")
-            sharedstore.removeValue("iv")
-            Global.getInstance()!!.logged = false
-            Global.getInstance()!!.token = ""
-//            ApolloInstance.token = ""
+            val sharedStore = Store(MyApplication.getAppContext())
+            sharedStore.removeValue("userToken")
+            sharedStore.removeValue("iv")
+            Global.getInstance()!!.isUserSigned = false
+            Global.getInstance()!!.userToken = ""
+
+            googleService = GoogleService(this.context!!, this.activity!!)
+            twitterService = TwitterService(this.context!!, this.activity!!)
+            facebookService = FacebookService(this.context!!, this.activity!!)
+
+            googleService.signOut()
+            twitterService.signOut()
+            facebookService.siqnOut()
+
+            val intent = Intent(this.activity, LoginPanel::class.java)
+            intent.putExtra("SHOW_WELCOME", true)
+            startActivity(intent)
+            this.activity!!.finish()
+//            ApolloInstance.userToken = ""
         }
     }
 }
