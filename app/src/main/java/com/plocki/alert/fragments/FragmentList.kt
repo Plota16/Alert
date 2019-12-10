@@ -43,12 +43,14 @@ class FragmentList : Fragment(){
 
         GlobalScope.launch(context = Main) {
             while (true){
+                if (newEventsList != null) {
                     if(Global.getInstance()!!.isDataChanged){
                         newEventsList.visibility = View.VISIBLE
                     }
                     else{
                         newEventsList.visibility = View.GONE
                     }
+                }
                 delay(2000)
 
             }

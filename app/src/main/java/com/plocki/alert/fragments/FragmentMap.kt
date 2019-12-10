@@ -61,13 +61,14 @@ class FragmentMap : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
 
         GlobalScope.launch(context = Main) {
             while (true){
+                if (newEventsMap != null) {
                     if(Global.getInstance()!!.isDataChanged){
                         newEventsMap.visibility = View.VISIBLE
                     }
                     else{
                         newEventsMap.visibility = View.GONE
                     }
-
+                }
                 delay(2000)
             }
         }
