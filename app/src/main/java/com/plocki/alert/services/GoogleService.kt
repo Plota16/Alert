@@ -68,7 +68,7 @@ class GoogleService(context: Context, activity: Activity) {
                     logger.info(account.id)
                     logger.info(account.account.toString())
                     logger.info(account.isExpired.toString())
-                    val providerUser = ProviderUser(ProviderType.GOOGLE, idToken!!.substring(0,249))
+                    val providerUser = ProviderUser(ProviderType.GOOGLE, idToken.toString())
                     AppLauncher.launchApp(context, mActivity, providerUser)
                 }
                 task.addOnFailureListener {
