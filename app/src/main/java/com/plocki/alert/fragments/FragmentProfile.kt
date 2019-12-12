@@ -39,6 +39,11 @@ class FragmentProfile : Fragment() {
             Global.getInstance()!!.isUserSigned = false
             Global.getInstance()!!.userToken = ""
 
+            Global.getInstance()!!.isUserSigned = false
+            Global.getInstance()!!.isDataChanged = false
+            Global.getInstance()!!.isDataLoadedFirstTime = true
+            Global.getInstance()!!.isMapCreated = true
+
             googleService = GoogleService(this.context!!, this.activity!!)
             twitterService = TwitterService(this.context!!, this.activity!!)
             facebookService = FacebookService(this.context!!, this.activity!!)

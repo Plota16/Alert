@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
@@ -18,11 +19,12 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.Marker
+import com.plocki.alert.MyApplication
 import com.plocki.alert.activities.Details
 import com.plocki.alert.models.Global
 import com.plocki.alert.R
 import com.plocki.alert.models.EventMethods
-import kotlinx.android.synthetic.main.fragment_list.*
+import com.plocki.alert.adapters.CustomInfoWindowGoogleMap
 import kotlinx.android.synthetic.main.fragment_map.*
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.GlobalScope
@@ -53,21 +55,17 @@ class FragmentMap : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        newEventsMap.setOnClickListener{
-            updateMap()
-            Global.getInstance()!!.isDataChanged = false
-            newEventsMap.visibility = View.GONE
-        }
 
         GlobalScope.launch(context = Main) {
             while (true){
                 if (newEventsMap != null) {
                     if(Global.getInstance()!!.isDataChanged){
-                        newEventsMap.visibility = View.VISIBLE
+                        Toast.makeText(MyApplication.getAppContext(), "Pobrano nowe dane", Toast.LENGTH_LONG).show()
+                        updateMap()
+                        Global.getInstance()!!.isDataChanged = false
+
                     }
-                    else{
-                        newEventsMap.visibility = View.GONE
-                    }
+
                 }
                 delay(2000)
             }
@@ -83,6 +81,8 @@ class FragmentMap : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
 
     override fun onMapReady(p0: GoogleMap?) {
         mMap = p0!!
+        val customInfoWidow = CustomInfoWindowGoogleMap(this.context!!)
+        mMap.setInfoWindowAdapter(customInfoWidow)
         mMap.setOnInfoWindowClickListener(this)
         mMap.mapType = GoogleMap.MAP_TYPE_NORMAL
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(inst!!.userCameraPosition, 12f), 1, null)
@@ -154,20 +154,25 @@ class FragmentMap : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
             if(isFilteringPossible) {
                 if(inst!!.filterList[index]){
                     if(EventMethods.calcDistance(event.coords) < EventMethods.getMaxDistance(inst!!.currentDistanceFilter) || EventMethods.getMaxDistance(inst!!.currentDistanceFilter) == 0) {
+
+                        val infoContainer = Global.getInstance()!!.categoryList[event.category+1] + "~" + event.title + "~" + "1"
                         val marker = mMap.addMarker(
                             MarkerOptions()
                                 .position(event.coords)
-                                .title(event.title)
+                                .title(infoContainer)
                         )
+
                         inst!!.mapHashMap[marker.id] = event
                     }
                 }
             }
             else{
+
+                val infoContainer = Global.getInstance()!!.categoryList[event.category+1] + "~" + event.title + "~" + "1"
                 val marker = mMap.addMarker(
                     MarkerOptions()
                         .position(event.coords)
-                        .title(event.title)
+                        .title(infoContainer)
                 )
                 inst!!.mapHashMap[marker.id] = event
 

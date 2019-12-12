@@ -6,8 +6,10 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.plocki.alert.recyclerAdapters.ListAdapter
+import com.plocki.alert.MyApplication
+import com.plocki.alert.adapters.ListAdapter
 import com.plocki.alert.R
 import com.plocki.alert.models.Event
 import com.plocki.alert.models.EventMethods
@@ -34,21 +36,14 @@ class FragmentList : Fragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        newEventsList.setOnClickListener{
-            updateList()
-            Global.getInstance()!!.isDataChanged = false
-            newEventsList.visibility = View.GONE
-        }
-
 
         GlobalScope.launch(context = Main) {
             while (true){
                 if (newEventsList != null) {
                     if(Global.getInstance()!!.isDataChanged){
-                        newEventsList.visibility = View.VISIBLE
-                    }
-                    else{
-                        newEventsList.visibility = View.GONE
+                        Toast.makeText(MyApplication.getAppContext(), "Pobrano nowe dane", Toast.LENGTH_LONG).show()
+                        updateList()
+                        Global.getInstance()!!.isDataChanged = false
                     }
                 }
                 delay(2000)

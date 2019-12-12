@@ -1,14 +1,19 @@
 package com.plocki.alert.activities
 
 import android.Manifest
+import android.app.Dialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.DisplayMetrics
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.Window
+import android.widget.Button
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.google.android.gms.location.LocationServices
@@ -22,6 +27,7 @@ import com.plocki.alert.models.Global
 import com.plocki.alert.R
 import com.plocki.alert.models.EventMethods
 import kotlinx.android.synthetic.main.activity_details.*
+import kotlinx.android.synthetic.main.dialog_report.*
 import kotlinx.android.synthetic.main.likebar.*
 import kotlin.math.roundToInt
 
@@ -79,6 +85,12 @@ class Details : AppCompatActivity(), OnMapReadyCallback {
             .findFragmentById(R.id.details_map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
+
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.details_menu, menu)
+        return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -86,6 +98,9 @@ class Details : AppCompatActivity(), OnMapReadyCallback {
 
         if (id == android.R.id.home) {
             finish()
+        }
+        else if(id == R.id.action_report){
+            showReportDialog()
         }
         return super.onOptionsItemSelected(item)
     }
@@ -169,6 +184,22 @@ class Details : AppCompatActivity(), OnMapReadyCallback {
             thump_up.foreground.alpha = 128
             thumb_down.foreground.alpha = 255
         }
+    }
+
+    private fun showReportDialog() {
+        val dialog = Dialog(this)
+        dialog .requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog .setCancelable(false)
+        dialog .setContentView(R.layout.dialog_report)
+
+        val yesBtn = dialog .findViewById(R.id.report_ok) as Button
+        val noBtn = dialog .findViewById(R.id.report_cancel) as Button
+        yesBtn.setOnClickListener {
+            dialog .dismiss()
+        }
+        noBtn.setOnClickListener { dialog .dismiss() }
+        dialog .show()
+
     }
 }
 

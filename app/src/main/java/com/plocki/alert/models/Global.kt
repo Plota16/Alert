@@ -54,7 +54,7 @@ class Global {
 
 
     companion object {
-        const val ip = "192.168.0.100"
+        const val ip = "192.168.1.247"
         private var mInstance: Global? = null
 
         @Synchronized fun getInstance(): Global? {

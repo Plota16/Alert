@@ -1,4 +1,4 @@
-package com.plocki.alert.recyclerAdapters
+package com.plocki.alert.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -7,7 +7,6 @@ import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.plocki.alert.EventViewHolder
 import com.plocki.alert.models.Event
-import com.plocki.alert.models.EventMethods
 
 class ListAdapter(private val list: List<Event>, act : FragmentActivity, cont : Context)
     : RecyclerView.Adapter<EventViewHolder>() {

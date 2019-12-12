@@ -135,26 +135,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-            <ImageView
-                    android:id="@+id/imageView3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/add_category_image_desc"
-                    app:layout_constraintBottom_toBottomOf="@+id/category"
-                    app:layout_constraintEnd_toEndOf="@+id/category"
-                    app:layout_constraintHorizontal_bias="1.0"
-                    app:layout_constraintStart_toStartOf="@+id/category"
-                    app:layout_constraintTop_toTopOf="@+id/category"
-                    app:srcCompat="@drawable/ic_expand_more_24px" />
-
             <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/category"
-                    app:boxBackgroundColor="@android:color/white"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
                     android:hint="@string/add_category_hint"
                     android:textColorHint="@color/colorPrimary"
+                    app:boxBackgroundColor="@android:color/white"
                     app:errorEnabled="true"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -169,6 +157,20 @@
                         android:focusable="false" />
 
             </com.google.android.material.textfield.TextInputLayout>
+
+            <ImageView
+                    android:id="@+id/imageView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_expand_more_24px"
+                    android:backgroundTint="@color/colorAccent"
+                    android:contentDescription="@string/add_category_image_desc"
+                    app:layout_constraintBottom_toBottomOf="@+id/category"
+                    app:layout_constraintEnd_toEndOf="@+id/category"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="@+id/category"
+                    app:layout_constraintTop_toTopOf="@+id/category" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.google.android.material.textfield.TextInputLayout
