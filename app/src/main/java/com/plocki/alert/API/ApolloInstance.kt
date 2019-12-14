@@ -8,7 +8,7 @@ import okhttp3.OkHttpClient
 
 object ApolloInstance {
     var apolloClient: ApolloClient? = null
-    var BASE_URL = "http://${Global.ip}:3000/graphql"
+    var BASE_URL = "https://${Global.ip}/graphql"
 
     init {
         buildApolloClient()

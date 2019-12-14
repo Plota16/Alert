@@ -54,7 +54,7 @@ class Global {
 
 
     companion object {
-        const val ip = "192.168.1.247"
+        const val ip = "alert-api-staging.eu-central-1.elasticbeanstalk.com"
         private var mInstance: Global? = null
 
         @Synchronized fun getInstance(): Global? {
