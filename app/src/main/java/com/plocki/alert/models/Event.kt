@@ -1,10 +1,14 @@
 package com.plocki.alert.models
 
+import android.content.Context
+import android.graphics.Bitmap
+import android.os.Environment
 import com.apollographql.apollo.api.FileUpload
 import com.google.android.gms.maps.model.LatLng
 import com.plocki.alert.AllEventsQuery
 import com.plocki.alert.type.CreateEventDto
 import com.plocki.alert.type.PointInput
+import id.zelory.compressor.Compressor
 import java.io.File
 import java.util.*
 
@@ -39,7 +43,7 @@ class Event (
         }
     }
 
-    fun createEventDto(): CreateEventDto {
+    fun createEventDto(context: Context?): CreateEventDto {
         var eventBuilder = CreateEventDto.builder()
             .title(this.title)
             .description(this.description)
@@ -53,8 +57,15 @@ class Event (
 
         if (this.image != "") {
             val image = File(this.image)
+            println("BEFORE"  + image.length())
+            val compressedImage = Compressor(context)
+                .setMaxWidth(1280)
+                .setMaxHeight(720)
+                .setQuality(90)
+                .compressToFile(image)
+            println("AFTER " + compressedImage.length())
             eventBuilder
-                .imageData(FileUpload("image/jpg", image))
+                .imageData(FileUpload("image/jpg", compressedImage))
         }
 
         return eventBuilder.build()

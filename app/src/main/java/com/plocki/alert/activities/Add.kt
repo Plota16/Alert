@@ -14,6 +14,7 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.DisplayMetrics
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -26,6 +27,7 @@ import androidx.core.content.ContextCompat
 import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
+import com.bumptech.glide.Glide
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -43,10 +45,12 @@ import com.plocki.alert.models.EventMethods.Companion.thumbnailFromUri
 import com.plocki.alert.models.Global
 import com.plocki.alert.utils.FileGetter
 import kotlinx.android.synthetic.main.activity_add.progressBar
+import kotlinx.android.synthetic.main.activity_details.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.lang.Exception
 import java.util.*
+import kotlin.math.roundToInt
 
 
 class Add : AppCompatActivity(), OnMapReadyCallback {
@@ -149,7 +153,9 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
 
 //            val apolloClient = MyApolloClient()
 //            apolloClient.createEvent(File(res))
+
             image.background = thumbnailFromUri(this, uri)
+
             add_photo_text.text = ""
             imageButton.visibility = View.INVISIBLE
         }
@@ -395,9 +401,10 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
                 WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
                 WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
             progressBar.visibility = View.VISIBLE
+            val createEventDto = event.createEventDto(this)
             GlobalScope.launch {
                 val createEventResult = EventsApi.createEvent(
-                    event,
+                    createEventDto,
                     object : ApolloCall.Callback<CreateEventMutation.Data>() {
                         override fun onFailure(e: ApolloException) {
                             Log.e("ERROR", e.cause.toString())
