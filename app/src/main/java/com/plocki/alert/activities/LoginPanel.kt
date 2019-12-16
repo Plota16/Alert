@@ -8,6 +8,7 @@ import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
 import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.plocki.alert.API.modules.FetchCategoriesHandler
 import com.plocki.alert.API.modules.FetchEventsHandler
 import com.plocki.alert.API.modules.UserApi
 import com.plocki.alert.MyApplication
@@ -29,37 +30,6 @@ class LoginPanel : AppCompatActivity() {
     private lateinit var facebookService: FacebookService
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val store = Store(this)
-        try {
-            Global.getInstance()!!.userToken = store.retrieveValue("userToken")
-//            ApolloInstance.userToken = store.retrieveValue("userToken")
-        }catch (ex : Exception){
-            ex.printStackTrace()
-        }
-        if(Global.getInstance()!!.userToken != ""){
-            UserApi.whoAmI(object : ApolloCall.Callback<WhoAmIQuery.Data>(){
-                override fun onResponse(response: Response<WhoAmIQuery.Data>) {
-                    val whoAmI = response.data()!!.whoAmI()
-                    Global.getInstance()!!.userName = whoAmI.username()
-                    val intent = Intent(MyApplication.context, MainActivity::class.java)
-                    intent.putExtra("SHOW_WELCOME", true)
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    Global.getInstance()!!.isUserSigned = true
-                    FetchEventsHandler.fetchEvents(this@LoginPanel)
-                    MyApplication.context!!.startActivity(intent)
-                    finish()
-                }
-
-                override fun onFailure(e: ApolloException) {
-                    Global.getInstance()!!.userToken = ""
-                    val sharedstore = Store(this@LoginPanel)
-                    sharedstore.removeValue("userToken")
-                }
-
-            })
-
-        }
-
 
 
 

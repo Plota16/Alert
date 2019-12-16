@@ -34,7 +34,6 @@ class Global {
             1,
             1
         )
-
     )
 
     var categoryList = arrayOf("Wydarzenie",

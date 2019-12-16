@@ -83,13 +83,7 @@ class EventViewHolder(inflater: LayoutInflater, parent: ViewGroup, act: Fragment
         eventTitle?.text = event.title
         eventCategory?.text = categoryContainer
 
-        if(event.description!!.length  > 77){
-            val descriptionContainer = event.description!!.substring(0,77) + "..."
-            eventDistance?.text = descriptionContainer
-        }
-        else{
-            eventDistance?.text = event.description
-        }
+
         if (con != null) {
             Glide.with(con)
                 .load("http://${Global.ip}:3000/static/${event.image}.jpg")

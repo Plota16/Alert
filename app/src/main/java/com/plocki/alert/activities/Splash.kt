@@ -5,7 +5,15 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import com.apollographql.apollo.ApolloCall
+import com.apollographql.apollo.api.Response
+import com.apollographql.apollo.exception.ApolloException
+import com.plocki.alert.API.modules.FetchCategoriesHandler
+import com.plocki.alert.API.modules.UserApi
 import com.plocki.alert.R
+import com.plocki.alert.WhoAmIQuery
+import com.plocki.alert.models.Global
+import com.plocki.alert.utils.Store
 
 class Splash : Activity() {
 
@@ -17,13 +25,40 @@ class Splash : Activity() {
         super.onCreate(icicle)
         setContentView(R.layout.splash)
 
-        /* New Handler to start the Menu-Activity
-         * and close this Splash-Screen after some seconds.*/
+        val store = Store(this)
+        try {
+            Global.getInstance()!!.userToken = store.retrieveValue("userToken")
+        }catch (ex : Exception){
+            ex.printStackTrace()
+        }
+
+
         Handler().postDelayed({
-            /* Create an Intent that will start the Menu-Activity. */
-            val mainIntent = Intent(this@Splash, LoginPanel::class.java)
-            this@Splash.startActivity(mainIntent)
-            this@Splash.finish()
+
+            if(Global.getInstance()!!.userToken != "") {
+                UserApi.whoAmI(object : ApolloCall.Callback<WhoAmIQuery.Data>(){
+                    override fun onResponse(response: Response<WhoAmIQuery.Data>) {
+                        val whoAmI = response.data()!!.whoAmI()
+                        Global.getInstance()!!.userName = whoAmI.username()
+                        Global.getInstance()!!.isUserSigned = true
+                        FetchCategoriesHandler.fetchCategories(this@Splash)
+
+                    }
+
+                    override fun onFailure(e: ApolloException) {
+                        Global.getInstance()!!.userToken = ""
+                        val sharedstore = Store(this@Splash)
+                        sharedstore.removeValue("userToken")
+                    }
+
+                })
+
+            }
+            else{
+                val mainIntent = Intent(this@Splash, LoginPanel::class.java)
+                this@Splash.startActivity(mainIntent)
+                this@Splash.finish()
+            }
         }, SPLASH_DISPLAY_LENGTH.toLong())
     }
 }
