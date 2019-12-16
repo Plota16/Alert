@@ -34,8 +34,7 @@ class FragmentProfile : Fragment() {
 
         siqn_out_button.setOnClickListener{
             val sharedStore = Store(MyApplication.getAppContext())
-            sharedStore.removeValue("userToken")
-            sharedStore.removeValue("iv")
+            sharedStore.removeToken()
             Global.getInstance()!!.isUserSigned = false
             Global.getInstance()!!.userToken = ""
 

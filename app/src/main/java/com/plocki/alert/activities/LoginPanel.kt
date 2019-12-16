@@ -3,6 +3,7 @@ package com.plocki.alert.activities
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.api.Response
@@ -44,12 +45,18 @@ class LoginPanel : AppCompatActivity() {
 
         //TWITTER
         twitter_login_button.setOnClickListener {
+            window.setFlags(
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
             progressBar.visibility = View.VISIBLE
             twitterService.signIn()
         }
 
         //GOOGLE
         google_login_button.setOnClickListener {
+            window.setFlags(
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
             progressBar.visibility = View.VISIBLE
             val signInIntent = googleService.mGoogleSignInClient.signInIntent
             startActivityForResult(signInIntent, 9002)
@@ -57,6 +64,9 @@ class LoginPanel : AppCompatActivity() {
 
         //FACEBOOK
         face_login_button.setOnClickListener(View.OnClickListener {
+            window.setFlags(
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
             progressBar.visibility = View.VISIBLE
             facebookService.signIn()
 
@@ -73,6 +83,10 @@ class LoginPanel : AppCompatActivity() {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             googleService.handleGoogleSignInResult(task)
         }
+    }
+
+    override fun onBackPressed() {
+
     }
 
     fun logoClicked(view: View) {

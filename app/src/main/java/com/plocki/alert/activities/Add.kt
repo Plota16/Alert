@@ -18,6 +18,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.WindowManager
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
@@ -390,6 +391,9 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
                 category = Global.getInstance()!!.categoryHashMap.get(Global.getInstance()!!.titleUUIDHashMap.get(tempCategory))!!,
                 creator = 1
             )
+            window.setFlags(
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
             progressBar.visibility = View.VISIBLE
             GlobalScope.launch {
                 val createEventResult = EventsApi.createEvent(
@@ -422,7 +426,11 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
                                             event.title(),
                                             event.image(),
                                             "opis",
-                                            Global.getInstance()!!.categoryHashMap.get(Global.getInstance()!!.titleUUIDHashMap.get(tempCategory))!!,
+                                            Global.getInstance()!!.categoryHashMap.get(
+                                                Global.getInstance()!!.titleUUIDHashMap.get(
+                                                    tempCategory
+                                                )
+                                            )!!,
                                             1
                                         )
                                         eventContainer.add(currentEvent)

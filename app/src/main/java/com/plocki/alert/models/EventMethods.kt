@@ -83,15 +83,7 @@ class EventMethods {
             return distance.roundToInt()
         }
 
-        fun getCategory(Id: Int): String {
-            when(Id){
-                1 -> return "Wydarzenie"
-                2 -> return "Korek"
-                3 -> return "Wypadek"
-                4 -> return "Utrudnienia"
-            }
-            return ""
-        }
+
 
         fun getMaxDistance(dist : String): Int{
             when(dist){

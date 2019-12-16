@@ -27,7 +27,7 @@ AppLauncher {
                     val store = Store(context)
                     Global.getInstance()!!.userName = response.data()!!.createUser().data().username()
                     Global.getInstance()!!.userToken = response.data()!!.createUser().token().accessToken()
-                    store.storeValue("userToken",Global.getInstance()!!.userToken)
+                    store.storeToken(Global.getInstance()!!.userToken)
                     Global.getInstance()!!.isUserSigned = true
 
                     FetchEventsHandler.fetchEvents(activity, true)

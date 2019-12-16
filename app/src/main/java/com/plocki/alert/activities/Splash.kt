@@ -27,11 +27,15 @@ class Splash : Activity() {
 
         val store = Store(this)
         try {
-            Global.getInstance()!!.userToken = store.retrieveValue("userToken")
+            Global.getInstance()!!.currentDistanceFilter = store.retrieveDistance()!!
+            Global.getInstance()!!.userToken = store.retrieveToken()
         }catch (ex : Exception){
-            ex.printStackTrace()
+                ex.printStackTrace()
         }
 
+        if(Global.getInstance()!!.currentDistanceFilter == ""){
+            Global.getInstance()!!.currentDistanceFilter = "Nielimitowane"
+        }
 
         Handler().postDelayed({
 
@@ -48,7 +52,8 @@ class Splash : Activity() {
                     override fun onFailure(e: ApolloException) {
                         Global.getInstance()!!.userToken = ""
                         val sharedstore = Store(this@Splash)
-                        sharedstore.removeValue("userToken")
+                        sharedstore.removeToken()
+
                     }
 
                 })
@@ -58,7 +63,9 @@ class Splash : Activity() {
                 val mainIntent = Intent(this@Splash, LoginPanel::class.java)
                 this@Splash.startActivity(mainIntent)
                 this@Splash.finish()
+                finish()
             }
         }, SPLASH_DISPLAY_LENGTH.toLong())
     }
+
 }

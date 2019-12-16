@@ -86,7 +86,8 @@ class EventViewHolder(inflater: LayoutInflater, parent: ViewGroup, act: Fragment
 
         if (con != null) {
             Glide.with(con)
-                .load("http://${Global.ip}:3000/static/${event.image}.jpg")
+                .load("http://${Global.ip}/static/${event.image}.jpg")
+                .centerCrop()
                 .placeholder(R.drawable.placeholder)
                 .override(120,90)
                 .into(imageView)

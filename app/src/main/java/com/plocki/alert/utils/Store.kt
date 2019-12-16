@@ -6,9 +6,6 @@ import com.plocki.alert.ciphers.Decryptor
 import com.plocki.alert.ciphers.Encryptor
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
-import com.facebook.FacebookSdk.getApplicationContext
-import com.plocki.alert.MyApplication
-import java.lang.Exception
 
 
 class Store(context: Context) {
@@ -20,19 +17,34 @@ class Store(context: Context) {
     private val editor : SharedPreferences.Editor = pref.edit()
 
 
-    fun storeValue(name: String,value: String){
+    fun storeDistance(value: String){
+        editor.putString("filteredDistance",value)
+        editor.apply()
+        editor.commit()
+    }
+
+    fun retrieveDistance() : String?{
+        return pref.getString("filteredDistance","")
+    }
+
+    fun removeDistance() {
+        editor.remove("filteredDistance")
+        editor.commit()
+    }
+
+    fun storeToken(value: String){
         val cipherClass = encryptor.encryptText("ALIAS",value)
         val encodedValueString = Base64.encodeToString(cipherClass.encrypter, Base64.DEFAULT)
         val encodedIVString = Base64.encodeToString(cipherClass.iv, Base64.DEFAULT)
-        editor.putString(name,encodedValueString)
+        editor.putString("userToken",encodedValueString)
         editor.apply()
         editor.putString("iv",encodedIVString)
         editor.apply()
         editor.commit()
     }
 
-    fun retrieveValue(name: String) : String{
-        val encodedValue = pref.getString(name,"")
+    fun retrieveToken() : String{
+        val encodedValue = pref.getString("userToken","")
         val encodedIV = pref.getString("iv","")
         val encodedValueByteArray = Base64.decode(encodedValue, Base64.DEFAULT)
         val encodedIVByteArray = Base64.decode(encodedIV, Base64.DEFAULT)
@@ -40,8 +52,9 @@ class Store(context: Context) {
         return result
     }
 
-    fun removeValue(name: String){
-        editor.remove(name)
+    fun removeToken(){
+        editor.remove("userToken")
+        editor.remove("iv")
         editor.commit()
     }
 }

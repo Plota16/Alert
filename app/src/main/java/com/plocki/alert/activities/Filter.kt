@@ -10,6 +10,7 @@ import android.view.View
 import com.google.android.material.chip.Chip
 import com.plocki.alert.R
 import com.plocki.alert.models.Global
+import com.plocki.alert.utils.Store
 import kotlinx.android.synthetic.main.activity_filter.*
 import java.lang.reflect.Array
 
@@ -127,7 +128,9 @@ class Filter : AppCompatActivity() {
     }
 
     fun confirm(v: View){
+        val store = Store(this)
         inst!!.currentDistanceFilter = inst.distanceList[distance]
+        store.storeDistance(inst.distanceList[distance])
         for(i in inst!!.categoryList){
             inst!!.filterHashMap[i] = filterList[inst!!.categoryList.indexOf(i)]
         }
