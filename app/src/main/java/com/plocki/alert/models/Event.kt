@@ -48,7 +48,7 @@ class Event (
                     .x(this.coords.latitude)
                     .y(this.coords.longitude).build())
             )
-            .categoryName(this.category.title)
+            .category(this.category.uuid)
 
 
         if (this.image != "") {

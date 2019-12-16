@@ -176,39 +176,19 @@
               "deprecationReason": null
             },
             {
-              "name": "oauthProvider",
-              "description": null,
-              "args": [],
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "ENUM",
-                  "name": "OauthProvider",
-                  "ofType": null
-                }
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
               "name": "events",
               "description": null,
               "args": [],
               "type": {
-                "kind": "NON_NULL",
+                "kind": "LIST",
                 "name": null,
                 "ofType": {
-                  "kind": "LIST",
+                  "kind": "NON_NULL",
                   "name": null,
                   "ofType": {
-                    "kind": "NON_NULL",
-                    "name": null,
-                    "ofType": {
-                      "kind": "OBJECT",
-                      "name": "Event",
-                      "ofType": null
-                    }
+                    "kind": "OBJECT",
+                    "name": "Event",
+                    "ofType": null
                   }
                 }
               },
@@ -239,35 +219,6 @@
           "inputFields": null,
           "interfaces": null,
           "enumValues": null,
-          "possibleTypes": null
-        },
-        {
-          "kind": "ENUM",
-          "name": "OauthProvider",
-          "description": "Oauth provider",
-          "fields": null,
-          "inputFields": null,
-          "interfaces": null,
-          "enumValues": [
-            {
-              "name": "GOOGLE",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "FACEBOOK",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "TWITTER",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            }
-          ],
           "possibleTypes": null
         },
         {
@@ -488,19 +439,15 @@
               "description": null,
               "args": [],
               "type": {
-                "kind": "NON_NULL",
+                "kind": "LIST",
                 "name": null,
                 "ofType": {
-                  "kind": "LIST",
+                  "kind": "NON_NULL",
                   "name": null,
                   "ofType": {
-                    "kind": "NON_NULL",
-                    "name": null,
-                    "ofType": {
-                      "kind": "OBJECT",
-                      "name": "Event",
-                      "ofType": null
-                    }
+                    "kind": "OBJECT",
+                    "name": "Event",
+                    "ofType": null
                   }
                 }
               },
@@ -793,6 +740,35 @@
           "possibleTypes": null
         },
         {
+          "kind": "ENUM",
+          "name": "OauthProvider",
+          "description": "Oauth provider",
+          "fields": null,
+          "inputFields": null,
+          "interfaces": null,
+          "enumValues": [
+            {
+              "name": "GOOGLE",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "FACEBOOK",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "TWITTER",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "possibleTypes": null
+        },
+        {
           "kind": "OBJECT",
           "name": "WithJwtTokenUser",
           "description": null,
@@ -923,17 +899,21 @@
               "defaultValue": null
             },
             {
-              "name": "description",
+              "name": "category",
               "description": null,
               "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
               },
               "defaultValue": null
             },
             {
-              "name": "categoryName",
+              "name": "description",
               "description": null,
               "type": {
                 "kind": "SCALAR",
@@ -1034,6 +1014,16 @@
             },
             {
               "name": "description",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "category",
               "description": null,
               "type": {
                 "kind": "SCALAR",
