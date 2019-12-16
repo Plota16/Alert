@@ -29,7 +29,7 @@ class EventViewHolder(inflater: LayoutInflater, parent: ViewGroup, act: Fragment
     private var ac : FragmentActivity? = null
     private var eventTitle: TextView? = null
     private var eventCategory: TextView? = null
-    private var eventDistance: TextView? = null
+    private var eventDescription: TextView? = null
     private var imageView : ImageView? = null
 
     init {
@@ -51,7 +51,7 @@ class EventViewHolder(inflater: LayoutInflater, parent: ViewGroup, act: Fragment
     init {
         eventTitle = itemView.findViewById(R.id.list_title)
         eventCategory = itemView.findViewById(R.id.list_category)
-        eventDistance = itemView.findViewById(R.id.list_distance)
+        eventDescription = itemView.findViewById(R.id.list_distance)
         imageView = itemView.findViewById(R.id.imageView)
         itemView.setOnClickListener(this)
     }
@@ -61,7 +61,6 @@ class EventViewHolder(inflater: LayoutInflater, parent: ViewGroup, act: Fragment
 
     fun bind(event: Event) {
         inst!!.listHashMap.put(layoutPosition.toString(),event)
-
 
         var res = ""
         val dist = EventMethods.calcDistance(event.coords)
@@ -80,9 +79,12 @@ class EventViewHolder(inflater: LayoutInflater, parent: ViewGroup, act: Fragment
         }
 
         val categoryContainer = event.category.title.toUpperCase()  + " ($res)"
-        eventTitle?.text = event.title
         eventCategory?.text = categoryContainer
+        eventTitle?.text = event.title
 
+        if(event.description != null){
+            eventDescription?.text = event.description
+        }
 
         if (con != null) {
             Glide.with(con)
