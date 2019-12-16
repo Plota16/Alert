@@ -14,7 +14,7 @@ class Event (
     var title: String,
     var image: String?,
     var description : String?,
-    var category: Int,
+    var category: Category,
     var creator : Int
 ) {
     companion object {
@@ -24,13 +24,17 @@ class Event (
             title: String,
             image: String?,
             description: String?,
-            category: Int,
+            category: Category,
             creator: Int
         ): Event {
             return Event(
                 UUID.fromString(uuid),
                 LatLng(coords.x(), coords.y()),
-                title, image, description, category, creator
+                title,
+                image,
+                description,
+                category,
+                creator
             )
         }
     }
@@ -44,6 +48,8 @@ class Event (
                     .x(this.coords.latitude)
                     .y(this.coords.longitude).build())
             )
+            .categoryName(this.category.title)
+
 
         if (this.image != "") {
             val image = File(this.image)

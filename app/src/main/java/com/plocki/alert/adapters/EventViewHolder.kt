@@ -79,7 +79,7 @@ class EventViewHolder(inflater: LayoutInflater, parent: ViewGroup, act: Fragment
             res = "$distInInt km"
         }
 
-        val categoryContainer = EventMethods.getCategory(event.category).toUpperCase()  + " ($res)"
+        val categoryContainer = event.category.title.toUpperCase()  + " ($res)"
         eventTitle?.text = event.title
         eventCategory?.text = categoryContainer
 

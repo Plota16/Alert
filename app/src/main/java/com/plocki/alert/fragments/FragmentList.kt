@@ -86,8 +86,7 @@ class FragmentList : Fragment(){
 
         val filteredList = ArrayList<Event>()
         for (event in inst!!.eventList) {
-            val index = inst.categoryList.indexOf(EventMethods.getCategory(event.category))
-            if (inst.filterList[index]) {
+            if (inst.filterHashMap.get(event.category.title)!!) {
                 if (EventMethods.calcDistance(event.coords) < EventMethods.getMaxDistance(inst.currentDistanceFilter) || EventMethods.getMaxDistance(
                         inst.currentDistanceFilter
                     ) == 0

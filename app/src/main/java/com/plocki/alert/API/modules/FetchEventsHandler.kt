@@ -10,8 +10,11 @@ import com.apollographql.apollo.exception.ApolloException
 import com.plocki.alert.API.ApolloInstance
 import com.plocki.alert.AllEventsQuery
 import com.plocki.alert.activities.MainActivity
+import com.plocki.alert.models.Category
 import com.plocki.alert.models.Event
 import com.plocki.alert.models.Global
+import java.util.*
+import kotlin.collections.ArrayList
 
 object FetchEventsHandler {
 
@@ -37,7 +40,10 @@ object FetchEventsHandler {
                                 event.title(),
                                 event.image(),
                                 event.description(),
-                                1,
+                                Category(
+                                    event.category()!!.uuid().toString(),
+                                    event.category()!!.title(),
+                                    event.category()!!.color()),
                                 1
                             )
                             eventContainer.add(currentEvent)

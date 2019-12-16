@@ -8,5 +8,10 @@ query AllEventsQuery {
     },
     description,
     image,
+    category{
+        uuid,
+        title,
+        color
+    },
   }
 }

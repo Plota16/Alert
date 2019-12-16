@@ -11,13 +11,14 @@ import com.google.android.material.chip.Chip
 import com.plocki.alert.R
 import com.plocki.alert.models.Global
 import kotlinx.android.synthetic.main.activity_filter.*
+import java.lang.reflect.Array
 
 class Filter : AppCompatActivity() {
 
     private val inst = Global.getInstance()
     private var chipList = HashMap<Int, Chip>()
     private var distance = 0
-    lateinit var checkedList : BooleanArray
+    var filterList = booleanArrayOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,8 +30,15 @@ class Filter : AppCompatActivity() {
         filter_distance.keyListener = null
         filter_category.keyListener = null
 
+
+        var i = 0
+        var boolContainter = ArrayList<Boolean>()
         distance = inst!!.distanceList.indexOf(inst.currentDistanceFilter)
-        checkedList = inst.filterList
+        for (category in Global.getInstance()!!.categoryList){
+            boolContainter.add(Global.getInstance()!!.filterHashMap.get(category)!!)
+            i++
+        }
+        filterList = boolContainter.toBooleanArray()
         if(distance != 0){
             filter_distance.setText(inst.distanceList[distance])
         }
@@ -70,18 +78,19 @@ class Filter : AppCompatActivity() {
 
     fun onCategoryMark() {
 
+        val multiChocieList = inst!!.categoryList.toTypedArray()
         val tmp = AlertDialog.Builder(this, R.style.CustomDialogTheme)
             .setTitle(this.getString(R.string.add_dialog_title))
-            .setMultiChoiceItems(inst!!.categoryList, checkedList) {
+            .setMultiChoiceItems(multiChocieList, filterList) {
                 dialog : DialogInterface, which : Int, isChecked : Boolean ->
 
-                checkedList[which] = isChecked
+                filterList[which] = isChecked
             }
 
             .setPositiveButton(this.getString(R.string.add_dialog_positive)) {
                     dialog, which ->
 
-               for(i in checkedList.indices)
+               for(i in filterList.indices)
                {
                    chipGroup.removeView(chipList.get(1000+i))
                }
@@ -99,7 +108,7 @@ class Filter : AppCompatActivity() {
 
     private fun generateChips(){
         for(i in inst!!.categoryList.indices){
-            if(inst.filterList[i]){
+            if(filterList[i]){
                 val chip = Chip(this)
                 val id = 1000 + i
 
@@ -109,7 +118,7 @@ class Filter : AppCompatActivity() {
                 chip.setOnCloseIconClickListener{
                     TransitionManager.beginDelayedTransition(chipGroup)
                     chipGroup.removeView(chip)
-                    checkedList[i] = false
+                    filterList[i] = false
                 }
                 chipList.put(id,chip)
                 chipGroup.addView(chip)
@@ -119,17 +128,19 @@ class Filter : AppCompatActivity() {
 
     fun confirm(v: View){
         inst!!.currentDistanceFilter = inst.distanceList[distance]
-        inst.filterList = checkedList
+        for(i in inst!!.categoryList){
+            inst!!.filterHashMap[i] = filterList[inst!!.categoryList.indexOf(i)]
+        }
         finish()
     }
 
     fun reset(v: View){
         distance = 0
         filter_distance.setText("")
-        for(i in inst!!.filterList.indices){
-            checkedList[i] = true
+        for(i in inst!!.categoryList.indices){
+            filterList[i] = true
         }
-        for(i in checkedList.indices)
+        for(i in filterList.indices)
         {
             chipGroup.removeView(chipList[1000+i])
         }

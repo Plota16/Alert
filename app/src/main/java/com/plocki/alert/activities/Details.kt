@@ -57,7 +57,7 @@ class Details : AppCompatActivity(), OnMapReadyCallback {
         else if(listMarker == null){
             this.event = inst!!.mapHashMap[extraMarker]!!
         }
-        details_category.text = EventMethods.getCategory(event.category)
+        details_category.text = event.category.title
         details_desc.text = event.description
         supportActionBar!!.title = event.title
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)

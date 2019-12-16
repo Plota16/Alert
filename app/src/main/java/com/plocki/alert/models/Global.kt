@@ -2,7 +2,9 @@ package com.plocki.alert.models
 
 import android.location.Location
 import com.google.android.gms.maps.model.LatLng
+import java.lang.reflect.Array
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 class Global {
@@ -24,24 +26,8 @@ class Global {
     lateinit var userLocation: Location
 
     // Lists
-    var eventList = arrayListOf(
-        Event(
-            UUID.randomUUID(),
-            LatLng(52.39786111,16.92500000),
-            "Stłuczka",
-            "https://6.allegroimg.com/original/0cf9f4/7082cd20499c8374de45a7de79e6",
-            "opis opis opis opis opis opis",
-            1,
-            1
-        )
-    )
-
-    var categoryList = arrayOf("Wydarzenie",
-        "Korek",
-        "Wypadek",
-        "Utrudnienia")
-
-    var filterList = booleanArrayOf(true,true,true,true)
+    var eventList = arrayListOf<Event>()
+    var categoryList = arrayListOf<String>()
 
     val distanceList = arrayOf("Nielimitowane", "500 m", "1 km", "3 km", "5 km", "10 km", "20 km", "100 km")
 
@@ -49,6 +35,9 @@ class Global {
 
     var mapHashMap = HashMap<String, Event>()
     var listHashMap = HashMap<String, Event>()
+    var categoryHashMap= HashMap<String, Category>()
+    val filterHashMap = HashMap<String, Boolean>()
+    val titleUUIDHashMap = HashMap<String, String>()
 
 
 

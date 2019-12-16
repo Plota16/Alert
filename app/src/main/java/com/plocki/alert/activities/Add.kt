@@ -247,7 +247,7 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
 
 
     fun onChooseCategoryClick() {
-        val singleChoiceItems = inst!!.categoryList
+        val singleChoiceItems :Array<String> = inst!!.categoryList.toTypedArray()
 
         val itemSelected = choose
         val tmp = AlertDialog.Builder(this, R.style.CustomDialogTheme)
@@ -379,13 +379,15 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
                     path = FileGetter.getRealPath(image_uri, contentResolver)
                 }
             }catch (ex : Exception){}
+
+            var tempCategory = category_in.text.toString()
             val event = Event(
                 UUID = UUID.randomUUID(),
                 coords = LatLng(lat, long),
                 image = path,
                 title = add_title.text.toString(),
                 description = desc2.text.toString(),
-                category = 1,
+                category = Global.getInstance()!!.categoryHashMap.get(Global.getInstance()!!.titleUUIDHashMap.get(tempCategory))!!,
                 creator = 1
             )
             progressBar.visibility = View.VISIBLE
@@ -420,7 +422,7 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
                                             event.title(),
                                             event.image(),
                                             "opis",
-                                            1,
+                                            Global.getInstance()!!.categoryHashMap.get(Global.getInstance()!!.titleUUIDHashMap.get(tempCategory))!!,
                                             1
                                         )
                                         eventContainer.add(currentEvent)
