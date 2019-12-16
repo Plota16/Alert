@@ -6,32 +6,33 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        >
+        android:minHeight="65dp">
 
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:gravity="clip_vertical"
-            android:orientation="horizontal"
-            android:layout_gravity="center_vertical">
+            android:orientation="horizontal">
 
         <TextView
                 android:id="@+id/likebar_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="24dp"
                 android:layout_weight="1"
                 android:text="@string/detail_bottombar_text"
                 android:textColor="@color/colorPrimary"
-                android:layout_gravity="center_vertical"
                 android:textSize="14sp" />
 
         <ImageButton
                 android:id="@+id/thump_up"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
+                android:layout_gravity="center_vertical"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginBottom="12dp"
@@ -41,8 +42,7 @@
                 android:foregroundTint="@color/green"
                 android:onClick="likeClicked"
                 android:padding="6dp"
-                android:src="#00FFFFFF"
-                android:layout_gravity="center_vertical"/>
+                android:src="#00FFFFFF" />
 
         <ImageButton
                 android:id="@+id/thumb_down"
