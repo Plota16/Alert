@@ -56,16 +56,6 @@ class FragmentMap : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        GlobalScope.launch(Main) {
-            while (true){
-                delay(10)
-                if(Global.getInstance()!!.areCategoriesLoaed){
-                    updateMap()
-                    break
-                }
-            }
-        }
-
         GlobalScope.launch(context = Main) {
             while (true){
                 if (newEventsMap != null) {

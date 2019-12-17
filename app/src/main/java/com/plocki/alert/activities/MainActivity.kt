@@ -142,8 +142,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        progressBarMain.visibility = View.VISIBLE
-        fetchCategories()
     }
 
     override fun onBackPressed() {
@@ -210,107 +208,6 @@ class MainActivity : AppCompatActivity() {
 
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    private fun fetchCategories(){
-        if (!Global.getInstance()!!.isErrorActivityOpen && Global.getInstance()!!.isUserSigned) {
-            ApolloInstance.buildApolloClient()
-            CategoriesApi.fetchCategories(object : ApolloCall.Callback<AllCategoriesQuery.Data>() {
-                override fun onFailure(e: ApolloException) {
-                    println("ERROR FETCH" +  e.cause.toString())
-                }
-
-                override fun onResponse(response: Response<AllCategoriesQuery.Data>) {
-                    if (response.data() != null) {
-                        println("CATEGORIES " + response.data()!!.categories().toString())
-                        for (category in response.data()!!.categories()){
-                            Global.getInstance()!!.categoryHashMap[category.uuid().toString()] =
-                                Category(
-                                    category.uuid().toString(),
-                                    category.title(),
-                                    category.color()
-                                )
-                            Global.getInstance()!!.categoryList.add(category.title())
-                            Global.getInstance()!!.filterHashMap[category.title()] = true
-                            Global.getInstance()!!.titleUUIDHashMap[category.title()] = category.uuid().toString()
-                        }
-                        fetchEvents()
-                    }
-                }
-            })
-        }
-    }
-
-    private fun fetchEvents(){
-
-        ApolloInstance.buildApolloClient()
-        EventsApi.fetchEvents(object : ApolloCall.Callback<AllEventsQuery.Data>() {
-            override fun onFailure(e: ApolloException) {
-                this@MainActivity.runOnUiThread { Toast.makeText(this@MainActivity, "Nie udało się pobrać danych z serwera", Toast.LENGTH_SHORT).show() }
-                Log.e("ERROR FETCH", e.cause.toString())
-            }
-
-            override fun onResponse(response: Response<AllEventsQuery.Data>) {
-
-                if (response.data() != null) {
-                    val events = response.data()!!.events()
-                    val eventContainer = ArrayList<Event>()
-                    for (event in events) {
-                        val currentEvent = Event.fromResponse(
-                            event.uuid().toString(),
-                            event.coords(),
-                            event.title(),
-                            event.image(),
-                            event.description(),
-                            Category(
-                                event.category()!!.uuid().toString(),
-                                event.category()!!.title(),
-                                event.category()!!.color()),
-                            1
-                        )
-                        eventContainer.add(currentEvent)
-                    }
-
-                    if (Global.getInstance()!!.eventList.size != eventContainer.size) {
-                        if(Global.getInstance()!!.isDataLoadedFirstTime){
-                            Global.getInstance()!!.isDataLoadedFirstTime = false
-                        }
-                        else{
-                            Global.getInstance()!!.isDataChanged = true
-                        }
-                    } else {
-                        for (i in 0 until Integer.max(
-                            Global.getInstance()!!.eventList.size,
-                            eventContainer.size
-                        )) {
-                            val event1 = Global.getInstance()!!.eventList[i].UUID
-                            val event2 = eventContainer[i].UUID
-                            if (event1 != event2) {
-                                if(Global.getInstance()!!.isDataLoadedFirstTime){
-                                    Global.getInstance()!!.isDataLoadedFirstTime = false
-                                }
-                                else{
-                                    Global.getInstance()!!.isDataChanged = true
-                                }
-                            }
-                        }
-
-                    }
-
-                    Global.getInstance()!!.eventList = eventContainer
-                    this@MainActivity?.runOnUiThread { Toast.makeText(this@MainActivity, "Pobrano danych z serwera", Toast.LENGTH_SHORT).show() }
-
-                } else {
-                    this@MainActivity?.runOnUiThread { Toast.makeText(this@MainActivity, "Nie udało się pobrać danych z serwera", Toast.LENGTH_SHORT).show()}
-                }
-
-                GlobalScope.launch(Main){
-                    Global.getInstance()!!.areCategoriesLoaed = true
-                    progressBarMain.visibility = View.GONE
-                }
-            }
-
-        })
     }
 
 }

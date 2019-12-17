@@ -46,6 +46,8 @@ class FacebookService(context: Context,activity: Activity) {
             override fun onError(error: FacebookException?) {
                 error!!.printStackTrace()
                 Toast.makeText(mActivity, "Error", Toast.LENGTH_LONG).show()
+                throw error
+
             }
         })
     }

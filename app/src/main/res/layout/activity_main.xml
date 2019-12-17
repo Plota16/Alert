@@ -52,10 +52,7 @@
             android:foreground="@drawable/ic_plus"
             android:tint="@color/white"
             app:backgroundTint="@color/colorPrimary" />
-    <include
-            android:id="@+id/progressBarMain"
-            android:visibility="gone"
-            layout="@layout/progres_bar"/>
+
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

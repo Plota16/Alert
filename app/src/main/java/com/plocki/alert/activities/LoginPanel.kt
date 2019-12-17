@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
+import com.facebook.FacebookException
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.plocki.alert.API.modules.FetchCategoriesHandler
 import com.plocki.alert.API.modules.FetchEventsHandler
@@ -68,7 +69,9 @@ class LoginPanel : AppCompatActivity() {
                 WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
                 WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
             progressBar.visibility = View.VISIBLE
+
             facebookService.signIn()
+
 
         })
 
@@ -95,8 +98,5 @@ class LoginPanel : AppCompatActivity() {
         this.startActivity(intent)
     }
 
-    fun askForName(){
-
-    }
 
 }
