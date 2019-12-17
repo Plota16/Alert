@@ -16,6 +16,7 @@ class Global {
     var isDataChanged = false
     var isDataLoadedFirstTime = true
     var isMapCreated = true
+    var areCategoriesLoaed = false
 
 
 

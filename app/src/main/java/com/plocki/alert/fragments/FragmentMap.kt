@@ -19,6 +19,7 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.Marker
+import com.plocki.alert.API.modules.FetchCategoriesHandler
 import com.plocki.alert.MyApplication
 import com.plocki.alert.activities.Details
 import com.plocki.alert.models.Global
@@ -45,7 +46,6 @@ class FragmentMap : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         retainInstance = true
-
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -55,6 +55,16 @@ class FragmentMap : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        GlobalScope.launch(Main) {
+            while (true){
+                delay(10)
+                if(Global.getInstance()!!.areCategoriesLoaed){
+                    updateMap()
+                    break
+                }
+            }
+        }
 
         GlobalScope.launch(context = Main) {
             while (true){

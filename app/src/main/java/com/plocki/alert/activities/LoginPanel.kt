@@ -86,7 +86,7 @@ class LoginPanel : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-
+        finishAffinity()
     }
 
     fun logoClicked(view: View) {

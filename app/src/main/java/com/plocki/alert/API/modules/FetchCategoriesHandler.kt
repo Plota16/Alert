@@ -38,11 +38,8 @@ object FetchCategoriesHandler {
                             Global.getInstance()!!.titleUUIDHashMap[category.title()] = category.uuid().toString()
                         }
                     }
-                    FetchEventsHandler.fetchEvents(activity)
-                    val intent = Intent(MyApplication.context, MainActivity::class.java)
-                    intent.putExtra("SHOW_WELCOME", true)
-                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                    MyApplication.context!!.startActivity(intent)
+
+
                 }
             })
         }
