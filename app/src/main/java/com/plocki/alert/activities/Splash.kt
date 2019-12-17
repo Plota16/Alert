@@ -34,6 +34,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import com.google.gson.GsonBuilder
+import com.plocki.alert.utils.HttpErrorHandler
+import kotlin.math.roundToInt
 
 class Splash : Activity() {
 
@@ -88,6 +91,12 @@ class Splash : Activity() {
         if(Global.getInstance()!!.userToken != "") {
             UserApi.whoAmI(object : ApolloCall.Callback<WhoAmIQuery.Data>(){
                 override fun onResponse(response: Response<WhoAmIQuery.Data>) {
+                   if (response.hasErrors()) {
+                       val gson = GsonBuilder().create()
+                       val errorMap = gson.fromJson(response.errors()[0].message(), Map::class.java)
+                       HttpErrorHandler.handle(errorMap["statusCode"].toString().toFloat().toInt())
+                       return
+                   }
                     val whoAmI = response.data()!!.whoAmI()
                     Global.getInstance()!!.userName = whoAmI.username()
                     Global.getInstance()!!.isUserSigned = true
