@@ -1,15 +1,16 @@
 package com.plocki.alert.runnables
 
 import com.plocki.alert.API.modules.FetchEventsHandler
+import com.plocki.alert.MyApplication
+import com.plocki.alert.activities.MainActivity
+import com.plocki.alert.models.Global
 
 class ForegroundRunnableCron : Runnable {
-    var isAppClose: Boolean = false
-
-    var seconds: Long = 2000
+    var seconds: Long = 5000
 
     override fun run() {
         var i = 0
-        while (!isAppClose) {
+        while (!Global.getInstance()!!.isAppClosed) {
             try {
                 Thread.sleep(seconds)
             } catch (e: InterruptedException) {
@@ -17,7 +18,6 @@ class ForegroundRunnableCron : Runnable {
             }
             i++
             println("Pobieram dane z serwera: $i" )
-
             FetchEventsHandler.fetchEvents()
         }
     }

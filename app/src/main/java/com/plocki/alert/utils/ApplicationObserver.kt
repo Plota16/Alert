@@ -3,6 +3,7 @@ package com.plocki.alert.utils
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
+import com.plocki.alert.models.Global
 import com.plocki.alert.runnables.BackgroundRunnableCron
 import com.plocki.alert.runnables.ConnectionObserver
 import com.plocki.alert.runnables.ForegroundRunnableCron
@@ -18,9 +19,7 @@ class ApplicationObserver : LifecycleObserver {
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     fun onForeground() {
-        backgroundRunnable.isAppClose = false
-        foregroundRunnable.isAppClose = false
-        connectionObserver.isAppClose = false
+        Global.getInstance()!!.isAppClosed = false
         foregroundRunnable.seconds = 2000
         val thread = Thread(foregroundRunnable)
         val connectionThread = Thread(connectionObserver)
@@ -30,9 +29,7 @@ class ApplicationObserver : LifecycleObserver {
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     fun onBackground() {
-        foregroundRunnable.isAppClose = true
-        backgroundRunnable.isAppClose = true
-        connectionObserver.isAppClose = true
+        Global.getInstance()!!.isAppClosed = true
         backgroundRunnable.seconds = 600000
         val thread = Thread(backgroundRunnable)
         thread.start()
