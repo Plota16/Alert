@@ -140,7 +140,7 @@ class Details : AppCompatActivity(), OnMapReadyCallback {
         mMap.addMarker(
             MarkerOptions()
                 .position(event.coords)
-                .title(event.title))
+        )
     }
 
     fun likeClicked(v: View){
