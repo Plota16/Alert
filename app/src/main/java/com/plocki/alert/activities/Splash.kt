@@ -43,14 +43,14 @@ class Splash : Activity() {
     /** Duration of wait  */
     private val SPLASH_DISPLAY_LENGTH = 100
     private val  PERMISSION_LOCATION = 101
+    lateinit var activity: Activity
 
     /** Called when the activity is first created.  */
     public override fun onCreate(icicle: Bundle?) {
         super.onCreate(icicle)
         setContentView(R.layout.splash)
-
         progressBarMain.indeterminateTintList = ColorStateList.valueOf(Color.parseColor("#FFFFFF"))
-
+        Global.getInstance()!!.currentActivity = this
         val store = Store(this)
         try {
             Global.getInstance()!!.currentDistanceFilter = store.retrieveDistance()!!
@@ -107,18 +107,20 @@ class Splash : Activity() {
                         splashLoadText.visibility = View.VISIBLE
                     }
                     fetchCategories()
-
                 }
 
                 override fun onFailure(e: ApolloException) {
-                    Global.getInstance()!!.userToken = ""
-                    val sharedstore = Store(this@Splash)
-                    sharedstore.removeToken()
-                    val intent = Intent(MyApplication.context, LoginPanel::class.java)
-                    intent.putExtra("SHOW_WELCOME", true)
-                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                    MyApplication.context!!.startActivity(intent)
 
+//                    Global.getInstance()!!.userToken = ""
+//                    val sharedstore = Store(this@Splash)
+//                    sharedstore.removeToken()
+//                    val intent = Intent(MyApplication.context, LoginPanel::class.java)
+//                    intent.putExtra("SHOW_WELCOME", true)
+//                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+//                    MyApplication.context!!.startActivity(intent)
+                    val gson = GsonBuilder().create()
+                    val errorMap = gson.fromJson(e.message, Map::class.java)
+                    HttpErrorHandler.handle(errorMap["statusCode"].toString().toFloat().toInt())
                 }
 
             })
@@ -147,10 +149,20 @@ class Splash : Activity() {
             ApolloInstance.buildApolloClient()
             CategoriesApi.fetchCategories(object : ApolloCall.Callback<AllCategoriesQuery.Data>() {
                 override fun onFailure(e: ApolloException) {
-                    println("ERROR FETCH" +  e.cause.toString())
+                    val gson = GsonBuilder().create()
+                    val errorMap = gson.fromJson(e.message, Map::class.java)
+                    HttpErrorHandler.handle(errorMap["statusCode"].toString().toFloat().toInt())
                 }
 
                 override fun onResponse(response: Response<AllCategoriesQuery.Data>) {
+                    if (response.hasErrors()) {
+                        Log.e("ERROR ", response.errors()[0].customAttributes()["statusCode"].toString())
+                        val gson = GsonBuilder().create()
+                        val errorMap = gson.fromJson(response.errors()[0].message(), Map::class.java)
+                        HttpErrorHandler.handle(errorMap["statusCode"].toString().toFloat().toInt())
+                        return
+                    }
+
                     if (response.data() != null) {
                         println("CATEGORIES " + response.data()!!.categories().toString())
                         for (category in response.data()!!.categories()){
@@ -176,11 +188,21 @@ class Splash : Activity() {
         ApolloInstance.buildApolloClient()
         EventsApi.fetchEvents(object : ApolloCall.Callback<AllEventsQuery.Data>() {
             override fun onFailure(e: ApolloException) {
+                //TODO sprawdzić czy usunąć linię poniżej
                 this@Splash.runOnUiThread { Toast.makeText(this@Splash, "Nie udało się pobrać danych z serwera", Toast.LENGTH_SHORT).show() }
-                Log.e("ERROR FETCH", e.cause.toString())
+                val gson = GsonBuilder().create()
+                val errorMap = gson.fromJson(e.message, Map::class.java)
+                HttpErrorHandler.handle(errorMap["statusCode"].toString().toFloat().toInt())
             }
 
             override fun onResponse(response: Response<AllEventsQuery.Data>) {
+                if (response.hasErrors()) {
+                    Log.e("ERROR ", response.errors()[0].customAttributes()["statusCode"].toString())
+                    val gson = GsonBuilder().create()
+                    val errorMap = gson.fromJson(response.errors()[0].message(), Map::class.java)
+                    HttpErrorHandler.handle(errorMap["statusCode"].toString().toFloat().toInt())
+                    return
+                }
 
                 if (response.data() != null) {
                     val events = response.data()!!.events()

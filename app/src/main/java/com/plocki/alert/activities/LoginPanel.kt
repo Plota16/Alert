@@ -32,12 +32,11 @@ class LoginPanel : AppCompatActivity() {
     private lateinit var facebookService: FacebookService
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        Global.getInstance()!!.currentActivity = this
 
-
-
-        googleService = GoogleService(this, this)
-        twitterService = TwitterService(this, this)
-        facebookService = FacebookService(this, this)
+        googleService = GoogleService(this)
+        twitterService = TwitterService(this)
+        facebookService = FacebookService(this)
 
         Twitter.initialize(twitterService.buildConfiguration())
 

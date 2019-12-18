@@ -45,6 +45,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         supportActionBar!!.title = "Alert!"
         supportActionBar!!.setIcon(ResourcesCompat.getDrawable(resources, R.drawable.ic_more, null))
+        Global.getInstance()!!.currentActivity = this
 
         addbutton.setOnClickListener {
             val intent = Intent(this@MainActivity, Add::class.java)

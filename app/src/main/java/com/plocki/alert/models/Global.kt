@@ -1,5 +1,7 @@
 package com.plocki.alert.models
 
+import android.app.Activity
+import android.content.Context
 import android.location.Location
 import com.google.android.gms.maps.model.LatLng
 import java.lang.reflect.Array
@@ -17,7 +19,8 @@ class Global {
     var isDataLoadedFirstTime = true
     var isMapCreated = true
     var areCategoriesLoaed = false
-
+    var isAppClosed = false
+    var currentActivity: Activity? = null
 
 
     //User Variables
