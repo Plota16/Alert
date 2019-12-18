@@ -39,13 +39,11 @@ class FragmentList : Fragment(){
 
         GlobalScope.launch(context = Main) {
             while (true){
-                if (newEventsList != null) {
                     if(Global.getInstance()!!.isDataChanged){
-                        Toast.makeText(MyApplication.getAppContext(), "Pobrano nowe dane", Toast.LENGTH_LONG).show()
+                        Toast.makeText(MyApplication.getAppContext(), "Aktualizacja Danych", Toast.LENGTH_LONG).show()
                         updateList()
                         Global.getInstance()!!.isDataChanged = false
                     }
-                }
                 delay(2000)
 
             }

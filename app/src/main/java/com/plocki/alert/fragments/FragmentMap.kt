@@ -40,23 +40,30 @@ class FragmentMap : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
     private lateinit var lastLocation: Location
     private var inst = Global.getInstance()
 
+    fun tmp(v: View){
+        GlobalScope.launch (Main){
+            delay(2000)
+            mMap.clear()
 
+        }
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
 
-
-
-        GlobalScope.launch(context = Main) {
-            while (true){
+        GlobalScope.launch (Main){
+            while (true) {
                 if(Global.getInstance()!!.isDataChanged){
-                    Toast.makeText(MyApplication.getAppContext(), "Aktualizacja Danych", Toast.LENGTH_LONG).show()
+                    delay(100)
+                    mMap.clear()
                     updateMap()
                     Global.getInstance()!!.isDataChanged = false
+                    Toast.makeText(MyApplication.getAppContext(), "Aktualizacja Danych", Toast.LENGTH_LONG).show()
                 }
                 delay(2000)
             }
         }
+
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
