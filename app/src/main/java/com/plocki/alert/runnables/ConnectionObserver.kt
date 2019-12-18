@@ -10,13 +10,13 @@ import com.plocki.alert.models.Global
 
 class ConnectionObserver : Runnable {
 
-
+    var isAppClose: Boolean = false
     private var gpsEnabled = false
     private var networkEnabled = false
 
     override fun run() {
         Thread.sleep(1000)
-        while (true){
+        while (isAppClose){
             if (!Global.getInstance()!!.isErrorActivityOpen){
                 try{
                     gpsEnabled = isGpsOn()

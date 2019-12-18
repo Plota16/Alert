@@ -10,14 +10,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.gms.maps.CameraUpdateFactory
 import androidx.core.content.ContextCompat
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.Marker
 import com.plocki.alert.API.modules.FetchCategoriesHandler
 import com.plocki.alert.MyApplication
@@ -43,29 +40,19 @@ class FragmentMap : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
     private lateinit var lastLocation: Location
     private var inst = Global.getInstance()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        retainInstance = true
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        retainInstance = true
-        super.onActivityCreated(savedInstanceState)
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
+
+
         GlobalScope.launch(context = Main) {
             while (true){
-                if (newEventsMap != null) {
-                    if(Global.getInstance()!!.isDataChanged){
-                        Toast.makeText(MyApplication.getAppContext(), "Pobrano nowe dane", Toast.LENGTH_LONG).show()
-                        updateMap()
-                        Global.getInstance()!!.isDataChanged = false
-
-                    }
-
+                if(Global.getInstance()!!.isDataChanged){
+                    Toast.makeText(MyApplication.getAppContext(), "Aktualizacja Danych", Toast.LENGTH_LONG).show()
+                    updateMap()
+                    Global.getInstance()!!.isDataChanged = false
                 }
                 delay(2000)
             }
@@ -76,6 +63,7 @@ class FragmentMap : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
         val rootView = inflater.inflate(R.layout.fragment_map, container, false)
         val mapFragment = childFragmentManager.findFragmentById(R.id.frg) as SupportMapFragment?
         mapFragment!!.getMapAsync(this)
+
         return rootView
     }
 
@@ -84,7 +72,9 @@ class FragmentMap : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
         val customInfoWidow = CustomInfoWindowGoogleMap(this.context!!)
         mMap.setInfoWindowAdapter(customInfoWidow)
         mMap.setOnInfoWindowClickListener(this)
+
         mMap.mapType = GoogleMap.MAP_TYPE_NORMAL
+
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(inst!!.userCameraPosition, 12f), 1, null)
         mMap.clear() //clear old markers
 
@@ -132,7 +122,7 @@ class FragmentMap : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
 
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
-        updateMap()
+       updateMap()
     }
 
     override fun onResume() {

@@ -76,7 +76,7 @@ object FetchEventsHandler {
                         }
 
                         Global.getInstance()!!.eventList = eventContainer
-                        activity?.runOnUiThread { Toast.makeText(activity, "Pobrano danych z serwera", Toast.LENGTH_SHORT).show() }
+
 
                     } else {
                         activity?.runOnUiThread { Toast.makeText(activity, "Nie udało się pobrać danych z serwera", Toast.LENGTH_SHORT).show()}

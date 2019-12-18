@@ -20,6 +20,7 @@ class ApplicationObserver : LifecycleObserver {
     fun onForeground() {
         backgroundRunnable.isAppClose = false
         foregroundRunnable.isAppClose = false
+        connectionObserver.isAppClose = false
         foregroundRunnable.seconds = 2000
         val thread = Thread(foregroundRunnable)
         val connectionThread = Thread(connectionObserver)
@@ -31,6 +32,7 @@ class ApplicationObserver : LifecycleObserver {
     fun onBackground() {
         foregroundRunnable.isAppClose = true
         backgroundRunnable.isAppClose = true
+        connectionObserver.isAppClose = true
         backgroundRunnable.seconds = 600000
         val thread = Thread(backgroundRunnable)
         thread.start()

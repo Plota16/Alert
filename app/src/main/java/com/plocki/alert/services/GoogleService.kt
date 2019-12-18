@@ -61,7 +61,7 @@ class GoogleService(context: Context, activity: Activity) {
                     Toast.makeText(mActivity, "Success", Toast.LENGTH_LONG).show()
                     val account = task.result
                     val idToken = account!!.idToken
-                    println("TOKEN " + idToken)
+                    println("TOKEN $idToken")
 
                     logger.info(account.email)
                     logger.info(account.displayName)
