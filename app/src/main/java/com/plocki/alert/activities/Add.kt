@@ -35,6 +35,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.gson.GsonBuilder
 import com.plocki.alert.API.modules.EventsApi
 import com.plocki.alert.AllEventsQuery
 import com.plocki.alert.CreateEventMutation
@@ -44,6 +45,7 @@ import kotlinx.android.synthetic.main.activity_add.*
 import com.plocki.alert.models.EventMethods.Companion.thumbnailFromUri
 import com.plocki.alert.models.Global
 import com.plocki.alert.utils.FileGetter
+import com.plocki.alert.utils.HttpErrorHandler
 import kotlinx.android.synthetic.main.activity_add.progressBar
 import kotlinx.android.synthetic.main.activity_details.*
 import kotlinx.coroutines.GlobalScope
@@ -409,18 +411,35 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
                     createEventDto,
                     object : ApolloCall.Callback<CreateEventMutation.Data>() {
                         override fun onFailure(e: ApolloException) {
-                            Log.e("ERROR", e.cause.toString())
+                            val gson = GsonBuilder().create()
+                            val errorMap = gson.fromJson(e.message, Map::class.java)
+                            HttpErrorHandler.handle(errorMap["statusCode"].toString().toFloat().toInt())
                         }
 
                         override fun onResponse(response: Response<CreateEventMutation.Data>) {
                             Log.d("SUCCESS", response.data().toString())
+                            if (response.hasErrors()) {
+                                Log.e("ERROR ", response.errors()[0].customAttributes()["statusCode"].toString())
+                                val gson = GsonBuilder().create()
+                                val errorMap = gson.fromJson(response.errors()[0].message(), Map::class.java)
+                                HttpErrorHandler.handle(errorMap["statusCode"].toString().toFloat().toInt())
+                                return
+                            }
                             EventsApi.fetchEvents(object : ApolloCall.Callback<AllEventsQuery.Data>() {
                                 override fun onFailure(e: ApolloException) {
-                                    Log.e("Źle", e.cause.toString())
+                                    val gson = GsonBuilder().create()
+                                    val errorMap = gson.fromJson(e.message, Map::class.java)
+                                    HttpErrorHandler.handle(errorMap["statusCode"].toString().toFloat().toInt())
                                     progressBar.visibility = View.INVISIBLE
                                 }
 
                                 override fun onResponse(response: Response<AllEventsQuery.Data>) {
+                                    if (response.hasErrors()) {
+                                        val gson = GsonBuilder().create()
+                                        val errorMap = gson.fromJson(response.errors()[0].message(), Map::class.java)
+                                        HttpErrorHandler.handle(errorMap["statusCode"].toString().toFloat().toInt())
+                                        return
+                                    }
                                     val events = response.data()!!.events()
                                     Log.d(
                                         "AA",
@@ -456,10 +475,6 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
         }
 
     }
-
-
-
-
 }
 
 

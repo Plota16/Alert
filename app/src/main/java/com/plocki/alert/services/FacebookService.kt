@@ -14,8 +14,7 @@ import com.plocki.alert.utils.AppLauncher
 import java.util.*
 import java.util.logging.Logger
 
-class FacebookService(context: Context,activity: Activity) {
-    var context = context
+class FacebookService(activity: Activity) {
     var mActivity = activity
     var callbackManager : CallbackManager? = null
     private val logger = Logger.getLogger(LoginPanel::class.java.toString())
@@ -27,7 +26,6 @@ class FacebookService(context: Context,activity: Activity) {
         handleSignIn()
         if (AccessToken.getCurrentAccessToken() != null) {
             getUserProfile(AccessToken.getCurrentAccessToken())
-                Toast.makeText(mActivity, "ELO", Toast.LENGTH_LONG).show()
         }
         getUserProfile(AccessToken.getCurrentAccessToken())
     }
@@ -37,15 +35,16 @@ class FacebookService(context: Context,activity: Activity) {
             FacebookCallback<LoginResult> {
             override fun onSuccess(result: LoginResult?) {
                 val providerUser = ProviderUser(ProviderType.FACEBOOK, result!!.accessToken.token)
-                AppLauncher.launchApp(context, mActivity, providerUser)
+                AppLauncher.launchApp(mActivity, providerUser)
                 getUserProfile(result.accessToken)
             }
             override fun onCancel() {
-                Toast.makeText(mActivity, "Cancel", Toast.LENGTH_LONG).show()
+                //TODO CZY COS Z TYM ROBIć
+//                Toast.makeText(mActivity, "Cancel", Toast.LENGTH_LONG).show()
             }
             override fun onError(error: FacebookException?) {
                 error!!.printStackTrace()
-                Toast.makeText(mActivity, "Error", Toast.LENGTH_LONG).show()
+                Toast.makeText(mActivity, "Nie można połączyć się przy pomocy Facebook", Toast.LENGTH_LONG).show()
                 throw error
 
             }

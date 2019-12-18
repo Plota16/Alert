@@ -6,12 +6,14 @@ import android.util.Log
 import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
+import com.google.gson.GsonBuilder
 import com.plocki.alert.API.ApolloInstance
 import com.plocki.alert.AllCategoriesQuery
 import com.plocki.alert.MyApplication
 import com.plocki.alert.activities.MainActivity
 import com.plocki.alert.models.Category
 import com.plocki.alert.models.Global
+import com.plocki.alert.utils.HttpErrorHandler
 import java.util.*
 
 object FetchCategoriesHandler {
@@ -20,10 +22,19 @@ object FetchCategoriesHandler {
             ApolloInstance.buildApolloClient()
             CategoriesApi.fetchCategories(object : ApolloCall.Callback<AllCategoriesQuery.Data>() {
                 override fun onFailure(e: ApolloException) {
-                    println("ERROR FETCH" +  e.cause.toString())
+                    val gson = GsonBuilder().create()
+                    val errorMap = gson.fromJson(e.message, Map::class.java)
+                    HttpErrorHandler.handle(errorMap["statusCode"].toString().toFloat().toInt())
                 }
-
                 override fun onResponse(response: Response<AllCategoriesQuery.Data>) {
+                    if (response.hasErrors()) {
+                        Log.e("ERROR ", response.errors()[0].customAttributes()["statusCode"].toString())
+                        val gson = GsonBuilder().create()
+                        val errorMap = gson.fromJson(response.errors()[0].message(), Map::class.java)
+                        HttpErrorHandler.handle(errorMap["statusCode"].toString().toFloat().toInt())
+                        return
+                    }
+
                     if (response.data() != null) {
                         println("CATEGORIES " + response.data()!!.categories().toString())
                         for (category in response.data()!!.categories()){

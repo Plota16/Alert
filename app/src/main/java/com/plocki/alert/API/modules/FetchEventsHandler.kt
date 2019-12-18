@@ -7,12 +7,14 @@ import android.widget.Toast
 import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
+import com.google.gson.GsonBuilder
 import com.plocki.alert.API.ApolloInstance
 import com.plocki.alert.AllEventsQuery
 import com.plocki.alert.activities.MainActivity
 import com.plocki.alert.models.Category
 import com.plocki.alert.models.Event
 import com.plocki.alert.models.Global
+import com.plocki.alert.utils.HttpErrorHandler
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -24,11 +26,21 @@ object FetchEventsHandler {
             ApolloInstance.buildApolloClient()
             EventsApi.fetchEvents(object : ApolloCall.Callback<AllEventsQuery.Data>() {
                 override fun onFailure(e: ApolloException) {
+                    //TODO sprawdzić czy zakomentować linię niżej
                     activity?.runOnUiThread { Toast.makeText(activity, "Nie udało się pobrać danych z serwera", Toast.LENGTH_SHORT).show() }
-                    Log.e("ERROR FETCH", e.cause.toString())
+                    val gson = GsonBuilder().create()
+                    val errorMap = gson.fromJson(e.message, Map::class.java)
+                    HttpErrorHandler.handle(errorMap["statusCode"].toString().toFloat().toInt())
                 }
 
                 override fun onResponse(response: Response<AllEventsQuery.Data>) {
+                    if (response.hasErrors()) {
+                        Log.e("ERROR ", response.errors()[0].customAttributes()["statusCode"].toString())
+                        val gson = GsonBuilder().create()
+                        val errorMap = gson.fromJson(response.errors()[0].message(), Map::class.java)
+                        HttpErrorHandler.handle(errorMap["statusCode"].toString().toFloat().toInt())
+                        return
+                    }
 
                     if (response.data() != null) {
                         val events = response.data()!!.events()

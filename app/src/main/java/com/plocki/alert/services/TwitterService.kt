@@ -1,7 +1,6 @@
 package com.plocki.alert.services
 
 import android.app.Activity
-import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import com.plocki.alert.models.ProviderType
@@ -10,8 +9,7 @@ import com.plocki.alert.utils.AppLauncher
 import com.twitter.sdk.android.core.*
 import com.twitter.sdk.android.core.identity.TwitterAuthClient
 
-class TwitterService(context: Context, activity: Activity) {
-    var context = context
+class TwitterService(activity: Activity) {
     var mActivity: Activity = activity
     var mTwitterAuthClient: TwitterAuthClient = TwitterAuthClient()
 
@@ -56,7 +54,7 @@ class TwitterService(context: Context, activity: Activity) {
                 Log.d("TWITTER", "twitterLogin:secret" + twitterSession.authToken.secret)
                 Log.d("TWITTER", "twitterLogin:secret" + twitterSession.userId)
                 val providerUser = ProviderUser(ProviderType.TWITTER, "${twitterSession.authToken.token};${twitterSession.authToken.secret}")
-                AppLauncher.launchApp(context, mActivity, providerUser)
+                AppLauncher.launchApp(mActivity, providerUser)
 
             }
             override fun failure(exception: TwitterException) {

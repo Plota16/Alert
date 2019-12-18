@@ -15,8 +15,7 @@ import com.plocki.alert.models.ProviderUser
 import com.plocki.alert.utils.AppLauncher
 import java.util.logging.Logger
 
-class GoogleService(context: Context, activity: Activity) {
-    var context = context
+class GoogleService(activity: Activity) {
     var acct: GoogleSignInAccount?
     var mGoogleSignInClient: GoogleSignInClient
     private val logger = Logger.getLogger(LoginPanel::class.java.toString())
@@ -54,11 +53,11 @@ class GoogleService(context: Context, activity: Activity) {
             task.addOnCompleteListener {
                 logger.info("COMPLETE")
                 task.addOnCanceledListener {
-                    Toast.makeText(mActivity, "ERROR", Toast.LENGTH_LONG).show()
+                    //TODO czy coś z tym robić
+//                    Toast.makeText(mActivity, "Nie można połączyć się przy pomocy Google", Toast.LENGTH_LONG).show()
 
                 }
                 task.addOnSuccessListener {
-                    Toast.makeText(mActivity, "Success", Toast.LENGTH_LONG).show()
                     val account = task.result
                     val idToken = account!!.idToken
                     println("TOKEN $idToken")
@@ -69,11 +68,11 @@ class GoogleService(context: Context, activity: Activity) {
                     logger.info(account.account.toString())
                     logger.info(account.isExpired.toString())
                     val providerUser = ProviderUser(ProviderType.GOOGLE, idToken.toString())
-                    AppLauncher.launchApp(context, mActivity, providerUser)
+                    AppLauncher.launchApp(mActivity, providerUser)
                 }
                 task.addOnFailureListener {
                     println("ERRR" + it.message)
-                    Toast.makeText(mActivity, "Fail", Toast.LENGTH_LONG).show()
+                    Toast.makeText(mActivity, "Nie można połączyć się przy pomocy Google", Toast.LENGTH_LONG).show()
                 }
             }
         } catch (e: ApiException) {
