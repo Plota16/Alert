@@ -415,9 +415,7 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
                     createEventDto,
                     object : ApolloCall.Callback<CreateEventMutation.Data>() {
                         override fun onFailure(e: ApolloException) {
-                            val gson = GsonBuilder().create()
-                            val errorMap = gson.fromJson(e.message, Map::class.java)
-                            HttpErrorHandler.handle(errorMap["statusCode"].toString().toFloat().toInt())
+                            HttpErrorHandler.handle(500)
                         }
 
                         override fun onResponse(response: Response<CreateEventMutation.Data>) {
@@ -431,9 +429,7 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
                             }
                             EventsApi.fetchEvents(object : ApolloCall.Callback<AllEventsQuery.Data>() {
                                 override fun onFailure(e: ApolloException) {
-                                    val gson = GsonBuilder().create()
-                                    val errorMap = gson.fromJson(e.message, Map::class.java)
-                                    HttpErrorHandler.handle(errorMap["statusCode"].toString().toFloat().toInt())
+                                    HttpErrorHandler.handle(500)
                                     progressBar.visibility = View.INVISIBLE
                                 }
 

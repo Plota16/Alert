@@ -7,6 +7,7 @@ import android.widget.Toast
 import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
+import com.apollographql.apollo.exception.ApolloHttpException
 import com.google.gson.GsonBuilder
 import com.plocki.alert.API.ApolloInstance
 import com.plocki.alert.AllEventsQuery
@@ -27,9 +28,7 @@ object FetchEventsHandler {
                 override fun onFailure(e: ApolloException) {
                     //TODO sprawdzić czy zakomentować linię niżej
                     activity?.runOnUiThread { Toast.makeText(activity, "Nie udało się pobrać danych z serwera", Toast.LENGTH_SHORT).show() }
-                    val gson = GsonBuilder().create()
-                    val errorMap = gson.fromJson(e.message, Map::class.java)
-                    HttpErrorHandler.handle(errorMap["statusCode"].toString().toFloat().toInt())
+                    HttpErrorHandler.handle(500)
                 }
 
                 override fun onResponse(response: Response<AllEventsQuery.Data>) {

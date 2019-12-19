@@ -17,6 +17,7 @@ import androidx.core.content.ContextCompat
 import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
+import com.apollographql.apollo.exception.ApolloHttpException
 import com.plocki.alert.*
 import com.plocki.alert.API.ApolloInstance
 import com.plocki.alert.API.modules.CategoriesApi
@@ -130,9 +131,7 @@ class Splash : Activity() {
 //                    intent.putExtra("SHOW_WELCOME", true)
 //                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
 //                    MyApplication.context!!.startActivity(intent)
-                    val gson = GsonBuilder().create()
-                    val errorMap = gson.fromJson(e.message, Map::class.java)
-                    HttpErrorHandler.handle(errorMap["statusCode"].toString().toFloat().toInt())
+                    HttpErrorHandler.handle(500)
                 }
 
             })
@@ -161,9 +160,7 @@ class Splash : Activity() {
             ApolloInstance.buildApolloClient()
             CategoriesApi.fetchCategories(object : ApolloCall.Callback<AllCategoriesQuery.Data>() {
                 override fun onFailure(e: ApolloException) {
-                    val gson = GsonBuilder().create()
-                    val errorMap = gson.fromJson(e.message, Map::class.java)
-                    HttpErrorHandler.handle(errorMap["statusCode"].toString().toFloat().toInt())
+                    HttpErrorHandler.handle(500)
                 }
 
                 override fun onResponse(response: Response<AllCategoriesQuery.Data>) {
@@ -202,9 +199,7 @@ class Splash : Activity() {
             override fun onFailure(e: ApolloException) {
                 //TODO sprawdzić czy usunąć linię poniżej
                // this@Splash.runOnUiThread { Toast.makeText(this@Splash, "Nie udało się pobrać danych z serwera", Toast.LENGTH_SHORT).show() }
-                val gson = GsonBuilder().create()
-                val errorMap = gson.fromJson(e.message, Map::class.java)
-                HttpErrorHandler.handle(errorMap["statusCode"].toString().toFloat().toInt())
+                HttpErrorHandler.handle(500)
             }
 
             override fun onResponse(response: Response<AllEventsQuery.Data>) {

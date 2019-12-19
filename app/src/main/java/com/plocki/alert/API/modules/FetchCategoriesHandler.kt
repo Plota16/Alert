@@ -4,6 +4,7 @@ import android.util.Log
 import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
+import com.apollographql.apollo.exception.ApolloHttpException
 import com.google.gson.GsonBuilder
 import com.plocki.alert.API.ApolloInstance
 import com.plocki.alert.AllCategoriesQuery
@@ -17,10 +18,10 @@ object FetchCategoriesHandler {
             ApolloInstance.buildApolloClient()
             CategoriesApi.fetchCategories(object : ApolloCall.Callback<AllCategoriesQuery.Data>() {
                 override fun onFailure(e: ApolloException) {
-                    val gson = GsonBuilder().create()
-                    val errorMap = gson.fromJson(e.message, Map::class.java)
-                    HttpErrorHandler.handle(errorMap["statusCode"].toString().toFloat().toInt())
+                    HttpErrorHandler.handle(500)
                 }
+
+
                 override fun onResponse(response: Response<AllCategoriesQuery.Data>) {
                     if (response.hasErrors()) {
                         Log.e("ERROR ", response.errors()[0].customAttributes()["statusCode"].toString())
