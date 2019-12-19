@@ -16,7 +16,7 @@ class ForegroundRunnableCron : Runnable {
             try {
                     Thread.sleep(seconds)
             } catch (e: InterruptedException) {
-                println("Exception handled $e")
+                println("Wierzchni wątek aktualizujący zakończony")
                 break
             }
         }

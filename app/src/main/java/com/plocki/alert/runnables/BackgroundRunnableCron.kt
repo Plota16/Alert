@@ -15,7 +15,7 @@ class BackgroundRunnableCron : Runnable {
             try {
                 Thread.sleep(seconds)
             } catch (e: InterruptedException) {
-                println("Exception handled $e")
+                println("Tylni wątek aktualizujący zakończony")
                 break
             }
             i++

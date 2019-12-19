@@ -35,7 +35,7 @@ class ConnectionObserver : Runnable {
             try {
                 Thread.sleep(2000)
             } catch (e: InterruptedException) {
-                println("Exception handled $e")
+                println("Obserwator stanu połączenia zakończony")
                 break
             }
         }
