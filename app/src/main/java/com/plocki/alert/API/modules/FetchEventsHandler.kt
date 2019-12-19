@@ -15,7 +15,6 @@ import com.plocki.alert.models.Category
 import com.plocki.alert.models.Event
 import com.plocki.alert.models.Global
 import com.plocki.alert.utils.HttpErrorHandler
-import java.util.*
 import kotlin.collections.ArrayList
 
 object FetchEventsHandler {

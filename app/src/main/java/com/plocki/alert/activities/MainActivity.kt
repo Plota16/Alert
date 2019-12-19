@@ -2,7 +2,6 @@ package com.plocki.alert.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -10,27 +9,14 @@ import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
-import com.apollographql.apollo.ApolloCall
-import com.apollographql.apollo.api.Response
-import com.apollographql.apollo.exception.ApolloException
-import com.plocki.alert.API.ApolloInstance
-import com.plocki.alert.API.modules.CategoriesApi
-import com.plocki.alert.API.modules.EventsApi
+import androidx.fragment.app.FragmentTransaction
 import com.plocki.alert.API.modules.FetchEventsHandler
-import com.plocki.alert.AllCategoriesQuery
-import com.plocki.alert.AllEventsQuery
 import com.plocki.alert.R
 import com.plocki.alert.fragments.FragmentList
 import com.plocki.alert.fragments.FragmentMap
 import com.plocki.alert.fragments.FragmentProfile
-import com.plocki.alert.models.Category
-import com.plocki.alert.models.Event
 import com.plocki.alert.models.Global
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.Dispatchers.Main
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-
 
 class MainActivity : AppCompatActivity() {
 
@@ -152,7 +138,7 @@ class MainActivity : AppCompatActivity() {
         else{
             bottom_navigation.selectedItemId = R.id.action_map
             val manager = supportFragmentManager
-            var transaction = manager.beginTransaction()
+            val transaction: FragmentTransaction
             addbutton.show()
             filterbutton.show()
             transaction = manager.beginTransaction()

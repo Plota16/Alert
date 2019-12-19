@@ -1,7 +1,6 @@
 package com.plocki.alert.services
 
 import android.app.Activity
-import android.content.Context
 import android.widget.Toast
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -16,7 +15,7 @@ import com.plocki.alert.utils.AppLauncher
 import java.util.logging.Logger
 
 class GoogleService(activity: Activity) {
-    var acct: GoogleSignInAccount?
+    private var acct: GoogleSignInAccount?
     var mGoogleSignInClient: GoogleSignInClient
     private val logger = Logger.getLogger(LoginPanel::class.java.toString())
     private val mActivity: Activity = activity

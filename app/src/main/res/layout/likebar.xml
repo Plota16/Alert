@@ -40,7 +40,6 @@
                 android:background="#00FFFFFF"
                 android:foreground="@drawable/ic_thumb_up"
                 android:foregroundTint="@color/green"
-                android:onClick="likeClicked"
                 android:padding="6dp"
                 android:src="#00FFFFFF" />
 
@@ -57,7 +56,6 @@
                 android:background="#FFFFFF"
                 android:foreground="@drawable/ic_thumb_down"
                 android:foregroundTint="@color/red"
-                android:onClick="dislikeClicked"
                 android:padding="4dp"
                 android:src="#00FFFFFF" />
     </LinearLayout>

@@ -2,18 +2,14 @@ package com.plocki.alert.activities
 
 import android.Manifest
 import android.app.Dialog
-import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.view.Window
 import android.widget.Button
-import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.google.android.gms.location.LocationServices
@@ -25,25 +21,31 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.plocki.alert.models.Event
 import com.plocki.alert.models.Global
 import com.plocki.alert.R
-import com.plocki.alert.models.EventMethods
 import kotlinx.android.synthetic.main.activity_details.*
-import kotlinx.android.synthetic.main.dialog_report.*
 import kotlinx.android.synthetic.main.likebar.*
 import kotlin.math.roundToInt
 
 
 class Details : AppCompatActivity(), OnMapReadyCallback {
 
-    var like = false
-    var dislike = false
+    private var like = false
+    private var dislike = false
 
-    lateinit var mMap : GoogleMap
+    private lateinit var mMap : GoogleMap
     private lateinit var event : Event
-    var inst = Global.getInstance()
+    private var inst = Global.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_details)
+
+        thump_up.setOnClickListener {
+            likeClicked()
+        }
+        thumb_down.setOnClickListener{
+            dislikeClicked()
+        }
+
 
         val bundle :Bundle ?=intent.extras
 
@@ -66,7 +68,7 @@ class Details : AppCompatActivity(), OnMapReadyCallback {
         val outMetrics = DisplayMetrics()
         display.getMetrics(outMetrics)
 
-        var dpWidth = outMetrics.widthPixels
+        val dpWidth = outMetrics.widthPixels
         val dpHeight = dpWidth.toDouble()/4*3
 
 
@@ -129,7 +131,7 @@ class Details : AppCompatActivity(), OnMapReadyCallback {
             }
         }
         val fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(event.coords, 15f),1, null)
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(event.coordinates, 15f),1, null)
         fusedLocationClient.lastLocation.addOnSuccessListener {
             if (it != null) {
                 Add.lastLocation = it
@@ -139,11 +141,11 @@ class Details : AppCompatActivity(), OnMapReadyCallback {
 
         mMap.addMarker(
             MarkerOptions()
-                .position(event.coords)
+                .position(event.coordinates)
         )
     }
 
-    fun likeClicked(v: View){
+    private fun likeClicked(){
         if(!like && !dislike){
             like = true
         }
@@ -157,7 +159,7 @@ class Details : AppCompatActivity(), OnMapReadyCallback {
         doColor()
     }
 
-    fun dislikeClicked(v: View){
+    private fun dislikeClicked(){
         if(!like && !dislike){
             dislike = true
         }
@@ -171,7 +173,7 @@ class Details : AppCompatActivity(), OnMapReadyCallback {
         doColor()
     }
 
-    fun doColor(){
+    private fun doColor(){
         if(!like && !dislike){
             thumb_down.foreground.alpha = 255
             thump_up.foreground.alpha = 255

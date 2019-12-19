@@ -1,7 +1,6 @@
 package com.plocki.alert.services
 
 import android.app.Activity
-import android.content.Context
 import android.os.Bundle
 import android.widget.Toast
 import com.facebook.*
@@ -11,7 +10,6 @@ import com.plocki.alert.activities.LoginPanel
 import com.plocki.alert.models.ProviderType
 import com.plocki.alert.models.ProviderUser
 import com.plocki.alert.utils.AppLauncher
-import java.util.*
 import java.util.logging.Logger
 
 class FacebookService(activity: Activity) {
@@ -22,7 +20,7 @@ class FacebookService(activity: Activity) {
     fun signIn() {
         callbackManager = CallbackManager.Factory.create()
         LoginManager.getInstance()
-            .logInWithReadPermissions(mActivity, Arrays.asList("public_profile", "email"))
+            .logInWithReadPermissions(mActivity, listOf("public_profile", "email"))
         handleSignIn()
         if (AccessToken.getCurrentAccessToken() != null) {
             getUserProfile(AccessToken.getCurrentAccessToken())
@@ -51,12 +49,12 @@ class FacebookService(activity: Activity) {
         })
     }
 
-    fun siqnOut() {
+    fun signOut() {
         LoginManager.getInstance().logOut()
     }
 
     fun getUserProfile(accessToken : AccessToken?){
-        val request = GraphRequest.newMeRequest(accessToken) { `object`, response ->
+        val request = GraphRequest.newMeRequest(accessToken) { `object`, _ ->
             try {
                 logger.info(`object`.toString())
             } catch (e: Exception) {

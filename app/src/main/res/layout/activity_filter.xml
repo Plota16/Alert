@@ -125,24 +125,22 @@
             android:orientation="horizontal">
 
         <Button
-                android:id="@+id/button2"
+                android:id="@+id/resetButton"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:fontFamily="@font/roboto"
-                android:onClick="reset"
                 android:text="@string/filter_resetbutton_text"
                 android:textColor="@color/colorPrimary" />
 
         <Button
-                android:id="@+id/button3"
+                android:id="@+id/confirmButton"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:fontFamily="@font/roboto"
-                android:onClick="confirm"
                 android:text="@string/filter_confirm_button_text"
                 android:textColor="@color/colorPrimary" />
     </LinearLayout>

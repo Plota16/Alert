@@ -1,29 +1,38 @@
 package com.plocki.alert.activities
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.transition.TransitionManager
-import android.view.View
 import com.google.android.material.chip.Chip
 import com.plocki.alert.R
 import com.plocki.alert.models.Global
 import com.plocki.alert.utils.Store
 import kotlinx.android.synthetic.main.activity_filter.*
-import java.lang.reflect.Array
 
 class Filter : AppCompatActivity() {
 
     private val inst = Global.getInstance()
+    @SuppressLint("UseSparseArrays")
     private var chipList = HashMap<Int, Chip>()
     private var distance = 0
-    var filterList = booleanArrayOf()
+    private var filterList = booleanArrayOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_filter)
+
+        resetButton.setOnClickListener {
+            reset()
+        }
+
+        confirmButton.setOnClickListener {
+            confirm()
+        }
+
 
         supportActionBar!!.title = this.getString(R.string.filter_title)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
@@ -32,14 +41,12 @@ class Filter : AppCompatActivity() {
         filter_category.keyListener = null
 
 
-        var i = 0
-        var boolContainter = ArrayList<Boolean>()
+        val boolContainer = ArrayList<Boolean>()
         distance = inst!!.distanceList.indexOf(inst.currentDistanceFilter)
         for (category in Global.getInstance()!!.categoryList){
-            boolContainter.add(Global.getInstance()!!.filterHashMap.get(category)!!)
-            i++
+            boolContainer.add(Global.getInstance()!!.filterHashMap[category]!!)
         }
-        filterList = boolContainter.toBooleanArray()
+        filterList = boolContainer.toBooleanArray()
         if(distance != 0){
             filter_distance.setText(inst.distanceList[distance])
         }
@@ -63,9 +70,9 @@ class Filter : AppCompatActivity() {
         val tmp = AlertDialog.Builder(this, R.style.CustomDialogTheme)
             .setTitle(this.getString(R.string.filter_dostance_title))
             .setSingleChoiceItems(inst!!.distanceList, itemSelected) {
-                    dialogInterface, selectedIndex -> distance = selectedIndex}
+                    _, selectedIndex -> distance = selectedIndex}
             .setPositiveButton(this.getString(R.string.add_dialog_positive)) {
-                    dialog, which ->
+                    _, _ ->
                 filter_distance.setText(inst.distanceList[distance])  }
             .setNegativeButton(this.getString(R.string.add_dialog_negative), null)
             .show()
@@ -77,23 +84,22 @@ class Filter : AppCompatActivity() {
         but2.setTextColor(Color.parseColor("#6200EE"))
     }
 
-    fun onCategoryMark() {
+    private fun onCategoryMark() {
 
-        val multiChocieList = inst!!.categoryList.toTypedArray()
+        val multiChoiceList = inst!!.categoryList.toTypedArray()
         val tmp = AlertDialog.Builder(this, R.style.CustomDialogTheme)
             .setTitle(this.getString(R.string.add_dialog_title))
-            .setMultiChoiceItems(multiChocieList, filterList) {
-                dialog : DialogInterface, which : Int, isChecked : Boolean ->
-
+            .setMultiChoiceItems(multiChoiceList, filterList) {
+                    _: DialogInterface, which : Int, isChecked : Boolean ->
                 filterList[which] = isChecked
             }
 
             .setPositiveButton(this.getString(R.string.add_dialog_positive)) {
-                    dialog, which ->
+                    _, _ ->
 
                for(i in filterList.indices)
                {
-                   chipGroup.removeView(chipList.get(1000+i))
+                   chipGroup.removeView(chipList[1000+i])
                }
                 generateChips()
             }
@@ -121,23 +127,23 @@ class Filter : AppCompatActivity() {
                     chipGroup.removeView(chip)
                     filterList[i] = false
                 }
-                chipList.put(id,chip)
+                chipList[id] = chip
                 chipGroup.addView(chip)
             }
         }
     }
 
-    fun confirm(v: View){
+    private fun confirm(){
         val store = Store(this)
         inst!!.currentDistanceFilter = inst.distanceList[distance]
         store.storeDistance(inst.distanceList[distance])
-        for(i in inst!!.categoryList){
-            inst!!.filterHashMap[i] = filterList[inst!!.categoryList.indexOf(i)]
+        for(i in inst.categoryList){
+            inst.filterHashMap[i] = filterList[inst.categoryList.indexOf(i)]
         }
         finish()
     }
 
-    fun reset(v: View){
+    private fun reset(){
         distance = 0
         filter_distance.setText("")
         for(i in inst!!.categoryList.indices){

@@ -1,8 +1,6 @@
 package com.plocki.alert.models
 
 import android.content.Context
-import android.graphics.Bitmap
-import android.os.Environment
 import com.apollographql.apollo.api.FileUpload
 import com.google.android.gms.maps.model.LatLng
 import com.plocki.alert.AllEventsQuery
@@ -14,7 +12,7 @@ import java.util.*
 
 class Event (
     var UUID : UUID,
-    var coords: LatLng,
+    var coordinates: LatLng,
     var title: String,
     var image: String?,
     var description : String?,
@@ -24,7 +22,7 @@ class Event (
     companion object {
         fun fromResponse(
             uuid: String,
-            coords: AllEventsQuery.Coords, // TODO: Make class for Coords
+            coordinates: AllEventsQuery.Coords, // TODO: Make class for Coords
             title: String,
             image: String?,
             description: String?,
@@ -33,7 +31,7 @@ class Event (
         ): Event {
             return Event(
                 UUID.fromString(uuid),
-                LatLng(coords.x(), coords.y()),
+                LatLng(coordinates.x(), coordinates.y()),
                 title,
                 image,
                 description,
@@ -44,19 +42,19 @@ class Event (
     }
 
     fun createEventDto(context: Context?): CreateEventDto {
-        var eventBuilder = CreateEventDto.builder()
+        val eventBuilder = CreateEventDto.builder()
             .title(this.title)
             .description(this.description)
             .coords(
                 (PointInput.builder()
-                    .x(this.coords.latitude)
-                    .y(this.coords.longitude).build())
+                    .x(this.coordinates.latitude)
+                    .y(this.coordinates.longitude).build())
             )
             .category(this.category.uuid)
 
 
         if (this.image != "") {
-            val image = File(this.image)
+            val image = File(this.image!!)
             println("BEFORE"  + image.length())
             val compressedImage = Compressor(context)
                 .setMaxWidth(1280)
@@ -72,6 +70,6 @@ class Event (
     }
 
     override fun toString(): String {
-        return "Event(UUID=$UUID, coords=$coords, image='$image', title='$title', desctription=$description, category=$category, creator=$creator)"
+        return "Event(UUID=$UUID, coordinates=$coordinates, image='$image', title='$title', desctription=$description, category=$category, creator=$creator)"
     }
 }

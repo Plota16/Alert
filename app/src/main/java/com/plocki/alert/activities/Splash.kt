@@ -21,28 +21,23 @@ import com.plocki.alert.*
 import com.plocki.alert.API.ApolloInstance
 import com.plocki.alert.API.modules.CategoriesApi
 import com.plocki.alert.API.modules.EventsApi
-import com.plocki.alert.API.modules.FetchCategoriesHandler
 import com.plocki.alert.API.modules.UserApi
-import com.plocki.alert.fragments.FragmentList
-import com.plocki.alert.fragments.FragmentMap
 import com.plocki.alert.models.Category
 import com.plocki.alert.models.Event
 import com.plocki.alert.models.Global
 import com.plocki.alert.utils.Store
 import kotlinx.android.synthetic.main.splash.*
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import com.google.gson.GsonBuilder
 import com.plocki.alert.utils.HttpErrorHandler
-import kotlin.math.roundToInt
 
 class Splash : Activity() {
 
     /** Duration of wait  */
-    private val SPLASH_DISPLAY_LENGTH = 100
-    private val  PERMISSION_LOCATION = 101
+    private val splashDisplayLength = 100
+    private val  permissionLocation = 101
     lateinit var activity: Activity
 
     /** Called when the activity is first created.  */
@@ -67,13 +62,13 @@ class Splash : Activity() {
             if (getPermissionsLocation()){
                 launchApp()
             }
-        }, SPLASH_DISPLAY_LENGTH.toLong())
+        }, splashDisplayLength.toLong())
     }
 
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         when(requestCode){
-            PERMISSION_LOCATION -> {
+            permissionLocation -> {
                 Toast.makeText(this, "Permission granted", Toast.LENGTH_SHORT).show()
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED){
                     launchApp()
@@ -137,7 +132,7 @@ class Splash : Activity() {
     private fun getPermissionsLocation(): Boolean {
         return if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_DENIED){
             val permissions = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
-            ActivityCompat.requestPermissions(this, permissions, PERMISSION_LOCATION)
+            ActivityCompat.requestPermissions(this, permissions, permissionLocation)
             false
         } else{
             true
@@ -189,7 +184,7 @@ class Splash : Activity() {
         EventsApi.fetchEvents(object : ApolloCall.Callback<AllEventsQuery.Data>() {
             override fun onFailure(e: ApolloException) {
                 //TODO sprawdzić czy usunąć linię poniżej
-                this@Splash.runOnUiThread { Toast.makeText(this@Splash, "Nie udało się pobrać danych z serwera", Toast.LENGTH_SHORT).show() }
+               // this@Splash.runOnUiThread { Toast.makeText(this@Splash, "Nie udało się pobrać danych z serwera", Toast.LENGTH_SHORT).show() }
                 val gson = GsonBuilder().create()
                 val errorMap = gson.fromJson(e.message, Map::class.java)
                 HttpErrorHandler.handle(errorMap["statusCode"].toString().toFloat().toInt())
@@ -250,14 +245,14 @@ class Splash : Activity() {
                     }
 
                     Global.getInstance()!!.eventList = eventContainer
-                    this@Splash?.runOnUiThread { Toast.makeText(this@Splash, "Pobrano danych z serwera", Toast.LENGTH_SHORT).show() }
+                    this@Splash.runOnUiThread { Toast.makeText(this@Splash, "Pobrano danych z serwera", Toast.LENGTH_SHORT).show() }
 
                 } else {
-                    this@Splash?.runOnUiThread { Toast.makeText(this@Splash, "Nie udało się pobrać danych z serwera", Toast.LENGTH_SHORT).show()}
+                    this@Splash.runOnUiThread { Toast.makeText(this@Splash, "Nie udało się pobrać danych z serwera", Toast.LENGTH_SHORT).show()}
                 }
 
-                GlobalScope.launch(Dispatchers.Main){
-                    Global.getInstance()!!.areCategoriesLoaed = true
+                GlobalScope.launch(Main){
+                    Global.getInstance()!!.areCategoriesLoaded = true
 
                     val intent = Intent(MyApplication.context, MainActivity::class.java)
                     intent.putExtra("SHOW_WELCOME", true)

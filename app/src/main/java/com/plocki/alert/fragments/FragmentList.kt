@@ -85,7 +85,7 @@ class FragmentList : Fragment(){
         val filteredList = ArrayList<Event>()
         for (event in inst!!.eventList) {
             if (inst.filterHashMap.get(event.category.title)!!) {
-                if (EventMethods.calcDistance(event.coords) < EventMethods.getMaxDistance(inst.currentDistanceFilter) || EventMethods.getMaxDistance(
+                if (EventMethods.calcDistance(event.coordinates) < EventMethods.getMaxDistance(inst.currentDistanceFilter) || EventMethods.getMaxDistance(
                         inst.currentDistanceFilter
                     ) == 0
                 ) {
@@ -93,7 +93,7 @@ class FragmentList : Fragment(){
                 }
             }
         }
-        val sortedList = filteredList.sortedBy { EventMethods.calcDistance(it.coords) }
+        val sortedList = filteredList.sortedBy { EventMethods.calcDistance(it.coordinates) }
         // RecyclerView node initialized here
         recycler.apply {
             // set a LinearLayoutManager to handle Android

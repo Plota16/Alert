@@ -16,14 +16,12 @@ import androidx.core.content.ContextCompat
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.Marker
-import com.plocki.alert.API.modules.FetchCategoriesHandler
 import com.plocki.alert.MyApplication
 import com.plocki.alert.activities.Details
 import com.plocki.alert.models.Global
 import com.plocki.alert.R
 import com.plocki.alert.models.EventMethods
 import com.plocki.alert.adapters.CustomInfoWindowGoogleMap
-import kotlinx.android.synthetic.main.fragment_map.*
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -40,13 +38,8 @@ class FragmentMap : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
     private lateinit var lastLocation: Location
     private var inst = Global.getInstance()
 
-    fun tmp(v: View){
-        GlobalScope.launch (Main){
-            delay(2000)
-            mMap.clear()
 
-        }
-    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -75,6 +68,7 @@ class FragmentMap : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
     }
 
     override fun onMapReady(p0: GoogleMap?) {
+
         mMap = p0!!
         val customInfoWidow = CustomInfoWindowGoogleMap(this.context!!)
         mMap.setInfoWindowAdapter(customInfoWidow)
@@ -82,14 +76,12 @@ class FragmentMap : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
 
         mMap.mapType = GoogleMap.MAP_TYPE_NORMAL
 
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(inst!!.userCameraPosition, 12f), 1, null)
         mMap.clear() //clear old markers
 
-        if (ContextCompat.checkSelfPermission(this.context!!, Manifest.permission.ACCESS_FINE_LOCATION)
-            == PackageManager.PERMISSION_GRANTED
-        ){
+        if (ContextCompat.checkSelfPermission(this.context!!, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
             mMap.isMyLocationEnabled = true
-        } else {
+        }
+        else {
             if (ContextCompat.checkSelfPermission(this.context!!, Manifest.permission.ACCESS_COARSE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED
             ) {
@@ -98,26 +90,24 @@ class FragmentMap : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
             }
         }
 
-        val context = this.context
-
         mMap.setOnCameraMoveListener {
             inst!!.userCameraPosition = mMap.cameraPosition.target
         }
 
 
-        val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context!!)
+        val fusedLocationClient = LocationServices.getFusedLocationProviderClient(this.context!!)
 
         fusedLocationClient.lastLocation.addOnSuccessListener {
             if (it != null) {
                 lastLocation = it
                 inst!!.userLocation = it
                 val currentLatLng = LatLng(it.latitude, it.longitude)
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f), 1, null)
 
-                if(inst!!.userCameraPosition == LatLng(52.39786111,16.92500000)){
-                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f), 1, null)
-                }
             }
         }
+
+
         updateMap()
     }
 
@@ -147,13 +137,13 @@ class FragmentMap : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
         for (event in inst!!.eventList) {
 
             if(isFilteringPossible) {
-                if(Global.getInstance()!!.filterHashMap.get(event.category.title)!!){
-                    if(EventMethods.calcDistance(event.coords) < EventMethods.getMaxDistance(inst!!.currentDistanceFilter) || EventMethods.getMaxDistance(inst!!.currentDistanceFilter) == 0) {
+                if(Global.getInstance()!!.filterHashMap[event.category.title]!!){
+                    if(EventMethods.calcDistance(event.coordinates) < EventMethods.getMaxDistance(inst!!.currentDistanceFilter) || EventMethods.getMaxDistance(inst!!.currentDistanceFilter) == 0) {
 
                         val infoContainer = event.category.title + "~" + event.title + "~" + "1"
                         val marker = mMap.addMarker(
                             MarkerOptions()
-                                .position(event.coords)
+                                .position(event.coordinates)
                                 .title(infoContainer)
                         )
 
@@ -166,7 +156,7 @@ class FragmentMap : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
                 val infoContainer = event.category.title + "~" + event.title + "~" + "1"
                 val marker = mMap.addMarker(
                     MarkerOptions()
-                        .position(event.coords)
+                        .position(event.coordinates)
                         .title(infoContainer)
                 )
                 inst!!.mapHashMap[marker.id] = event

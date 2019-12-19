@@ -26,7 +26,7 @@ class ConnectionObserver : Runnable {
                     Global.getInstance()!!.isErrorActivityOpen = true
                     val context = MyApplication.getAppContext()
                     val intent = Intent(context, ConnectionError::class.java)
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                     intent.putExtra("SHOW_WELCOME", true)
                     context.startActivity(intent)
                 }

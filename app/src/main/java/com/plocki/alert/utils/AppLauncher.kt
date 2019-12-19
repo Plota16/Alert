@@ -1,14 +1,10 @@
 package com.plocki.alert.utils
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
-import android.opengl.Visibility
-import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
@@ -17,7 +13,6 @@ import com.plocki.alert.API.modules.UserApi
 import com.plocki.alert.CreateUserMutation
 import com.plocki.alert.MyApplication
 import com.plocki.alert.activities.LoginPanel
-import com.plocki.alert.activities.MainActivity
 import com.plocki.alert.activities.Splash
 import com.plocki.alert.models.Global
 import com.plocki.alert.models.ProviderUser
@@ -66,7 +61,7 @@ AppLauncher {
 
         googleService.signOut()
         twitterService.signOut()
-        facebookService.siqnOut()
+        facebookService.signOut()
         if (currentActivity::class != LoginPanel::class || currentActivity::class != Splash::class) {
             currentActivity.runOnUiThread {
                 Toast.makeText(

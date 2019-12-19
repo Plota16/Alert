@@ -15,15 +15,15 @@ class TwitterService(activity: Activity) {
 
 
     fun buildConfiguration() : TwitterConfig {
-        val CONSUMER_KEY = "4jkx0vsmHb2BekJoaUEgzpWC0"
-        val CONSUMER_SECRET = "Yczx4FBpVhmXrhfdLFhbJ2gSFgo2mAY1OmofM9lnyljxkWDuXY"
+        val consumerKey = "4jkx0vsmHb2BekJoaUEgzpWC0"
+        val consumerSecret = "Yczx4FBpVhmXrhfdLFhbJ2gSFgo2mAY1OmofM9lnyljxkWDuXY"
 
         return TwitterConfig.Builder(mActivity)
             .logger(DefaultLogger(Log.DEBUG))//enable logging when app is in debug mode
             .twitterAuthConfig(
                 TwitterAuthConfig(
-                    CONSUMER_KEY,
-                    CONSUMER_SECRET
+                    consumerKey,
+                    consumerSecret
                 )
             )
             .debug(true)//enable debug mode
@@ -43,7 +43,7 @@ class TwitterService(activity: Activity) {
     }
 
     fun signOut() {
-        val twitterSession = TwitterCore.getInstance().sessionManager.clearActiveSession()
+        TwitterCore.getInstance().sessionManager.clearActiveSession()
     }
 
     fun fetchTwitterEmail(twitterSession: TwitterSession) {

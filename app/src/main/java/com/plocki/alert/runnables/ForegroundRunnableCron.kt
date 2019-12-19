@@ -1,8 +1,6 @@
 package com.plocki.alert.runnables
 
 import com.plocki.alert.API.modules.FetchEventsHandler
-import com.plocki.alert.MyApplication
-import com.plocki.alert.activities.MainActivity
 import com.plocki.alert.models.Global
 
 class ForegroundRunnableCron : Runnable {

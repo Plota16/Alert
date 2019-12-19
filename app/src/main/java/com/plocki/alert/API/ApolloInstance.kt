@@ -7,8 +7,8 @@ import com.plocki.alert.models.Global
 import okhttp3.OkHttpClient
 
 object ApolloInstance {
-    var apolloClient: ApolloClient? = null
-    var BASE_URL = "https://${Global.ip}/graphql"
+    private var apolloClient: ApolloClient? = null
+    private var BASE_URL = "https://${Global.ip}/graphql"
 
     init {
         buildApolloClient()

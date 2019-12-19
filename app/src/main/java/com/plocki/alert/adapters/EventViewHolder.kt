@@ -14,11 +14,8 @@ import com.plocki.alert.activities.Details
 import com.plocki.alert.models.Event
 import com.plocki.alert.models.EventMethods
 import com.plocki.alert.models.Global
-import com.squareup.picasso.Picasso
-import retrofit2.http.Url
 import java.math.BigDecimal
 import java.math.RoundingMode
-import java.net.URL
 import kotlin.math.roundToInt
 
 class EventViewHolder(inflater: LayoutInflater, parent: ViewGroup, act: FragmentActivity, cont : Context) :
@@ -63,7 +60,7 @@ class EventViewHolder(inflater: LayoutInflater, parent: ViewGroup, act: Fragment
         inst!!.listHashMap.put(layoutPosition.toString(),event)
 
         var res = ""
-        val dist = EventMethods.calcDistance(event.coords)
+        val dist = EventMethods.calcDistance(event.coordinates)
         if(dist < 1000){
             var dintInDouble = dist.toDouble()
             dintInDouble /= 10

@@ -10,11 +10,9 @@ import android.content.pm.PackageManager
 import android.graphics.Color
 import android.location.Location
 import android.net.Uri
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.DisplayMetrics
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -27,7 +25,6 @@ import androidx.core.content.ContextCompat
 import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
-import com.bumptech.glide.Glide
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -47,18 +44,16 @@ import com.plocki.alert.models.Global
 import com.plocki.alert.utils.FileGetter
 import com.plocki.alert.utils.HttpErrorHandler
 import kotlinx.android.synthetic.main.activity_add.progressBar
-import kotlinx.android.synthetic.main.activity_details.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.lang.Exception
 import java.util.*
-import kotlin.math.roundToInt
 
 
 class Add : AppCompatActivity(), OnMapReadyCallback {
 
 
-    val inst = Global.getInstance()
+    private val inst = Global.getInstance()
 
     companion object {
         var hasLocation = false
@@ -127,7 +122,6 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
                     PackageManager.PERMISSION_GRANTED){
                     pickImageFromGallery()
                 }
-
                 else{
                     Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
                 }
@@ -137,7 +131,6 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
                     PackageManager.PERMISSION_GRANTED){
                     launchCamera()
                 }
-
                 else{
                     Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
                 }
@@ -150,7 +143,7 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
             val uri = data?.data
 
             if (uri != null) {
-                image_uri = data?.data
+                image_uri = data.data!!
             }
 
 //            val apolloClient = MyApolloClient()
@@ -228,14 +221,14 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
             if(hasLocation){
                 locationTransformed = "$lat+$long"
             }
-            intent.putExtra("Coords", locationTransformed)
+            intent.putExtra("coordinate", locationTransformed)
             startActivityForResult(intent, PICK_CODE)
         }
 
     }
 
     //ON CLICKS
-    fun onAddImageClick() {
+    private fun onAddImageClick() {
         val menuItemView = findViewById<View>(R.id.image) // SAME ID AS MENU ID
         val context = applicationContext
         val popupMenu = PopupMenu(context, menuItemView)
@@ -257,18 +250,18 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
     }
 
 
-    fun onChooseCategoryClick() {
+    private fun onChooseCategoryClick() {
         val singleChoiceItems :Array<String> = inst!!.categoryList.toTypedArray()
 
         val itemSelected = choose
         val tmp = AlertDialog.Builder(this, R.style.CustomDialogTheme)
             .setTitle(this.getString(R.string.add_dialog_title))
             .setSingleChoiceItems(singleChoiceItems, itemSelected) {
-                    dialogInterface, selectedIndex ->
+                    _, selectedIndex ->
                 choose = selectedIndex
             }
             .setPositiveButton(this.getString(R.string.add_dialog_positive)) {
-                    dialog, which ->
+                    _, _ ->
                 category_in.setText(singleChoiceItems[choose])
                 validateCategory() }
             .setNegativeButton(this.getString(R.string.add_dialog_negative), null)
@@ -286,7 +279,7 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
         val values = ContentValues()
         values.put(MediaStore.Images.Media.TITLE, "New Picture")
         values.put(MediaStore.Images.Media.DESCRIPTION, "From the Camera")
-        image_uri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+        image_uri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)!!
         //camera intent
         val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, image_uri)
@@ -301,14 +294,9 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun permissionsRead(){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED){
-                val permissions = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
-                ActivityCompat.requestPermissions(this, permissions, PERMISSION_READ)
-            }
-            else{
-                pickImageFromGallery()
-            }
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED){
+            val permissions = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
+            ActivityCompat.requestPermissions(this, permissions, PERMISSION_READ)
         }
         else{
             pickImageFromGallery()
@@ -316,33 +304,24 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun permissionsCamera(){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED &&
-                ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED){
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED &&
+            ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED){
 
-                val permissions = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
-                ActivityCompat.requestPermissions(this, permissions, PERMISSION_CAMERA)
-            }
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED){
+            val permissions = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
+            ActivityCompat.requestPermissions(this, permissions, PERMISSION_CAMERA)
+        }
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED){
 
-                val permissions = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                ActivityCompat.requestPermissions(this, permissions, PERMISSION_CAMERA)
-            }
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED){
-                val permissions = arrayOf( Manifest.permission.CAMERA)
-                ActivityCompat.requestPermissions(this, permissions, PERMISSION_CAMERA)
-            }
-            else{
-                launchCamera()
-            }
+            val permissions = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            ActivityCompat.requestPermissions(this, permissions, PERMISSION_CAMERA)
+        }
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED){
+            val permissions = arrayOf( Manifest.permission.CAMERA)
+            ActivityCompat.requestPermissions(this, permissions, PERMISSION_CAMERA)
         }
         else{
             launchCamera()
         }
-
-
-
-
     }
 
     private fun validateTitle(): Boolean {
@@ -367,7 +346,7 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun validateCategory(): Boolean {
-        var temp = category_in.text.toString()
+        val temp = category_in.text.toString()
         return if(temp != ""){
             category.error = null
             true
@@ -377,7 +356,7 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    fun addEvent() {
+    private fun addEvent() {
 
         val titleValidation = validateTitle()
         val categoryValidation = validateCategory()
@@ -391,14 +370,14 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
                 }
             }catch (ex : Exception){}
 
-            var tempCategory = category_in.text.toString()
+            val tempCategory = category_in.text.toString()
             val event = Event(
                 UUID = UUID.randomUUID(),
-                coords = LatLng(lat, long),
+                coordinates = LatLng(lat, long),
                 image = path,
                 title = add_title.text.toString(),
                 description = desc2.text.toString(),
-                category = Global.getInstance()!!.categoryHashMap.get(Global.getInstance()!!.titleUUIDHashMap.get(tempCategory))!!,
+                category = Global.getInstance()!!.categoryHashMap[Global.getInstance()!!.titleUUIDHashMap[tempCategory]]!!,
                 creator = 1
             )
             window.setFlags(
@@ -407,7 +386,7 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
             progressBar.visibility = View.VISIBLE
             val createEventDto = event.createEventDto(this)
             GlobalScope.launch {
-                val createEventResult = EventsApi.createEvent(
+                EventsApi.createEvent(
                     createEventDto,
                     object : ApolloCall.Callback<CreateEventMutation.Data>() {
                         override fun onFailure(e: ApolloException) {
@@ -446,19 +425,14 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
                                         "RESPONSE" + response.data()!!.events()
                                     )
                                     val eventContainer = ArrayList<Event>()
-                                    val instance = Global.getInstance()
-                                    for (event in events) {
+                                    for (singleEvent in events) {
                                         val currentEvent = Event.fromResponse(
-                                            event.uuid().toString(),
-                                            event.coords(),
-                                            event.title(),
-                                            event.image(),
+                                            singleEvent.uuid().toString(),
+                                            singleEvent.coords(),
+                                            singleEvent.title(),
+                                            singleEvent.image(),
                                             "opis",
-                                            Global.getInstance()!!.categoryHashMap.get(
-                                                Global.getInstance()!!.titleUUIDHashMap.get(
-                                                    tempCategory
-                                                )
-                                            )!!,
+                                            Global.getInstance()!!.categoryHashMap[Global.getInstance()!!.titleUUIDHashMap[tempCategory]]!!,
                                             1
                                         )
                                         eventContainer.add(currentEvent)

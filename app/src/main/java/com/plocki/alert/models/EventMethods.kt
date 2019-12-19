@@ -12,17 +12,12 @@ import android.location.Location
 import android.location.LocationManager
 import android.net.ConnectivityManager
 import com.jaychang.sa.Initializer
-import java.io.IOException
-import java.net.HttpURLConnection
-import java.net.URL
-
-
 class EventMethods {
 
     companion object {
 
         fun isGpsOn(): Boolean {
-            var locationManager = Initializer.context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+            val locationManager = Initializer.context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
             return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
         }
         fun isNetworkOn(context: Context): Boolean {
@@ -52,31 +47,16 @@ class EventMethods {
 
         }
 
-        fun imageFromURL(context: Context, src : String): BitmapDrawable? {
-            try {
-                val url = URL(src)
-                val connection = url.openConnection() as HttpURLConnection
-                connection.doInput = true
-                connection.connect()
-                val input = connection.inputStream
-                val bitmap = BitmapFactory.decodeStream(input)
-                return BitmapDrawable(context.resources, bitmap)
-            } catch (e: IOException) {
-                // Log exception
-                return null
-            }
-
-        }
 
         fun calcDistance(point: LatLng) : Int{
             val inst = Global.getInstance()
 
-            var pointLocation = Location("")
+            val pointLocation = Location("")
             pointLocation.longitude = point.longitude
             pointLocation.latitude = point.latitude
-            var currLocation = inst!!.userLocation
+            val currLocation = inst!!.userLocation
 
-            var distance = currLocation.distanceTo(pointLocation)
+            val distance = currLocation.distanceTo(pointLocation)
 
 
 

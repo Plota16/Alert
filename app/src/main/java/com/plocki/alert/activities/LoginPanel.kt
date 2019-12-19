@@ -5,22 +5,12 @@ import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
-import com.apollographql.apollo.ApolloCall
-import com.apollographql.apollo.api.Response
-import com.apollographql.apollo.exception.ApolloException
-import com.facebook.FacebookException
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.plocki.alert.API.modules.FetchCategoriesHandler
-import com.plocki.alert.API.modules.FetchEventsHandler
-import com.plocki.alert.API.modules.UserApi
-import com.plocki.alert.MyApplication
 import com.plocki.alert.R
-import com.plocki.alert.WhoAmIQuery
 import com.plocki.alert.models.Global
 import com.plocki.alert.services.FacebookService
 import com.plocki.alert.services.GoogleService
 import com.plocki.alert.services.TwitterService
-import com.plocki.alert.utils.Store
 import com.twitter.sdk.android.core.Twitter
 import kotlinx.android.synthetic.main.activity_login_panel.*
 
@@ -63,7 +53,7 @@ class LoginPanel : AppCompatActivity() {
         }
 
         //FACEBOOK
-        face_login_button.setOnClickListener(View.OnClickListener {
+        face_login_button.setOnClickListener {
             window.setFlags(
                 WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
                 WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
@@ -72,7 +62,7 @@ class LoginPanel : AppCompatActivity() {
             facebookService.signIn()
 
 
-        })
+        }
 
     }
 
@@ -90,12 +80,5 @@ class LoginPanel : AppCompatActivity() {
     override fun onBackPressed() {
         finishAffinity()
     }
-
-    fun logoClicked(view: View) {
-        val intent = Intent(this, MainActivity::class.java)
-        intent.putExtra("SHOW_WELCOME", true)
-        this.startActivity(intent)
-    }
-
 
 }

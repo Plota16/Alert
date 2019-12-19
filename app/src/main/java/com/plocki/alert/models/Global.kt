@@ -1,12 +1,9 @@
 package com.plocki.alert.models
 
+import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.Context
 import android.location.Location
 import com.google.android.gms.maps.model.LatLng
-import java.lang.reflect.Array
-import java.util.*
-import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 class Global {
@@ -18,7 +15,7 @@ class Global {
     var isDataChanged = false
     var isDataLoadedFirstTime = true
     var isMapCreated = true
-    var areCategoriesLoaed = false
+    var areCategoriesLoaded = false
     var isAppClosed = false
     var currentActivity: Activity? = null
 
@@ -47,6 +44,7 @@ class Global {
 
     companion object {
         const val ip = "alert-api-staging.eu-central-1.elasticbeanstalk.com"
+        @SuppressLint("StaticFieldLeak")
         private var mInstance: Global? = null
 
         @Synchronized fun getInstance(): Global? {
