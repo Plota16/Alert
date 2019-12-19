@@ -36,6 +36,7 @@ import com.google.gson.GsonBuilder
 import com.plocki.alert.API.modules.EventsApi
 import com.plocki.alert.AllEventsQuery
 import com.plocki.alert.CreateEventMutation
+import com.plocki.alert.MyApplication.Companion.context
 import com.plocki.alert.R
 import com.plocki.alert.models.Event
 import kotlinx.android.synthetic.main.activity_add.*
@@ -68,12 +69,17 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
         private const val CAMERA_CODE = 2001
         private const val PERMISSION_READ = 1001
         private const val PERMISSION_CAMERA= 1002
+        private const val PERMISSION_STORAGE = 1003
+        private const val PERMISSION_STORAGE_AND_CAMERA = 1004
     }
 
     //OVERRIDES
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add)
+
+        lat = 0.0
+        long = 0.0
 
         supportActionBar!!.title = this.getString(R.string.add_menu_title)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
@@ -95,7 +101,6 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
 
         imageclick.setOnClickListener{ onAddImageClick() }
     }
-
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.add_menu, menu)
@@ -135,6 +140,25 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
                     Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
                 }
             }
+            PERMISSION_STORAGE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] ==
+                    PackageManager.PERMISSION_GRANTED){
+                    launchCamera()
+                }
+                else{
+                    Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
+                }
+            }
+            PERMISSION_STORAGE_AND_CAMERA -> {
+                if (grantResults.isNotEmpty() &&
+                    grantResults[1] == PackageManager.PERMISSION_GRANTED &&
+                    grantResults[1] == PackageManager.PERMISSION_GRANTED){
+                    launchCamera()
+                }
+                else{
+                    Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
 
@@ -145,9 +169,6 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
             if (uri != null) {
                 image_uri = data.data!!
             }
-
-//            val apolloClient = MyApolloClient()
-//            apolloClient.createEvent(File(res))
 
             image.background = thumbnailFromUri(this, uri)
 
@@ -176,7 +197,10 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
             )
         }
 
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(lat,long), 14f),1, null)
+        if(hasLocation){
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(lat,long), 14f),1, null)
+        }
+        validateLocation()
         super.onActivityResult(requestCode, resultCode, data)
     }
 
@@ -249,7 +273,6 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
         popupMenu.show()
     }
 
-
     private fun onChooseCategoryClick() {
         val singleChoiceItems :Array<String> = inst!!.categoryList.toTypedArray()
 
@@ -308,12 +331,12 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
             ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED){
 
             val permissions = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
-            ActivityCompat.requestPermissions(this, permissions, PERMISSION_CAMERA)
+            ActivityCompat.requestPermissions(this, permissions, PERMISSION_STORAGE_AND_CAMERA)
         }
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED){
 
             val permissions = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            ActivityCompat.requestPermissions(this, permissions, PERMISSION_CAMERA)
+            ActivityCompat.requestPermissions(this, permissions, PERMISSION_STORAGE)
         }
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED){
             val permissions = arrayOf( Manifest.permission.CAMERA)
@@ -338,9 +361,11 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
     private fun validateLocation() : Boolean {
         return if(lat != 0.0 && long != 0.0){
             localization_lay.error = null
+            localization_textView.setTextColor(ContextCompat.getColor(this,R.color.colorPrimary))
             true
         } else{
             localization_lay.error = getString(R.string.add_location_error)
+            localization_textView.setTextColor(ContextCompat.getColor(this,R.color.errorRed))
             false
         }
     }

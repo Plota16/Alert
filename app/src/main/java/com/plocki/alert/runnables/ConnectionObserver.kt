@@ -14,7 +14,7 @@ class ConnectionObserver : Runnable {
     private var networkEnabled = false
 
     override fun run() {
-        Thread.sleep(1000)
+        //Thread.sleep(1000)
         while (!Global.getInstance()!!.isAppClosed){
             if (!Global.getInstance()!!.isErrorActivityOpen){
                 try{

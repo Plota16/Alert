@@ -7,5 +7,6 @@
     <color name="grey">#77FFFFFF</color>
     <color name="green">#FF4CAF50</color>
     <color name="red">#FFF44336</color>
+    <color name="errorRed">#B00020</color>
 
 </resources>

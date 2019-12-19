@@ -10,6 +10,7 @@ object HttpErrorHandler {
         val currentActivity = Global.getInstance()!!.currentActivity!!
         when (statusCode) {
             401 -> {
+                Toast.makeText(currentActivity, "Błąd 401", Toast.LENGTH_SHORT).show()
                 AppLauncher.logOut()
             }
             500 -> {

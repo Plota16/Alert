@@ -19,10 +19,6 @@ import kotlinx.android.synthetic.main.fragment_profile.*
 
 class FragmentProfile : Fragment() {
 
-    private lateinit var googleService: GoogleService
-    private lateinit var twitterService: TwitterService
-    private lateinit var facebookService: FacebookService
-
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {

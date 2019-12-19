@@ -17,6 +17,7 @@ class Global {
     var isMapCreated = true
     var areCategoriesLoaded = false
     var isAppClosed = false
+    var isFirstStart = true
     var currentActivity: Activity? = null
 
 

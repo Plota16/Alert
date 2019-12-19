@@ -179,17 +179,19 @@
                 android:layout_marginEnd="16dp"
             android:layout_height="wrap_content"
             android:layout_width="match_parent">
-        <TextView
 
-                app:errorEnabled="true"
-                android:id="@+id/textView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:text="@string/add_location_text"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                android:textColor="@color/colorPrimary" />
+            <TextView
+
+                    android:id="@+id/localization_textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:text="@string/add_location_text"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                    android:textColor="@color/colorPrimary"
+                    app:errorEnabled="true" />
 
         <fragment
                 android:id="@+id/fragmini"

@@ -60,7 +60,11 @@ class Splash : Activity() {
 
         Handler().postDelayed({
             if (getPermissionsLocation()){
-                launchApp()
+                if(!Global.getInstance()!!.isErrorActivityOpen){
+                    if(!Global.getInstance()!!.isErrorActivityOpen){
+                        launchApp()
+                    }
+                }
             }
         }, splashDisplayLength.toLong())
     }
@@ -71,7 +75,9 @@ class Splash : Activity() {
             permissionLocation -> {
                 Toast.makeText(this, "Permission granted", Toast.LENGTH_SHORT).show()
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                    launchApp()
+                    if(!Global.getInstance()!!.isErrorActivityOpen){
+                        launchApp()
+                    }
                 }
 
                 else{
@@ -81,6 +87,17 @@ class Splash : Activity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        if(!Global.getInstance()!!.isFirstStart){
+            if(!Global.getInstance()!!.isErrorActivityOpen){
+                launchApp()
+            }
+        }
+        else{
+            Global.getInstance()!!.isFirstStart = false
+        }
+    }
 
     private fun launchApp(){
         if(Global.getInstance()!!.userToken != "") {
