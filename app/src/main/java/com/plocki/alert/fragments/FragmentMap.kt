@@ -3,6 +3,7 @@ package com.plocki.alert.fragments
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.location.Location
 import androidx.fragment.app.Fragment
 import android.os.Bundle
@@ -10,12 +11,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
 import androidx.core.content.ContextCompat
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.*
-import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.model.*
 import com.plocki.alert.MyApplication
 import com.plocki.alert.activities.Details
 import com.plocki.alert.models.Global
@@ -102,7 +101,7 @@ class FragmentMap : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
                 lastLocation = it
                 inst!!.userLocation = it
                 val currentLatLng = LatLng(it.latitude, it.longitude)
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f), 1, null)
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 14f), 1, null)
 
             }
         }
@@ -145,6 +144,7 @@ class FragmentMap : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
                             MarkerOptions()
                                 .position(event.coordinates)
                                 .title(infoContainer)
+                                .icon(getMarkerIcon(event.category.color))
                         )
 
                         inst!!.mapHashMap[marker.id] = event
@@ -158,11 +158,17 @@ class FragmentMap : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
                     MarkerOptions()
                         .position(event.coordinates)
                         .title(infoContainer)
+                        .icon(getMarkerIcon(event.category.color))
                 )
                 inst!!.mapHashMap[marker.id] = event
 
             }
         }
         isFilteringPossible = true
+    }
+    fun getMarkerIcon(color: String): BitmapDescriptor {
+        val hsv = FloatArray(3)
+        Color.colorToHSV(Color.parseColor(color), hsv)
+        return BitmapDescriptorFactory.defaultMarker(hsv[0])
     }
 }

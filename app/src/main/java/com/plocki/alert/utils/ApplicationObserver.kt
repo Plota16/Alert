@@ -31,6 +31,7 @@ class ApplicationObserver : LifecycleObserver {
     fun onBackground() {
         Global.getInstance()!!.isAppClosed = true
         backgroundRunnable.seconds = 600000
+
         val thread = Thread(backgroundRunnable)
         thread.start()
     }

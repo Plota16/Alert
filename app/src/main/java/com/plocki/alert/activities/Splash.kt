@@ -16,6 +16,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.api.Response
+import com.apollographql.apollo.exception.ApolloCanceledException
 import com.apollographql.apollo.exception.ApolloException
 import com.apollographql.apollo.exception.ApolloHttpException
 import com.plocki.alert.*
@@ -201,7 +202,7 @@ class Splash : Activity() {
                // this@Splash.runOnUiThread { Toast.makeText(this@Splash, "Nie udało się pobrać danych z serwera", Toast.LENGTH_SHORT).show() }
                 HttpErrorHandler.handle(500)
             }
-
+            
             override fun onResponse(response: Response<AllEventsQuery.Data>) {
                 if (response.hasErrors()) {
                     Log.e("ERROR ", response.errors()[0].customAttributes()["statusCode"].toString())

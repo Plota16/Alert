@@ -9,14 +9,14 @@ class ForegroundRunnableCron : Runnable {
     override fun run() {
         var i = 0
         while (!Global.getInstance()!!.isAppClosed) {
+            i++
+            println("Pobieram dane z serwera: $i" )
+            FetchEventsHandler.fetchEvents()
             try {
                 Thread.sleep(seconds)
             } catch (e: InterruptedException) {
                 e.printStackTrace()
             }
-            i++
-            println("Pobieram dane z serwera: $i" )
-            FetchEventsHandler.fetchEvents()
         }
     }
 }
