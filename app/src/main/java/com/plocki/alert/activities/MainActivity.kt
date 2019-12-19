@@ -2,21 +2,36 @@ package com.plocki.alert.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.WindowManager
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.FragmentTransaction
+import com.apollographql.apollo.ApolloCall
+import com.apollographql.apollo.api.Response
+import com.apollographql.apollo.exception.ApolloException
+import com.google.gson.GsonBuilder
+import com.plocki.alert.API.ApolloInstance
+import com.plocki.alert.API.modules.EventsApi
 import com.plocki.alert.API.modules.FetchEventsHandler
+import com.plocki.alert.AllEventsQuery
 import com.plocki.alert.R
 import com.plocki.alert.fragments.FragmentList
 import com.plocki.alert.fragments.FragmentMap
 import com.plocki.alert.fragments.FragmentProfile
+import com.plocki.alert.models.Category
+import com.plocki.alert.models.Event
 import com.plocki.alert.models.Global
+import com.plocki.alert.utils.HttpErrorHandler
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
@@ -25,6 +40,7 @@ class MainActivity : AppCompatActivity() {
     private val textFragmentMap = FragmentMap()
     private val textFragmentList = FragmentList()
     private val textFragmentProfile = FragmentProfile()
+    private var isBlocked = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -132,31 +148,33 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if(currentFragment == "Map"){
-            finishAffinity()
-        }
-        else{
-            bottom_navigation.selectedItemId = R.id.action_map
-            val manager = supportFragmentManager
-            val transaction: FragmentTransaction
-            addbutton.show()
-            filterbutton.show()
-            transaction = manager.beginTransaction()
-
-            when(currentFragment){
-                "List" -> {
-                    transaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
-                    transaction.hide(textFragmentList)
-                }
-                "Profile" -> {
-                    transaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
-                    transaction.hide(textFragmentProfile)
-                }
+        if(!isBlocked){
+            if(currentFragment == "Map"){
+                finishAffinity()
             }
+            else{
+                bottom_navigation.selectedItemId = R.id.action_map
+                val manager = supportFragmentManager
+                val transaction: FragmentTransaction
+                addbutton.show()
+                filterbutton.show()
+                transaction = manager.beginTransaction()
 
-            transaction.show(textFragmentMap)
-            currentFragment = "Map"
-            transaction.commit()
+                when(currentFragment){
+                    "List" -> {
+                        transaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
+                        transaction.hide(textFragmentList)
+                    }
+                    "Profile" -> {
+                        transaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
+                        transaction.hide(textFragmentProfile)
+                    }
+                }
+
+                transaction.show(textFragmentMap)
+                currentFragment = "Map"
+                transaction.commit()
+            }
         }
 
     }
@@ -171,7 +189,10 @@ class MainActivity : AppCompatActivity() {
         val id = item.itemId
 
         if (id == R.id.action_refresh) {
-            FetchEventsHandler.fetchEvents(this)
+            GlobalScope.launch(Main){
+                block()
+                fetchEvents()
+            }
         }
 
         if (id == R.id.action_more) {
@@ -195,6 +216,104 @@ class MainActivity : AppCompatActivity() {
 
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun block(){
+        isBlocked = true
+        progressBarMap.visibility = View.VISIBLE
+        this.window.setFlags(
+            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+    }
+
+    private fun unBlock(){
+        isBlocked = false
+        progressBarMap.visibility = View.GONE
+        this.window.clearFlags(
+            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+    }
+
+    private fun fetchEvents(){
+        if(!Global.getInstance()!!.isErrorActivityOpen && Global.getInstance()!!.isUserSigned){
+
+            ApolloInstance.buildApolloClient()
+            EventsApi.fetchEvents(object : ApolloCall.Callback<AllEventsQuery.Data>() {
+                override fun onFailure(e: ApolloException) {
+                    //TODO sprawdzić czy zakomentować linię niżej
+                    this@MainActivity.runOnUiThread { Toast.makeText(this@MainActivity, "Nie udało się pobrać danych z serwera", Toast.LENGTH_SHORT).show() }
+                    HttpErrorHandler.handle(500)
+                }
+
+                override fun onResponse(response: Response<AllEventsQuery.Data>) {
+                    if (response.hasErrors()) {
+                        Log.e("ERROR ", response.errors()[0].customAttributes()["statusCode"].toString())
+                        val gson = GsonBuilder().create()
+                        val errorMap = gson.fromJson(response.errors()[0].message(), Map::class.java)
+                        HttpErrorHandler.handle(errorMap["statusCode"].toString().toFloat().toInt())
+                        return
+                    }
+
+                    if (response.data() != null) {
+                        val events = response.data()!!.events()
+                        val eventContainer = ArrayList<Event>()
+                        for (event in events) {
+                            val currentEvent = Event.fromResponse(
+                                event.uuid().toString(),
+                                event.coords(),
+                                event.title(),
+                                event.image(),
+                                event.description(),
+                                Category(
+                                    event.category()!!.uuid().toString(),
+                                    event.category()!!.title(),
+                                    event.category()!!.color()),
+                                1
+                            )
+                            eventContainer.add(currentEvent)
+                        }
+
+                        if (Global.getInstance()!!.eventList.size != eventContainer.size) {
+                            if(Global.getInstance()!!.isDataLoadedFirstTime){
+                                Global.getInstance()!!.isDataLoadedFirstTime = false
+                            }
+                            else{
+                                Global.getInstance()!!.isDataChanged = true
+                            }
+                        } else {
+                            for (i in 0 until Integer.max(
+                                Global.getInstance()!!.eventList.size,
+                                eventContainer.size
+                            )) {
+                                val event1 = Global.getInstance()!!.eventList[i].UUID
+                                val event2 = eventContainer[i].UUID
+                                if (event1 != event2) {
+                                    if(Global.getInstance()!!.isDataLoadedFirstTime){
+                                        Global.getInstance()!!.isDataLoadedFirstTime = false
+                                    }
+                                    else{
+                                        Global.getInstance()!!.isDataChanged = true
+                                    }
+                                }
+                            }
+
+                        }
+
+                        Global.getInstance()!!.eventList = eventContainer
+                        GlobalScope.launch(Main){
+                            unBlock()
+                        }
+
+
+                    } else {
+                        this@MainActivity.runOnUiThread { Toast.makeText(this@MainActivity, "Nie udało się pobrać danych z serwera", Toast.LENGTH_SHORT).show()}
+                    }
+
+
+
+                }
+
+            })
+        }
     }
 
 }

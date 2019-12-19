@@ -89,6 +89,8 @@ class Splash : Activity() {
         }
     }
 
+    override fun onBackPressed() {
+    }
     override fun onResume() {
         super.onResume()
         if(!Global.getInstance()!!.isFirstStart){
@@ -174,6 +176,9 @@ class Splash : Activity() {
                     }
 
                     if (response.data() != null) {
+                        Global.getInstance()!!.categoryList.clear()
+                        Global.getInstance()!!.filterHashMap.clear()
+                        Global.getInstance()!!.titleUUIDHashMap.clear()
                         println("CATEGORIES " + response.data()!!.categories().toString())
                         for (category in response.data()!!.categories()){
                             Global.getInstance()!!.categoryHashMap[category.uuid().toString()] =

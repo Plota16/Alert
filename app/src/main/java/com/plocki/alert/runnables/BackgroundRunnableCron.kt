@@ -5,17 +5,18 @@ import com.plocki.alert.models.Global
 
 class BackgroundRunnableCron : Runnable {
     var seconds: Long = 2000
+    var isAlive = true
 
     override fun run() {
         var i = 0
-        while (Global.getInstance()!!.isAppClosed) {
-
+        while (isAlive) {
             println("Pobieram back dane z serwera: $i" )
             FetchEventsHandler.fetchEvents()
             try {
                 Thread.sleep(seconds)
             } catch (e: InterruptedException) {
-                e.printStackTrace()
+                println("Exception handled $e")
+                break
             }
             i++
         }

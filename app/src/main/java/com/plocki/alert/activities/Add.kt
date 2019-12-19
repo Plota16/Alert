@@ -34,6 +34,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.gson.GsonBuilder
 import com.plocki.alert.API.modules.EventsApi
+import com.plocki.alert.API.modules.FetchEventsHandler
 import com.plocki.alert.AllEventsQuery
 import com.plocki.alert.CreateEventMutation
 import com.plocki.alert.MyApplication.Companion.context
@@ -253,7 +254,7 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
 
     //ON CLICKS
     private fun onAddImageClick() {
-        val menuItemView = findViewById<View>(R.id.image) // SAME ID AS MENU ID
+        val menuItemView = findViewById<View>(R.id.image)
         val context = applicationContext
         val popupMenu = PopupMenu(context, menuItemView)
         popupMenu.inflate(R.menu.image_menu)
@@ -409,6 +410,7 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
                 WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
                 WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
             progressBar.visibility = View.VISIBLE
+
             val createEventDto = event.createEventDto(this)
             GlobalScope.launch {
                 EventsApi.createEvent(
@@ -427,42 +429,7 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
                                 HttpErrorHandler.handle(errorMap["statusCode"].toString().toFloat().toInt())
                                 return
                             }
-                            EventsApi.fetchEvents(object : ApolloCall.Callback<AllEventsQuery.Data>() {
-                                override fun onFailure(e: ApolloException) {
-                                    HttpErrorHandler.handle(500)
-                                    progressBar.visibility = View.INVISIBLE
-                                }
-
-                                override fun onResponse(response: Response<AllEventsQuery.Data>) {
-                                    if (response.hasErrors()) {
-                                        val gson = GsonBuilder().create()
-                                        val errorMap = gson.fromJson(response.errors()[0].message(), Map::class.java)
-                                        HttpErrorHandler.handle(errorMap["statusCode"].toString().toFloat().toInt())
-                                        return
-                                    }
-                                    val events = response.data()!!.events()
-                                    Log.d(
-                                        "AA",
-                                        "RESPONSE" + response.data()!!.events()
-                                    )
-                                    val eventContainer = ArrayList<Event>()
-                                    for (singleEvent in events) {
-                                        val currentEvent = Event.fromResponse(
-                                            singleEvent.uuid().toString(),
-                                            singleEvent.coords(),
-                                            singleEvent.title(),
-                                            singleEvent.image(),
-                                            "opis",
-                                            Global.getInstance()!!.categoryHashMap[Global.getInstance()!!.titleUUIDHashMap[tempCategory]]!!,
-                                            1
-                                        )
-                                        eventContainer.add(currentEvent)
-                                    }
-                                    Global.getInstance()!!.eventList = eventContainer
-                                    progressBar.visibility = View.INVISIBLE
-                                    finish()
-                                }
-                            })
+                            FetchEventsHandler.fetchEvents(finish = true, activity = this@Add)
                         }
                     }
                 )

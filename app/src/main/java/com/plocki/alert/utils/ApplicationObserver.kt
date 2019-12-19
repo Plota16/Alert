@@ -10,20 +10,27 @@ import com.plocki.alert.runnables.ForegroundRunnableCron
 
 class ApplicationObserver : LifecycleObserver {
 
-    private val foregroundRunnable: ForegroundRunnableCron =
-        ForegroundRunnableCron()
-    private val backgroundRunnable: BackgroundRunnableCron =
-            BackgroundRunnableCron()
-
+    private val foregroundRunnable: ForegroundRunnableCron = ForegroundRunnableCron()
+    private val backgroundRunnable: BackgroundRunnableCron = BackgroundRunnableCron()
     private val connectionObserver: ConnectionObserver = ConnectionObserver()
+
+    var foregroundthread = Thread(foregroundRunnable)
+    var connectionThread = Thread(connectionObserver)
+    var backgroudthread = Thread(backgroundRunnable)
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     fun onForeground() {
         Global.getInstance()!!.isAppClosed = false
         foregroundRunnable.seconds = 2000
-        val thread = Thread(foregroundRunnable)
-        val connectionThread = Thread(connectionObserver)
-        thread.start()
+
+        foregroundthread = Thread(foregroundRunnable)
+        connectionThread = Thread(connectionObserver)
+
+        if(backgroudthread.isAlive){
+            backgroudthread.interrupt()
+        }
+
+        foregroundthread.start()
         connectionThread.start()
     }
 
@@ -31,9 +38,16 @@ class ApplicationObserver : LifecycleObserver {
     fun onBackground() {
         Global.getInstance()!!.isAppClosed = true
         backgroundRunnable.seconds = 600000
+        backgroudthread = Thread(backgroundRunnable)
 
-        val thread = Thread(backgroundRunnable)
-        thread.start()
+        if(foregroundthread.isAlive){
+            foregroundthread.interrupt()
+        }
+        if(connectionThread.isAlive){
+            connectionThread.interrupt()
+        }
+
+        backgroudthread.start()
     }
 
 }

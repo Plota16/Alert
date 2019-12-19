@@ -12,10 +12,11 @@ class ConnectionObserver : Runnable {
 
     private var gpsEnabled = false
     private var networkEnabled = false
+    var isAlive = true
 
     override fun run() {
         //Thread.sleep(1000)
-        while (!Global.getInstance()!!.isAppClosed){
+        while (isAlive){
             if (!Global.getInstance()!!.isErrorActivityOpen){
                 try{
                     gpsEnabled = isGpsOn()
@@ -31,7 +32,12 @@ class ConnectionObserver : Runnable {
                     context.startActivity(intent)
                 }
             }
-            Thread.sleep(2000)
+            try {
+                Thread.sleep(2000)
+            } catch (e: InterruptedException) {
+                println("Exception handled $e")
+                break
+            }
         }
 
     }

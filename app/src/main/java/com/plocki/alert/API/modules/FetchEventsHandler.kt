@@ -21,7 +21,7 @@ import kotlin.collections.ArrayList
 
 object FetchEventsHandler {
 
-    fun fetchEvents(activity: Activity? = null, isLoginPanel: Boolean = false) {
+    fun fetchEvents(activity: Activity? = null, isLoginPanel: Boolean = false, finish: Boolean = false) {
         if(!Global.getInstance()!!.isErrorActivityOpen && Global.getInstance()!!.isUserSigned){
 
             ApolloInstance.buildApolloClient()
@@ -97,6 +97,9 @@ object FetchEventsHandler {
                         val intent = Intent(activity, MainActivity::class.java)
                         intent.putExtra("SHOW_WELCOME", true)
                         activity.startActivity(intent)
+                        activity.finish()
+                    }
+                    if(finish &&  activity != null){
                         activity.finish()
                     }
 

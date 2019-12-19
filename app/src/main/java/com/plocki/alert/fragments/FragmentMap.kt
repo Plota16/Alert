@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.google.android.gms.location.LocationServices
@@ -21,6 +22,7 @@ import com.plocki.alert.models.Global
 import com.plocki.alert.R
 import com.plocki.alert.models.EventMethods
 import com.plocki.alert.adapters.CustomInfoWindowGoogleMap
+import kotlinx.android.synthetic.main.fragment_map.*
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -166,9 +168,11 @@ class FragmentMap : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
         }
         isFilteringPossible = true
     }
-    fun getMarkerIcon(color: String): BitmapDescriptor {
+
+    private fun getMarkerIcon(color: String): BitmapDescriptor {
         val hsv = FloatArray(3)
         Color.colorToHSV(Color.parseColor(color), hsv)
         return BitmapDescriptorFactory.defaultMarker(hsv[0])
     }
+
 }
