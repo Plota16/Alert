@@ -9,23 +9,15 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.api.Response
-import com.apollographql.apollo.exception.ApolloCanceledException
 import com.apollographql.apollo.exception.ApolloException
-import com.apollographql.apollo.exception.ApolloHttpException
 import com.plocki.alert.*
-import com.plocki.alert.API.ApolloInstance
-import com.plocki.alert.API.modules.CategoriesApi
-import com.plocki.alert.API.modules.EventsApi
 import com.plocki.alert.API.modules.UserApi
-import com.plocki.alert.models.Category
-import com.plocki.alert.models.Event
 import com.plocki.alert.models.Global
 import com.plocki.alert.utils.Store
 import kotlinx.android.synthetic.main.splash.*
@@ -33,6 +25,7 @@ import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import com.google.gson.GsonBuilder
+import com.plocki.alert.API.modules.FetchCategoriesHandler.fetchCategories
 import com.plocki.alert.utils.HttpErrorHandler
 
 class Splash : Activity() {
@@ -122,7 +115,7 @@ class Splash : Activity() {
                         progressBarMain.visibility = View.VISIBLE
                         splashLoadText.visibility = View.VISIBLE
                     }
-                    fetchCategories()
+                    fetchCategories(this@Splash)
                 }
 
                 override fun onFailure(e: ApolloException) {
@@ -156,130 +149,6 @@ class Splash : Activity() {
         } else{
             true
         }
-    }
-
-    private fun fetchCategories(){
-        if (!Global.getInstance()!!.isErrorActivityOpen && Global.getInstance()!!.isUserSigned) {
-            ApolloInstance.buildApolloClient()
-            CategoriesApi.fetchCategories(object : ApolloCall.Callback<AllCategoriesQuery.Data>() {
-                override fun onFailure(e: ApolloException) {
-                    HttpErrorHandler.handle(500)
-                }
-
-                override fun onResponse(response: Response<AllCategoriesQuery.Data>) {
-                    if (response.hasErrors()) {
-                        Log.e("ERROR ", response.errors()[0].customAttributes()["statusCode"].toString())
-                        val gson = GsonBuilder().create()
-                        val errorMap = gson.fromJson(response.errors()[0].message(), Map::class.java)
-                        HttpErrorHandler.handle(errorMap["statusCode"].toString().toFloat().toInt())
-                        return
-                    }
-
-                    if (response.data() != null) {
-                        Global.getInstance()!!.categoryList.clear()
-                        Global.getInstance()!!.filterHashMap.clear()
-                        Global.getInstance()!!.titleUUIDHashMap.clear()
-                        println("CATEGORIES " + response.data()!!.categories().toString())
-                        for (category in response.data()!!.categories()){
-                            Global.getInstance()!!.categoryHashMap[category.uuid().toString()] =
-                                Category(
-                                    category.uuid().toString(),
-                                    category.title(),
-                                    category.color()
-                                )
-                            Global.getInstance()!!.categoryList.add(category.title())
-                            Global.getInstance()!!.filterHashMap[category.title()] = true
-                            Global.getInstance()!!.titleUUIDHashMap[category.title()] = category.uuid().toString()
-                        }
-                        fetchEvents()
-                    }
-                }
-            })
-        }
-    }
-
-    private fun fetchEvents(){
-
-        ApolloInstance.buildApolloClient()
-        EventsApi.fetchEvents(object : ApolloCall.Callback<AllEventsQuery.Data>() {
-            override fun onFailure(e: ApolloException) {
-                //TODO sprawdzić czy usunąć linię poniżej
-               // this@Splash.runOnUiThread { Toast.makeText(this@Splash, "Nie udało się pobrać danych z serwera", Toast.LENGTH_SHORT).show() }
-                HttpErrorHandler.handle(500)
-            }
-            
-            override fun onResponse(response: Response<AllEventsQuery.Data>) {
-                if (response.hasErrors()) {
-                    Log.e("ERROR ", response.errors()[0].customAttributes()["statusCode"].toString())
-                    val gson = GsonBuilder().create()
-                    val errorMap = gson.fromJson(response.errors()[0].message(), Map::class.java)
-                    HttpErrorHandler.handle(errorMap["statusCode"].toString().toFloat().toInt())
-                    return
-                }
-
-                if (response.data() != null) {
-                    val events = response.data()!!.events()
-                    val eventContainer = ArrayList<Event>()
-                    for (event in events) {
-                        val currentEvent = Event.fromResponse(
-                            event.uuid().toString(),
-                            event.coords(),
-                            event.title(),
-                            event.image(),
-                            event.description(),
-                            Category(
-                                event.category()!!.uuid().toString(),
-                                event.category()!!.title(),
-                                event.category()!!.color()),
-                            1
-                        )
-                        eventContainer.add(currentEvent)
-                    }
-
-                    if (Global.getInstance()!!.eventList.size != eventContainer.size) {
-                        if(Global.getInstance()!!.isDataLoadedFirstTime){
-                            Global.getInstance()!!.isDataLoadedFirstTime = false
-                        }
-                        else{
-                            Global.getInstance()!!.isDataChanged = true
-                        }
-                    } else {
-                        for (i in 0 until Integer.max(
-                            Global.getInstance()!!.eventList.size,
-                            eventContainer.size
-                        )) {
-                            val event1 = Global.getInstance()!!.eventList[i].UUID
-                            val event2 = eventContainer[i].UUID
-                            if (event1 != event2) {
-                                if(Global.getInstance()!!.isDataLoadedFirstTime){
-                                    Global.getInstance()!!.isDataLoadedFirstTime = false
-                                }
-                                else{
-                                    Global.getInstance()!!.isDataChanged = true
-                                }
-                            }
-                        }
-
-                    }
-
-                    Global.getInstance()!!.eventList = eventContainer
-                    this@Splash.runOnUiThread { Toast.makeText(this@Splash, "Pobrano danych z serwera", Toast.LENGTH_SHORT).show() }
-
-                } else {
-                    this@Splash.runOnUiThread { Toast.makeText(this@Splash, "Nie udało się pobrać danych z serwera", Toast.LENGTH_SHORT).show()}
-                }
-
-                GlobalScope.launch(Main){
-                    Global.getInstance()!!.areCategoriesLoaded = true
-
-                    val intent = Intent(MyApplication.context, MainActivity::class.java)
-                    intent.putExtra("SHOW_WELCOME", true)
-                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                    MyApplication.context!!.startActivity(intent)
-                }
-            }
-
-        })
     }
 
 }

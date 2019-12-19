@@ -12,16 +12,20 @@ import com.apollographql.apollo.exception.ApolloHttpException
 import com.google.gson.GsonBuilder
 import com.plocki.alert.API.ApolloInstance
 import com.plocki.alert.AllEventsQuery
+import com.plocki.alert.MyApplication
 import com.plocki.alert.activities.MainActivity
 import com.plocki.alert.models.Category
 import com.plocki.alert.models.Event
 import com.plocki.alert.models.Global
 import com.plocki.alert.utils.HttpErrorHandler
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import kotlin.collections.ArrayList
 
 object FetchEventsHandler {
 
-    fun fetchEvents(activity: Activity? = null, isLoginPanel: Boolean = false, finish: Boolean = false) {
+    fun fetchEvents(activity: Activity? = null, isLoginPanel: Boolean = false, finish: Boolean = false, startMain: Boolean = false) {
         if(!Global.getInstance()!!.isErrorActivityOpen && Global.getInstance()!!.isUserSigned){
 
             ApolloInstance.buildApolloClient()
@@ -93,6 +97,7 @@ object FetchEventsHandler {
                         activity?.runOnUiThread { Toast.makeText(activity, "Nie udało się pobrać danych z serwera", Toast.LENGTH_SHORT).show()}
                     }
 
+                    //Options
                     if (isLoginPanel && activity != null) {
                         val intent = Intent(activity, MainActivity::class.java)
                         intent.putExtra("SHOW_WELCOME", true)
@@ -101,6 +106,16 @@ object FetchEventsHandler {
                     }
                     if(finish &&  activity != null){
                         activity.finish()
+                    }
+                    if(startMain && activity != null){
+                        GlobalScope.launch(Dispatchers.Main){
+                            Global.getInstance()!!.areCategoriesLoaded = true
+
+                            val intent = Intent(MyApplication.context, MainActivity::class.java)
+                            intent.putExtra("SHOW_WELCOME", true)
+                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                            MyApplication.context!!.startActivity(intent)
+                        }
                     }
 
                 }

@@ -1,5 +1,6 @@
 package com.plocki.alert.API.modules
 
+import android.app.Activity
 import android.util.Log
 import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.api.Response
@@ -13,7 +14,7 @@ import com.plocki.alert.models.Global
 import com.plocki.alert.utils.HttpErrorHandler
 
 object FetchCategoriesHandler {
-    fun fetchCategories() {
+    fun fetchCategories(activity: Activity) {
         if (!Global.getInstance()!!.isErrorActivityOpen && Global.getInstance()!!.isUserSigned) {
             ApolloInstance.buildApolloClient()
             CategoriesApi.fetchCategories(object : ApolloCall.Callback<AllCategoriesQuery.Data>() {
@@ -32,6 +33,9 @@ object FetchCategoriesHandler {
                     }
 
                     if (response.data() != null) {
+                        Global.getInstance()!!.categoryList.clear()
+                        Global.getInstance()!!.filterHashMap.clear()
+                        Global.getInstance()!!.titleUUIDHashMap.clear()
                         println("CATEGORIES " + response.data()!!.categories().toString())
                         for (category in response.data()!!.categories()){
                             Global.getInstance()!!.categoryHashMap[category.uuid().toString()] =
@@ -44,9 +48,8 @@ object FetchCategoriesHandler {
                             Global.getInstance()!!.filterHashMap[category.title()] = true
                             Global.getInstance()!!.titleUUIDHashMap[category.title()] = category.uuid().toString()
                         }
+                        FetchEventsHandler.fetchEvents(activity = activity, startMain = true)
                     }
-
-
                 }
             })
         }

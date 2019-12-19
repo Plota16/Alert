@@ -288,14 +288,19 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
                     _, _ ->
                 category_in.setText(singleChoiceItems[choose])
                 validateCategory() }
-            .setNegativeButton(this.getString(R.string.add_dialog_negative), null)
+            .setNegativeButton(this.getString(R.string.add_dialog_negative)) {
+                _, _ ->
+                validateCategory() }
+            .setOnDismissListener {
+                validateCategory()
+            }
             .show()
 
 
-       val but = tmp.getButton(DialogInterface.BUTTON_POSITIVE)
-        but.setTextColor(Color.parseColor("#6200EE"))
+        val but = tmp.getButton(DialogInterface.BUTTON_POSITIVE)
+        but.setTextColor(ContextCompat.getColor(this,R.color.colorPrimary))
         val but2 = tmp.getButton(DialogInterface.BUTTON_NEGATIVE)
-        but2.setTextColor(Color.parseColor("#6200EE"))
+        but2.setTextColor(ContextCompat.getColor(this,R.color.colorPrimary))
     }
 
     //PRIVATES
