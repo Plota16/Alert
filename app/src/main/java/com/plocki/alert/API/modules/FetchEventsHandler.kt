@@ -17,6 +17,7 @@ import com.plocki.alert.activities.MainActivity
 import com.plocki.alert.models.Category
 import com.plocki.alert.models.Event
 import com.plocki.alert.models.Global
+import com.plocki.alert.models.LikeType
 import com.plocki.alert.utils.HttpErrorHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -59,7 +60,9 @@ object FetchEventsHandler {
                                     event.category()!!.uuid().toString(),
                                     event.category()!!.title(),
                                     event.category()!!.color()),
-                                1
+                                1,
+                                event.totalLikes(),
+                                LikeType.getNameByType(event.userLike())!!
                             )
                             eventContainer.add(currentEvent)
                         }
