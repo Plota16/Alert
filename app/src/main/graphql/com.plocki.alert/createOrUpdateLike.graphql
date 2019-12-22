@@ -1,0 +1,7 @@
+mutation createOrUpdateLike($likeData: CreateLikeDto!) {
+    createOrUpdateLike(likeData: $likeData) {
+        title,
+        totalLikes,
+        userLike
+    }
+}

@@ -1,0 +1,6 @@
+mutation deleteLike($likeData: DeleteLikeDto!) {
+    deleteLike(likeData: $likeData) {
+        uuid,
+        userLike
+    }
+}
