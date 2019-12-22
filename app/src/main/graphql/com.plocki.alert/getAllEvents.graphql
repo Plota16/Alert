@@ -8,6 +8,8 @@ query AllEventsQuery {
     },
     description,
     image,
+    totalLikes,
+    userLike,
     category{
         uuid,
         title,
