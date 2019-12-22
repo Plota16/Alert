@@ -17,7 +17,9 @@ class Event (
     var image: String?,
     var description : String?,
     var category: Category,
-    var creator : Int
+    var creator : Int,
+    var totalLikes: Int? = null,
+    var userLike: LikeType? = null
 ) {
     companion object {
         fun fromResponse(
@@ -27,7 +29,9 @@ class Event (
             image: String?,
             description: String?,
             category: Category,
-            creator: Int
+            creator: Int,
+            totalLikes: Int? = null,
+            userLike: LikeType? = null
         ): Event {
             return Event(
                 UUID.fromString(uuid),
@@ -36,7 +40,9 @@ class Event (
                 image,
                 description,
                 category,
-                creator
+                creator,
+                totalLikes,
+                userLike
             )
         }
     }
@@ -70,6 +76,6 @@ class Event (
     }
 
     override fun toString(): String {
-        return "Event(UUID=$UUID, coordinates=$coordinates, image='$image', title='$title', desctription=$description, category=$category, creator=$creator)"
+        return "Event(UUID=$UUID, coordinates=$coordinates, image='$image', title='$title', desctription=$description, category=$category, creator=$creator, totalLikes=$totalLikes, userLike=$userLike)"
     }
 }
