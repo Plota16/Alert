@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.Marker
 import com.plocki.alert.R
+import java.text.ParseException
 
 class CustomInfoWindowGoogleMap(private val context: Context) : GoogleMap.InfoWindowAdapter {
 
@@ -24,25 +25,33 @@ class CustomInfoWindowGoogleMap(private val context: Context) : GoogleMap.InfoWi
         val title = view.findViewById<TextView>(R.id.infoWindowTitle)
         val like = view.findViewById<TextView>(R.id.infoWindowLike)
 
-
+        println()
         val infoContainer =
             marker.title.split("~".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
 
         title.text = infoContainer[1]
         category.text = infoContainer[0].toUpperCase()
 
+        if (infoContainer[2] != "null") {
+            if (Integer.parseInt(infoContainer[2]) > 0) {
+                val likeContainer = "+" + infoContainer[2]
+                like.text = likeContainer
+                like.setTextColor(ContextCompat.getColor(context, R.color.green))
+            } else if (Integer.parseInt(infoContainer[2]) < 0) {
+                val likeContainer = "-" + infoContainer[2]
+                like.text = likeContainer
+                like.setTextColor(ContextCompat.getColor(context, R.color.red))
 
-        if (Integer.parseInt(infoContainer[2]) > 0) {
-            val likeContainer = "+" + infoContainer[2]
-            like.text = likeContainer
-            like.setTextColor(ContextCompat.getColor(context,R.color.green))
-        } else if (Integer.parseInt(infoContainer[2]) < 0) {
-            val likeContainer = "-" + infoContainer[2]
-            like.text = likeContainer
-            like.setTextColor(ContextCompat.getColor(context,R.color.red))
+            } else {
+                like.text = infoContainer[2]
+            }
         } else {
-            like.text = infoContainer[2]
+            //TODO NIE WIEM CO WYSwietlic
+            like.text = "0"
         }
+
+
+
         return view
     }
 }

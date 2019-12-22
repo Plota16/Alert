@@ -141,7 +141,7 @@ class FragmentMap : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
                 if(Global.getInstance()!!.filterHashMap[event.category.title]!!){
                     if(EventMethods.calcDistance(event.coordinates) < EventMethods.getMaxDistance(inst!!.currentDistanceFilter) || EventMethods.getMaxDistance(inst!!.currentDistanceFilter) == 0) {
 
-                        val infoContainer = event.category.title + "~" + event.title + "~" + "1"
+                        val infoContainer = event.category.title + "~" + event.title + "~" + event.totalLikes
                         val marker = mMap.addMarker(
                             MarkerOptions()
                                 .position(event.coordinates)
@@ -155,7 +155,7 @@ class FragmentMap : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
             }
             else{
 
-                val infoContainer = event.category.title + "~" + event.title + "~" + "1"
+                val infoContainer = event.category.title + "~" + event.title + "~" + event.totalLikes
                 val marker = mMap.addMarker(
                     MarkerOptions()
                         .position(event.coordinates)

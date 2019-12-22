@@ -6,11 +6,16 @@ import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.Window
 import android.widget.Button
+import android.widget.Toast
 import androidx.core.content.ContextCompat
+import com.apollographql.apollo.ApolloCall
+import com.apollographql.apollo.api.Response
+import com.apollographql.apollo.exception.ApolloException
 import com.bumptech.glide.Glide
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -18,9 +23,18 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.gson.GsonBuilder
+import com.plocki.alert.*
+import com.plocki.alert.API.modules.EventsApi
+import com.plocki.alert.API.modules.FetchEventsHandler
+import com.plocki.alert.API.modules.LikesApi
 import com.plocki.alert.models.Event
 import com.plocki.alert.models.Global
-import com.plocki.alert.R
+import com.plocki.alert.models.LikeType
+import com.plocki.alert.type.CreateLikeDto
+import com.plocki.alert.type.DeleteLikeDto
+import com.plocki.alert.type.LikeEnum
+import com.plocki.alert.utils.HttpErrorHandler
 import kotlinx.android.synthetic.main.activity_details.*
 import kotlinx.android.synthetic.main.likebar.*
 import kotlin.math.roundToInt
@@ -28,8 +42,7 @@ import kotlin.math.roundToInt
 
 class Details : AppCompatActivity(), OnMapReadyCallback {
 
-    private var like = false
-    private var dislike = false
+    private lateinit var rate: LikeType
 
     private lateinit var mMap : GoogleMap
     private lateinit var event : Event
@@ -39,13 +52,13 @@ class Details : AppCompatActivity(), OnMapReadyCallback {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_details)
 
+
         thump_up.setOnClickListener {
             likeClicked()
         }
         thumb_down.setOnClickListener{
             dislikeClicked()
         }
-
 
         val bundle :Bundle ?=intent.extras
 
@@ -59,6 +72,8 @@ class Details : AppCompatActivity(), OnMapReadyCallback {
         else if(listMarker == null){
             this.event = inst!!.mapHashMap[extraMarker]!!
         }
+
+        setPreviousRateButton()
         details_category.text = event.category.title
         details_desc.text = event.description
         supportActionBar!!.title = event.title
@@ -145,44 +160,104 @@ class Details : AppCompatActivity(), OnMapReadyCallback {
         )
     }
 
+    private fun setPreviousRateButton() {
+        rate = event.userLike!!
+        println(rate)
+        doColor()
+    }
+
     private fun likeClicked(){
-        if(!like && !dislike){
-            like = true
+        if(rate != LikeType.LIKE){
+            rate = LikeType.LIKE
+            giveRate()
         }
-        else if(like && !dislike){
-            like = false
-        }
-        else if(!like && dislike){
-            dislike = false
-            like = true
+        else if(rate == LikeType.LIKE && rate != LikeType.DISLIKE){
+            rate = LikeType.NONE
+            removeRate()
         }
         doColor()
     }
 
+    private fun removeRate() {
+        val deleteLikeDto: DeleteLikeDto = DeleteLikeDto.builder()
+            .eventUuid(event.UUID.toString())
+            .build()
+
+        LikesApi.deleteLike(
+            deleteLikeDto,
+            object: ApolloCall.Callback<DeleteLikeMutation.Data>() {
+                override fun onFailure(e: ApolloException) {
+                    HttpErrorHandler.handle(500)
+                }
+
+                override fun onResponse(response: Response<DeleteLikeMutation.Data>) {
+                    Log.d("SUCCESS", response.data().toString())
+                    if (response.hasErrors()) {
+                        Log.e("ERROR ", response.errors()[0].customAttributes()["statusCode"].toString())
+                        val gson = GsonBuilder().create()
+                        val errorMap = gson.fromJson(response.errors()[0].message(), Map::class.java)
+                        HttpErrorHandler.handle(errorMap["statusCode"].toString().toFloat().toInt())
+                        return
+                    }
+                }
+            }
+        )
+
+    }
+
+    private fun giveRate() {
+        var createLikeDto: CreateLikeDto = CreateLikeDto.builder()
+            .like(LikeEnum.LIKE)
+            .eventUuid(event.UUID.toString())
+            .build()
+        if (rate == LikeType.DISLIKE) {
+            createLikeDto =  CreateLikeDto.builder()
+                .like(LikeEnum.DISLIKE)
+                .eventUuid(event.UUID.toString())
+                .build()
+        }
+        LikesApi.createOrUpadateLike(
+            createLikeDto,
+            object : ApolloCall.Callback<CreateOrUpdateLikeMutation.Data>() {
+                override fun onFailure(e: ApolloException) {
+                    HttpErrorHandler.handle(500)
+                }
+
+                override fun onResponse(response: Response<CreateOrUpdateLikeMutation.Data>) {
+                    Log.d("SUCCESS", response.data().toString())
+                    if (response.hasErrors()) {
+                        Log.e("ERROR ", response.errors()[0].customAttributes()["statusCode"].toString())
+                        val gson = GsonBuilder().create()
+                        val errorMap = gson.fromJson(response.errors()[0].message(), Map::class.java)
+                        HttpErrorHandler.handle(errorMap["statusCode"].toString().toFloat().toInt())
+                        return
+                    }
+                }
+            })
+    }
+
     private fun dislikeClicked(){
-        if(!like && !dislike){
-            dislike = true
+        if(rate != LikeType.DISLIKE){
+            rate = LikeType.DISLIKE
+            giveRate()
         }
-        else if(like && !dislike){
-            like = false
-            dislike = true
-        }
-        else if(!like && dislike){
-            dislike = false
+        else {
+            rate = LikeType.NONE
+            removeRate()
         }
         doColor()
     }
 
     private fun doColor(){
-        if(!like && !dislike){
+        if(rate == LikeType.NONE){
             thumb_down.foreground.alpha = 255
             thump_up.foreground.alpha = 255
         }
-        else if(like && !dislike){
+        else if(rate == LikeType.LIKE){
             thump_up.foreground.alpha = 255
             thumb_down.foreground.alpha = 128
         }
-        else if(!like && dislike){
+        else if(rate == LikeType.DISLIKE){
             thump_up.foreground.alpha = 128
             thumb_down.foreground.alpha = 255
         }

@@ -27,6 +27,7 @@ import com.plocki.alert.fragments.FragmentProfile
 import com.plocki.alert.models.Category
 import com.plocki.alert.models.Event
 import com.plocki.alert.models.Global
+import com.plocki.alert.models.LikeType
 import com.plocki.alert.utils.HttpErrorHandler
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.Dispatchers.Main
@@ -267,7 +268,9 @@ class MainActivity : AppCompatActivity() {
                                     event.category()!!.uuid().toString(),
                                     event.category()!!.title(),
                                     event.category()!!.color()),
-                                1
+                                1,
+                                event.totalLikes(),
+                                LikeType.getNameByType(event.userLike())
                             )
                             eventContainer.add(currentEvent)
                         }
