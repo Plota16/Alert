@@ -38,7 +38,7 @@ class CustomInfoWindowGoogleMap(private val context: Context) : GoogleMap.InfoWi
                 like.text = likeContainer
                 like.setTextColor(ContextCompat.getColor(context, R.color.green))
             } else if (Integer.parseInt(infoContainer[2]) < 0) {
-                val likeContainer = "-" + infoContainer[2]
+                val likeContainer = infoContainer[2]
                 like.text = likeContainer
                 like.setTextColor(ContextCompat.getColor(context, R.color.red))
 

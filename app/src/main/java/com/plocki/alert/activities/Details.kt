@@ -11,7 +11,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.Window
 import android.widget.Button
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.api.Response
@@ -25,7 +24,6 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.gson.GsonBuilder
 import com.plocki.alert.*
-import com.plocki.alert.API.modules.EventsApi
 import com.plocki.alert.API.modules.FetchEventsHandler
 import com.plocki.alert.API.modules.LikesApi
 import com.plocki.alert.models.Event
@@ -188,6 +186,7 @@ class Details : AppCompatActivity(), OnMapReadyCallback {
             object: ApolloCall.Callback<DeleteLikeMutation.Data>() {
                 override fun onFailure(e: ApolloException) {
                     HttpErrorHandler.handle(500)
+                    setPreviousRateButton()
                 }
 
                 override fun onResponse(response: Response<DeleteLikeMutation.Data>) {
@@ -198,6 +197,9 @@ class Details : AppCompatActivity(), OnMapReadyCallback {
                         val errorMap = gson.fromJson(response.errors()[0].message(), Map::class.java)
                         HttpErrorHandler.handle(errorMap["statusCode"].toString().toFloat().toInt())
                         return
+                    }
+                    else{
+                        FetchEventsHandler.fetchEvents()
                     }
                 }
             }
@@ -221,6 +223,7 @@ class Details : AppCompatActivity(), OnMapReadyCallback {
             object : ApolloCall.Callback<CreateOrUpdateLikeMutation.Data>() {
                 override fun onFailure(e: ApolloException) {
                     HttpErrorHandler.handle(500)
+                    setPreviousRateButton()
                 }
 
                 override fun onResponse(response: Response<CreateOrUpdateLikeMutation.Data>) {
@@ -231,6 +234,9 @@ class Details : AppCompatActivity(), OnMapReadyCallback {
                         val errorMap = gson.fromJson(response.errors()[0].message(), Map::class.java)
                         HttpErrorHandler.handle(errorMap["statusCode"].toString().toFloat().toInt())
                         return
+                    }
+                    else{
+                        FetchEventsHandler.fetchEvents()
                     }
                 }
             })
