@@ -45,6 +45,7 @@ class Global {
 
     companion object {
         const val ip = "alert-api-staging.eu-central-1.elasticbeanstalk.com"
+        const val photoBaseDomain = "https://alert-api-image-bucket.s3.eu-central-1.amazonaws.com/"
         @SuppressLint("StaticFieldLeak")
         private var mInstance: Global? = null
 

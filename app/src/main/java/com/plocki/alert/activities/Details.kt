@@ -90,7 +90,7 @@ class Details : AppCompatActivity(), OnMapReadyCallback {
         details_image.requestLayout()
 
         Glide.with(this)
-            .load("https://${Global.ip}/static/${event.image}.jpg")
+            .load("${Global.photoBaseDomain}${event.image}.jpg")
             .placeholder(R.drawable.placeholder)
             .centerCrop()
             .override(dpWidth ,dpHeight.roundToInt())
