@@ -2,12 +2,15 @@ package com.plocki.alert.utils
 
 import android.app.Activity
 import android.content.Intent
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
 import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
+import com.google.gson.GsonBuilder
+import com.google.gson.JsonSyntaxException
 import com.plocki.alert.API.modules.FetchEventsHandler
 import com.plocki.alert.API.modules.UserApi
 import com.plocki.alert.CreateUserMutation
@@ -31,6 +34,20 @@ AppLauncher {
                 }
 
                 override fun onResponse(response: Response<CreateUserMutation.Data>) {
+                    if (response.hasErrors()) {
+                        Log.e("ERROR ", response.errors()[0].customAttributes()["statusCode"].toString())
+                        val gson = GsonBuilder().create()
+                        try {
+                            val errorMap =
+                                gson.fromJson(response.errors()[0].message(), Map::class.java)
+                            HttpErrorHandler.handle(errorMap["statusCode"].toString().toFloat().toInt())
+                        } catch (e: JsonSyntaxException) {
+                            HttpErrorHandler.handle(500)
+                            Log.e("ERROR ","Błąd bazy danych")
+
+                        }
+                        return
+                    }
                     val store = Store(activity)
                     Global.getInstance()!!.userName = response.data()!!.createUser().data().username()
                     Global.getInstance()!!.userToken = response.data()!!.createUser().token().accessToken()
