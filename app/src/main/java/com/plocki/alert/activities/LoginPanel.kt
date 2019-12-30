@@ -75,7 +75,7 @@ class LoginPanel : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if(resultCode == -1){
+        if(resultCode == -1 && requestCode != 9002){
             progressBar.visibility = View.INVISIBLE
             window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
             Toast.makeText(this, "Błąd logowania", Toast.LENGTH_LONG).show()
