@@ -7,6 +7,7 @@ import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.transition.TransitionManager
+import androidx.core.view.marginBottom
 import com.google.android.material.chip.Chip
 import com.plocki.alert.R
 import com.plocki.alert.models.Global
