@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.plocki.alert.R
@@ -13,6 +14,10 @@ import com.plocki.alert.services.GoogleService
 import com.plocki.alert.services.TwitterService
 import com.twitter.sdk.android.core.Twitter
 import kotlinx.android.synthetic.main.activity_login_panel.*
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 class LoginPanel : AppCompatActivity() {
@@ -40,6 +45,7 @@ class LoginPanel : AppCompatActivity() {
                 WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
             progressBar.visibility = View.VISIBLE
             twitterService.signIn()
+
         }
 
         //GOOGLE
@@ -69,6 +75,17 @@ class LoginPanel : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
+        if(resultCode == -1){
+            progressBar.visibility = View.INVISIBLE
+            window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+            Toast.makeText(this, "Błąd logowania", Toast.LENGTH_LONG).show()
+            return
+        }
+        if(resultCode == 0){
+            progressBar.visibility = View.INVISIBLE
+            window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+            return
+        }
         facebookService.callbackManager?.onActivityResult(requestCode, resultCode, data)
         twitterService.mTwitterAuthClient.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 9002) {

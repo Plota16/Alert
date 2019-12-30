@@ -23,6 +23,7 @@ import com.plocki.alert.services.FacebookService
 import com.plocki.alert.services.GoogleService
 import com.plocki.alert.services.TwitterService
 import kotlinx.android.synthetic.main.activity_login_panel.*
+import java.lang.Exception
 
 object
 AppLauncher {
@@ -42,6 +43,7 @@ AppLauncher {
                                 gson.fromJson(response.errors()[0].message(), Map::class.java)
                             HttpErrorHandler.handle(errorMap["statusCode"].toString().toFloat().toInt())
                         } catch (e: JsonSyntaxException) {
+
                             HttpErrorHandler.handle(500)
                             Log.e("ERROR ","Błąd bazy danych")
 
