@@ -24,8 +24,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.gson.GsonBuilder
 import com.plocki.alert.*
-import com.plocki.alert.API.modules.FetchEventsHandler
-import com.plocki.alert.API.modules.LikesApi
+import com.plocki.alert.API.modules.*
 import com.plocki.alert.models.Event
 import com.plocki.alert.models.Global
 import com.plocki.alert.models.LikeType
@@ -35,6 +34,8 @@ import com.plocki.alert.type.LikeEnum
 import com.plocki.alert.utils.HttpErrorHandler
 import kotlinx.android.synthetic.main.activity_details.*
 import kotlinx.android.synthetic.main.likebar.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
 
@@ -50,6 +51,7 @@ class Details : AppCompatActivity(), OnMapReadyCallback {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_details)
 
+        fetchReportsCategories()
 
         thump_up.setOnClickListener {
             likeClicked()
@@ -174,6 +176,59 @@ class Details : AppCompatActivity(), OnMapReadyCallback {
             removeRate()
         }
         doColor()
+    }
+
+    private fun createReport() {
+
+//        val createReportDto = report.createReportDto(this)
+//        ReportsApi.createReport(
+//            createReportDto,
+//            object : ApolloCall.Callback<CreateReportMutation.Data>() {
+//                override fun onFailure(e: ApolloException) {
+//                    HttpErrorHandler.handle(500)
+//                }
+//
+//                override fun onResponse(response: Response<CreateReportMutation.Data>) {
+//                    Log.d("SUCCESS", response.data().toString())
+//                    if (response.hasErrors()) {
+//                        Log.e(
+//                            "ERROR ",
+//                            response.errors()[0].customAttributes()["statusCode"].toString()
+//                        )
+//                        val gson = GsonBuilder().create()
+//                        val errorMap =
+//                            gson.fromJson(response.errors()[0].message(), Map::class.java)
+//                        HttpErrorHandler.handle(errorMap["statusCode"].toString().toFloat().toInt())
+//                        return
+//                    }
+//
+//                }
+//            }
+//        )
+    }
+
+
+
+    private fun fetchReportsCategories() {
+
+        ReportCategoriesApi.fetchReportCategories(object :
+            ApolloCall.Callback<AllReportCategoriesQuery.Data>() {
+            override fun onResponse(response: Response<AllReportCategoriesQuery.Data>) {
+                if (response.hasErrors()) {
+                    val gson = GsonBuilder().create()
+                    val errorMap = gson.fromJson(response.errors()[0].message(), Map::class.java)
+                    HttpErrorHandler.handle(errorMap["statusCode"].toString().toFloat().toInt())
+                    return
+                }
+                println("REPORT CATEGORIES " + response.data().toString())
+            }
+
+            override fun onFailure(e: ApolloException) {
+
+                HttpErrorHandler.handle(500)
+            }
+
+        })
     }
 
     private fun removeRate() {
