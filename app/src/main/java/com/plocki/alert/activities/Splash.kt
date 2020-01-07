@@ -109,7 +109,7 @@ class Splash : Activity() {
                     val whoAmI = response.data()!!.whoAmI()
                     Global.getInstance()!!.userName = whoAmI.username()
                     Global.getInstance()!!.isUserSigned = true
-
+                    println("WHOAMI STATS: " + response.data()!!.myStats().toString())
 
                     GlobalScope.launch(Main){
                         progressBarMain.visibility = View.VISIBLE
