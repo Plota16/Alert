@@ -22,6 +22,7 @@ import com.plocki.alert.models.Global
 import com.plocki.alert.R
 import com.plocki.alert.models.EventMethods
 import com.plocki.alert.adapters.CustomInfoWindowGoogleMap
+import com.plocki.alert.models.EventMethods.Companion.getMarkerIcon
 import kotlinx.android.synthetic.main.fragment_map.*
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.GlobalScope
@@ -167,12 +168,6 @@ class FragmentMap : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
             }
         }
         isFilteringPossible = true
-    }
-
-    private fun getMarkerIcon(color: String): BitmapDescriptor {
-        val hsv = FloatArray(3)
-        Color.colorToHSV(Color.parseColor(color), hsv)
-        return BitmapDescriptorFactory.defaultMarker(hsv[0])
     }
 
 }

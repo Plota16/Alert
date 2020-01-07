@@ -22,9 +22,24 @@ object StatsHandler {
                         return
                     }
                     if(response.data() != null){
-                        Global.getInstance()!!.userData.reputation = response.data()!!.myStats().reputation()!!.toInt()
-                        Global.getInstance()!!.userData.createdEvents = response.data()!!.myStats().createdEvents()!!.toInt()
-                        Global.getInstance()!!.userData.likesGiven = response.data()!!.myStats().likesGiven()!!.toInt()
+                        if(response.data()!!.myStats().reputation() != null){
+                            Global.getInstance()!!.userData.reputation = response.data()!!.myStats().reputation()!!.toInt()
+                        }
+                        else{
+                            Global.getInstance()!!.userData.reputation = 0
+                        }
+                        if(response.data()!!.myStats().createdEvents() != null){
+                            Global.getInstance()!!.userData.createdEvents = response.data()!!.myStats().createdEvents()!!.toInt()
+                        }
+                        else{
+                            Global.getInstance()!!.userData.createdEvents = 0
+                        }
+                        if(response.data()!!.myStats().likesGiven() != null){
+                            Global.getInstance()!!.userData.likesGiven = response.data()!!.myStats().likesGiven()!!.toInt()
+                        }
+                        else{
+                            Global.getInstance()!!.userData.likesGiven = 0
+                        }
                         if(response.data()!!.myStats().reportsReported() != null){
                             Global.getInstance()!!.userData.reportsReported = response.data()!!.myStats().reportsReported()!!.toInt()
                         }

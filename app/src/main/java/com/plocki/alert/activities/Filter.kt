@@ -7,6 +7,7 @@ import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.transition.TransitionManager
+import android.view.MenuItem
 import androidx.core.view.marginBottom
 import com.google.android.material.chip.Chip
 import com.plocki.alert.R
@@ -132,6 +133,16 @@ class Filter : AppCompatActivity() {
                 chipGroup.addView(chip)
             }
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id = item.itemId
+
+        if (id == android.R.id.home) {
+            finish()
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 
     private fun confirm(){

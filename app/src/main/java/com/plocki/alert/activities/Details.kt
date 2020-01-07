@@ -4,15 +4,21 @@ import android.Manifest
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.DialogInterface
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.ViewGroup
 import android.view.Window
 import android.widget.Button
+import android.widget.ImageView
+import android.widget.RelativeLayout
 import androidx.core.content.ContextCompat
 import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.api.Response
@@ -29,10 +35,7 @@ import com.google.android.material.textfield.TextInputLayout
 import com.google.gson.GsonBuilder
 import com.plocki.alert.*
 import com.plocki.alert.API.modules.*
-import com.plocki.alert.models.Event
-import com.plocki.alert.models.Global
-import com.plocki.alert.models.LikeType
-import com.plocki.alert.models.Report
+import com.plocki.alert.models.*
 import com.plocki.alert.type.CreateLikeDto
 import com.plocki.alert.type.DeleteLikeDto
 import com.plocki.alert.type.LikeEnum
@@ -40,6 +43,7 @@ import com.plocki.alert.utils.HttpErrorHandler
 import kotlinx.android.synthetic.main.activity_details.*
 import kotlinx.android.synthetic.main.dialog_report.*
 import kotlinx.android.synthetic.main.dialog_report.desc2
+import kotlinx.android.synthetic.main.event.*
 import kotlinx.android.synthetic.main.likebar.*
 import kotlin.math.roundToInt
 
@@ -108,6 +112,7 @@ class Details : AppCompatActivity(), OnMapReadyCallback {
             .findFragmentById(R.id.details_map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
+        details_image.setOnClickListener { showImage() }
 
     }
 
@@ -163,7 +168,15 @@ class Details : AppCompatActivity(), OnMapReadyCallback {
         mMap.addMarker(
             MarkerOptions()
                 .position(event.coordinates)
+                .icon(EventMethods.getMarkerIcon(event.category.color))
         )
+
+        mMap.setOnMapClickListener {
+            val intent = Intent(this@Details, Location::class.java)
+            val extra = event.coordinates.latitude.toString()+"~~"+event.coordinates.longitude.toString()+"~~"+event.category.color
+            intent.putExtra("cords",extra)
+            startActivity(intent)
+        }
     }
 
     private fun setPreviousRateButton() {
@@ -212,8 +225,6 @@ class Details : AppCompatActivity(), OnMapReadyCallback {
             }
         )
     }
-
-
 
     private fun fetchReportsCategories() {
 
@@ -375,6 +386,30 @@ class Details : AppCompatActivity(), OnMapReadyCallback {
         dialog .show()
 
     }
+
+    private fun showImage() {
+        val builder = Dialog(this,R.style.MyDialog)
+        builder.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        builder.window!!.setBackgroundDrawable(
+        ColorDrawable(Color.TRANSPARENT)
+        )
+        builder.window!!.setBackgroundDrawableResource(R.color.colorAccent)
+        builder.setOnDismissListener{builder.dismiss()}
+        builder.setCancelable(true)
+
+        val imageView = ImageView(this)
+
+        Glide.with(this)
+            .load("${Global.photoBaseDomain}${event.image}.jpg")
+            .into(imageView)
+
+        imageView.setOnClickListener { builder.dismiss() }
+
+        builder.addContentView(imageView, RelativeLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT))
+        builder.show()
+}
 
     private fun onChooseReportCategoryClick(dialog: Dialog) {
         var choose = 0

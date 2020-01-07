@@ -2,6 +2,7 @@ package com.plocki.alert.models
 
 import android.content.Context
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.media.ThumbnailUtils
 import android.net.Uri
@@ -11,6 +12,8 @@ import kotlin.math.roundToInt
 import android.location.Location
 import android.location.LocationManager
 import android.net.ConnectivityManager
+import com.google.android.gms.maps.model.BitmapDescriptor
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.jaychang.sa.Initializer
 class EventMethods {
 
@@ -77,6 +80,11 @@ class EventMethods {
                 "100 km" -> return 100000
             }
             return 0
+        }
+         fun getMarkerIcon(color: String): BitmapDescriptor {
+            val hsv = FloatArray(3)
+            Color.colorToHSV(Color.parseColor(color), hsv)
+            return BitmapDescriptorFactory.defaultMarker(hsv[0])
         }
 
     }
