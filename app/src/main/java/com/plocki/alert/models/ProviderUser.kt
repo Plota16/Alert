@@ -4,7 +4,7 @@ import com.plocki.alert.type.CreateOAuthUserDto
 import com.plocki.alert.type.OauthProvider
 
 class ProviderUser (
-    private var providerType: ProviderType,
+    var providerType: ProviderType,
     private var tokenId: String
 ) {
 

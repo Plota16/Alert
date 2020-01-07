@@ -32,6 +32,21 @@ class Store(context: Context) {
         editor.commit()
     }
 
+    fun storeProvider(value: String){
+        editor.putString("provider",value)
+        editor.apply()
+        editor.commit()
+    }
+
+    fun retrieveProvider() : String?{
+        return pref.getString("provider","")
+    }
+
+    fun removeProvider() {
+        editor.remove("provider")
+        editor.commit()
+    }
+
     fun storeToken(value: String){
         val cipherClass = encryptor.encryptText("ALIAS",value)
         val encodedValueString = Base64.encodeToString(cipherClass.encrypter, Base64.DEFAULT)

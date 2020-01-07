@@ -28,11 +28,13 @@ import com.plocki.alert.API.modules.*
 import com.plocki.alert.models.Event
 import com.plocki.alert.models.Global
 import com.plocki.alert.models.LikeType
+import com.plocki.alert.models.Report
 import com.plocki.alert.type.CreateLikeDto
 import com.plocki.alert.type.DeleteLikeDto
 import com.plocki.alert.type.LikeEnum
 import com.plocki.alert.utils.HttpErrorHandler
 import kotlinx.android.synthetic.main.activity_details.*
+import kotlinx.android.synthetic.main.dialog_report.*
 import kotlinx.android.synthetic.main.likebar.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -178,33 +180,33 @@ class Details : AppCompatActivity(), OnMapReadyCallback {
         doColor()
     }
 
-    private fun createReport() {
+    private fun createReport(report: Report) {
 
-//        val createReportDto = report.createReportDto(this)
-//        ReportsApi.createReport(
-//            createReportDto,
-//            object : ApolloCall.Callback<CreateReportMutation.Data>() {
-//                override fun onFailure(e: ApolloException) {
-//                    HttpErrorHandler.handle(500)
-//                }
-//
-//                override fun onResponse(response: Response<CreateReportMutation.Data>) {
-//                    Log.d("SUCCESS", response.data().toString())
-//                    if (response.hasErrors()) {
-//                        Log.e(
-//                            "ERROR ",
-//                            response.errors()[0].customAttributes()["statusCode"].toString()
-//                        )
-//                        val gson = GsonBuilder().create()
-//                        val errorMap =
-//                            gson.fromJson(response.errors()[0].message(), Map::class.java)
-//                        HttpErrorHandler.handle(errorMap["statusCode"].toString().toFloat().toInt())
-//                        return
-//                    }
-//
-//                }
-//            }
-//        )
+        val createReportDto = report.createReportDto(this)
+        ReportsApi.createReport(
+            createReportDto,
+            object : ApolloCall.Callback<CreateReportMutation.Data>() {
+                override fun onFailure(e: ApolloException) {
+                    HttpErrorHandler.handle(500)
+                }
+
+                override fun onResponse(response: Response<CreateReportMutation.Data>) {
+                    Log.d("SUCCESS", response.data().toString())
+                    if (response.hasErrors()) {
+                        Log.e(
+                            "ERROR ",
+                            response.errors()[0].customAttributes()["statusCode"].toString()
+                        )
+                        val gson = GsonBuilder().create()
+                        val errorMap =
+                            gson.fromJson(response.errors()[0].message(), Map::class.java)
+                        HttpErrorHandler.handle(errorMap["statusCode"].toString().toFloat().toInt())
+                        return
+                    }
+
+                }
+            }
+        )
     }
 
 
@@ -219,6 +221,12 @@ class Details : AppCompatActivity(), OnMapReadyCallback {
                     val errorMap = gson.fromJson(response.errors()[0].message(), Map::class.java)
                     HttpErrorHandler.handle(errorMap["statusCode"].toString().toFloat().toInt())
                     return
+                }
+                val reports = response.data()!!.reportCategories()
+                Global.getInstance()!!.reportList.clear()
+                for(report in reports){
+                    Global.getInstance()!!.reportList.add(report.title())
+                    Global.getInstance()!!.reportHashMap.put(report.title(), report.uuid().toString())
                 }
                 println("REPORT CATEGORIES " + response.data().toString())
             }
@@ -335,7 +343,13 @@ class Details : AppCompatActivity(), OnMapReadyCallback {
         yesBtn.setOnClickListener {
             dialog .dismiss()
         }
-        noBtn.setOnClickListener { dialog .dismiss() }
+        noBtn.setOnClickListener {
+            val cat = reportCategory_in.text.toString()
+            val uuid = Global.getInstance()!!.reportHashMap.get(cat)!!
+            val desc = desc2.text.toString()
+            createReport(Report(description = desc,category = uuid, event = event))
+            dialog .dismiss()
+        }
         dialog .show()
 
     }

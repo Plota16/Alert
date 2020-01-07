@@ -31,6 +31,7 @@ class Global {
     // Lists
     var eventList = arrayListOf<Event>()
     var categoryList = arrayListOf<String>()
+    var reportList = arrayListOf<String>()
 
     val distanceList = arrayOf("Nielimitowane", "500 m", "1 km", "3 km", "5 km", "10 km", "20 km", "100 km")
 
@@ -39,6 +40,7 @@ class Global {
     var mapHashMap = HashMap<String, Event>()
     var listHashMap = HashMap<String, Event>()
     var categoryHashMap= HashMap<String, Category>()
+    var reportHashMap= HashMap<String, String>()
     val filterHashMap = HashMap<String, Boolean>()
     val titleUUIDHashMap = HashMap<String, String>()
 

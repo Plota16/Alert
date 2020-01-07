@@ -51,6 +51,7 @@ AppLauncher {
                         return
                     }
                     val store = Store(activity)
+                    store.storeProvider(providerUser.providerType.toString())
                     Global.getInstance()!!.userName = response.data()!!.createUser().data().username()
                     Global.getInstance()!!.userToken = response.data()!!.createUser().token().accessToken()
                     println("CREATE USER STATS: " +  response.data()!!.createUser().stats())
@@ -67,6 +68,8 @@ AppLauncher {
         val sharedStore = Store(MyApplication.getAppContext())
         val currentActivity = Global.getInstance()!!.currentActivity!!
         sharedStore.removeToken()
+        sharedStore.removeDistance()
+        sharedStore.removeProvider()
         Global.getInstance()!!.isUserSigned = false
         Global.getInstance()!!.userToken = ""
 

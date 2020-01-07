@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import com.plocki.alert.R
 import com.plocki.alert.models.Global
 import com.plocki.alert.utils.AppLauncher
+import com.plocki.alert.utils.Store
 import kotlinx.android.synthetic.main.fragment_profile.*
 
 class FragmentProfile : Fragment() {
@@ -37,20 +38,25 @@ class FragmentProfile : Fragment() {
     }
 
     private fun updateProfile(){
-        if (Global.getInstance()!!.userData.reputation > 0) {
-            val likeContainer = "+" + Global.getInstance()!!.userData.reputation.toString()
-            profile_reputacion_number.text = likeContainer
-            profile_reputacion_number.setTextColor(ContextCompat.getColor(context!!, R.color.green))
-        } else if (Global.getInstance()!!.userData.reputation < 0) {
-            val likeContainer = Global.getInstance()!!.userData.reputation.toString()
-            profile_reputacion_number.text= likeContainer
-            profile_reputacion_number.setTextColor(ContextCompat.getColor(context!!, R.color.red))
+        val store = Store(context!!)
+        profile_provider.text = store.retrieveProvider()
 
-        } else {
-            profile_reputacion_number.text = Global.getInstance()!!.userData.reputation.toString()
+        when {
+            Global.getInstance()!!.userData.reputation > 0 -> {
+                val likeContainer = "+" + Global.getInstance()!!.userData.reputation.toString()
+                profile_reputacion_number.text = likeContainer
+                profile_reputacion_number.setTextColor(ContextCompat.getColor(context!!, R.color.green))
+            }
+            Global.getInstance()!!.userData.reputation < 0 -> {
+                val likeContainer = Global.getInstance()!!.userData.reputation.toString()
+                profile_reputacion_number.text= likeContainer
+                profile_reputacion_number.setTextColor(ContextCompat.getColor(context!!, R.color.red))
+
+            }
+            else -> profile_reputacion_number.text = Global.getInstance()!!.userData.reputation.toString()
         }
 
-        
+
         profile_statistic_add_num.text = Global.getInstance()!!.userData.createdEvents.toString()
         profile_statistic_rate_num.text = Global.getInstance()!!.userData.likesGiven.toString()
         profile_statistic_report_num.text = Global.getInstance()!!.userData.reportsReported.toString()

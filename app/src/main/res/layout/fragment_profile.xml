@@ -52,7 +52,7 @@
                         android:layout_marginTop="10dp"
                         android:fontFamily="@font/roboto"
                         android:text="+4762"
-                        android:textColor="@color/green"
+                        android:textColor="@android:color/black"
                         android:textSize="24sp" />
 
             </LinearLayout>
@@ -108,10 +108,9 @@
                     android:layout_height="match_parent">
 
                 <TextView
-                        android:layout_marginTop="10dp"
                         android:id="@+id/profile_statistic_add_text"
                         android:layout_width="wrap_content"
-                        android:layout_height="20dp"
+                        android:layout_height="wrap_content"
                         android:fontFamily="@font/roboto"
                         android:text="Dodanych wydarzeń"
                         android:textColor="@color/colorAccent"
@@ -119,7 +118,8 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/profile_statistic_add_num"
                         app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="parent" />
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                         android:id="@+id/profile_statistic_add_num"
@@ -143,7 +143,7 @@
                 <TextView
                         android:id="@+id/profile_statistic_rate_text"
                         android:layout_width="wrap_content"
-                        android:layout_height="20dp"
+                        android:layout_height="wrap_content"
                         android:fontFamily="@font/roboto"
                         android:text="Ocenionych wydarzeń"
                         android:textColor="@color/colorAccent"
@@ -152,7 +152,7 @@
                         app:layout_constraintEnd_toStartOf="@+id/profile_statistic_rate_num"
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
-                        android:layout_marginTop="16dp"/>
+                        app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                         android:id="@+id/profile_statistic_rate_num"
@@ -176,7 +176,7 @@
                 <TextView
                         android:id="@+id/profile_statistic_report_text"
                         android:layout_width="wrap_content"
-                        android:layout_height="20dp"
+                        android:layout_height="wrap_content"
                         android:fontFamily="@font/roboto"
                         android:text="Zgłoszonych wydarzeń"
                         android:textColor="@color/colorAccent"
@@ -184,7 +184,8 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/profile_statistic_report_num"
                         app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="parent" />
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                         android:id="@+id/profile_statistic_report_num"
@@ -250,6 +251,7 @@
                         android:textColor="@color/colorPrimary" />
 
                 <TextView
+                        android:id="@+id/profile_provider"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
@@ -261,4 +263,51 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.card.MaterialCardView>
+    <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="5dp"
+            android:foreground="?android:attr/selectableItemBackground"
+
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
+            android:layout_marginRight="8dp"
+            >
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <Button
+                    android:id="@+id/button2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:backgroundTint="#F44336"
+                    android:text="USUŃ KONTO"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toEndOf="@+id/textView"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:fontFamily="@font/roboto"
+                    android:text="Usuń konto:"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+
 </LinearLayout>

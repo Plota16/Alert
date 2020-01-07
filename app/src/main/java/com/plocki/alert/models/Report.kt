@@ -4,7 +4,7 @@ import android.content.Context
 import com.plocki.alert.type.CreateReportDto
 
 class Report(
-    var category: Category,
+    var category: String,
     var description: String,
     var event: Event
 ) {
@@ -12,8 +12,8 @@ class Report(
     fun createReportDto(context: Context?): CreateReportDto {
         val reportBuilder = CreateReportDto.builder()
             .description(this.description)
-            .category(this.category.uuid)
             .event(this.event.UUID.toString())
+            .category(this.category)
 
         return reportBuilder.build()
     }
