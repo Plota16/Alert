@@ -53,6 +53,7 @@ AppLauncher {
                     val store = Store(activity)
                     Global.getInstance()!!.userName = response.data()!!.createUser().data().username()
                     Global.getInstance()!!.userToken = response.data()!!.createUser().token().accessToken()
+                    println("CREATE USER STATS: " +  response.data()!!.createUser().stats())
                     store.storeToken(Global.getInstance()!!.userToken)
                     Global.getInstance()!!.isUserSigned = true
 
