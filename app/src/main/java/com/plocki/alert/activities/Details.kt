@@ -112,7 +112,11 @@ class Details : AppCompatActivity(), OnMapReadyCallback {
             .findFragmentById(R.id.details_map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
-        details_image.setOnClickListener { showImage() }
+        details_image.setOnClickListener {
+            if(event.image != null){
+                showImage()
+            }
+        }
 
     }
 
