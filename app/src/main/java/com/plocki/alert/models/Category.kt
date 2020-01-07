@@ -4,6 +4,4 @@ class Category(
     var uuid: String,
     val title: String,
     val color: String
-){
-
-}
+)
