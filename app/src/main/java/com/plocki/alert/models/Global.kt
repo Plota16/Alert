@@ -22,6 +22,7 @@ class Global {
 
 
     //User Variables
+    var userData : User = User("name",0,0,0,0)
     var userToken: String = ""
     var userName: String = ""
     var userCameraPosition: LatLng = LatLng(52.39786111,16.92500000)
