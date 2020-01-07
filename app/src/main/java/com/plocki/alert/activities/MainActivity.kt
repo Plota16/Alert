@@ -1,20 +1,26 @@
 package com.plocki.alert.activities
 
+import android.app.AlertDialog
+import android.app.Dialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
 import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
-import android.view.WindowManager
+import android.view.*
+import android.widget.Button
 import android.widget.PopupMenu
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.FragmentTransaction
 import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.google.gson.GsonBuilder
 import com.plocki.alert.API.ApolloInstance
 import com.plocki.alert.API.modules.EventsApi
@@ -24,12 +30,12 @@ import com.plocki.alert.R
 import com.plocki.alert.fragments.FragmentList
 import com.plocki.alert.fragments.FragmentMap
 import com.plocki.alert.fragments.FragmentProfile
-import com.plocki.alert.models.Category
-import com.plocki.alert.models.Event
-import com.plocki.alert.models.Global
-import com.plocki.alert.models.LikeType
+import com.plocki.alert.models.*
 import com.plocki.alert.utils.HttpErrorHandler
+import kotlinx.android.synthetic.main.activity_add.*
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.dialog_report.*
+import kotlinx.android.synthetic.main.dialog_report.desc2
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -318,5 +324,7 @@ class MainActivity : AppCompatActivity() {
             })
         }
     }
+
+
 
 }

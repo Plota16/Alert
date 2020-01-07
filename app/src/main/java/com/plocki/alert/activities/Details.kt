@@ -1,7 +1,9 @@
 package com.plocki.alert.activities
 
 import android.Manifest
+import android.app.AlertDialog
 import android.app.Dialog
+import android.content.DialogInterface
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -22,6 +24,8 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.google.gson.GsonBuilder
 import com.plocki.alert.*
 import com.plocki.alert.API.modules.*
@@ -35,9 +39,8 @@ import com.plocki.alert.type.LikeEnum
 import com.plocki.alert.utils.HttpErrorHandler
 import kotlinx.android.synthetic.main.activity_details.*
 import kotlinx.android.synthetic.main.dialog_report.*
+import kotlinx.android.synthetic.main.dialog_report.desc2
 import kotlinx.android.synthetic.main.likebar.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
 
@@ -48,6 +51,7 @@ class Details : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mMap : GoogleMap
     private lateinit var event : Event
     private var inst = Global.getInstance()
+    var choose = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -338,20 +342,97 @@ class Details : AppCompatActivity(), OnMapReadyCallback {
         dialog .setCancelable(false)
         dialog .setContentView(R.layout.dialog_report)
 
+
+
+        val categoryContainer = dialog.findViewById(R.id.reportCategory_in) as TextInputEditText
+        val descriptionContainer = dialog.findViewById(R.id.desc2) as TextInputEditText
+
         val yesBtn = dialog .findViewById(R.id.report_ok) as Button
         val noBtn = dialog .findViewById(R.id.report_cancel) as Button
-        yesBtn.setOnClickListener {
+
+
+        categoryContainer.setOnClickListener {
+            onChooseReportCategoryClick(dialog)
+        }
+
+
+        noBtn.setOnClickListener {
             dialog .dismiss()
         }
-        noBtn.setOnClickListener {
-            val cat = reportCategory_in.text.toString()
-            val uuid = Global.getInstance()!!.reportHashMap.get(cat)!!
-            val desc = desc2.text.toString()
-            createReport(Report(description = desc,category = uuid, event = event))
-            dialog .dismiss()
+
+        yesBtn.setOnClickListener {
+            val cat = categoryContainer.text.toString()
+            val desc = descriptionContainer.text.toString()
+            validateCategory(dialog)
+            validateDescription(dialog)
+
+            if(validateCategory(dialog) && validateDescription(dialog)){
+                val uuid = Global.getInstance()!!.reportHashMap.get(cat)!!
+                createReport(Report(description = desc,category = uuid, event = event))
+                dialog .dismiss()
+            }
         }
         dialog .show()
 
     }
+
+    private fun onChooseReportCategoryClick(dialog: Dialog) {
+        var choose = 0
+        val singleChoiceItems :Array<String> = inst!!.reportList.toTypedArray()
+
+        val itemSelected = choose
+        val tmp = AlertDialog.Builder(this, R.style.CustomDialogTheme)
+            .setTitle(this.getString(R.string.add_dialog_title))
+            .setSingleChoiceItems(singleChoiceItems, itemSelected) {
+                    _, selectedIndex ->
+                choose = selectedIndex
+            }
+            .setPositiveButton(this.getString(R.string.add_dialog_positive)) {
+                    _, _ ->
+                val categoryContainer = dialog.findViewById(R.id.reportCategory_in) as TextInputEditText
+                categoryContainer.setText(singleChoiceItems[choose])
+
+            }
+            .setNegativeButton(this.getString(R.string.add_dialog_negative)) {
+                    _, _ ->
+            }
+            .setOnDismissListener {
+
+            }
+            .show()
+
+
+        val but = tmp.getButton(DialogInterface.BUTTON_POSITIVE)
+        but.setTextColor(ContextCompat.getColor(this,R.color.colorPrimary))
+        val but2 = tmp.getButton(DialogInterface.BUTTON_NEGATIVE)
+        but2.setTextColor(ContextCompat.getColor(this,R.color.colorPrimary))
+    }
+
+    private fun validateCategory(dialog: Dialog): Boolean {
+        val categoryContainer = dialog.findViewById(R.id.reportCategory_in) as TextInputEditText
+        val categoryContainerLayout = dialog.findViewById(R.id.reportCategory) as TextInputLayout
+
+        return if(categoryContainer.text.toString() != ""){
+            categoryContainerLayout.error = null
+            true
+        } else{
+            categoryContainerLayout.error = "Wybierz Kategorię"
+            false
+        }
+    }
+
+    private fun validateDescription(dialog: Dialog): Boolean {
+        val descriptionContainer = dialog.findViewById(R.id.desc2) as TextInputEditText
+        val descriptionContainerLayout = dialog.findViewById(R.id.lay) as TextInputLayout
+
+        return if(descriptionContainer.text.toString() != ""){
+            descriptionContainerLayout.error = null
+            true
+        } else{
+            descriptionContainerLayout.error = "Wybierz Kategorię"
+            false
+        }
+    }
+
 }
 
