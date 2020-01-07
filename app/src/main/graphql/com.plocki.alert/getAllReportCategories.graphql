@@ -1,0 +1,6 @@
+query AllReportCategories {
+    reportCategories {
+        uuid,
+        title
+    }
+}

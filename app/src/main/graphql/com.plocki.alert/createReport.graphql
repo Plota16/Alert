@@ -1,0 +1,5 @@
+mutation createReport($reportData: CreateReportDto!) {
+    createReport(reportData: $reportData) {
+        uuid
+    }
+}
