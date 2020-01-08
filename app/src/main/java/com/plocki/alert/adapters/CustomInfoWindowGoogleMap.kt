@@ -26,31 +26,34 @@ class CustomInfoWindowGoogleMap(private val context: Context) : GoogleMap.InfoWi
         val like = view.findViewById<TextView>(R.id.infoWindowLike)
 
         println()
-        val infoContainer =
-            marker.title.split("~".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+        if(marker.title != null)
+        {
+            val infoContainer =
+                marker.title.split("~")
 
-        title.text = infoContainer[1]
-        category.text = infoContainer[0].toUpperCase()
+            title.text = infoContainer[1]
+            category.text = infoContainer[0].toUpperCase()
 
-        if (infoContainer[2] != "null") {
-            if (Integer.parseInt(infoContainer[2]) > 0) {
-                val likeContainer = "+" + infoContainer[2]
-                like.text = likeContainer
-                like.setTextColor(ContextCompat.getColor(context, R.color.green))
-            } else if (Integer.parseInt(infoContainer[2]) < 0) {
-                val likeContainer = infoContainer[2]
-                like.text = likeContainer
-                like.setTextColor(ContextCompat.getColor(context, R.color.red))
+            if (infoContainer[2] != "null") {
+                if (Integer.parseInt(infoContainer[2]) > 0) {
+                    val likeContainer = "+" + infoContainer[2]
+                    like.text = likeContainer
+                    like.setTextColor(ContextCompat.getColor(context, R.color.green))
+                } else if (Integer.parseInt(infoContainer[2]) < 0) {
+                    val likeContainer = infoContainer[2]
+                    like.text = likeContainer
+                    like.setTextColor(ContextCompat.getColor(context, R.color.red))
 
+                } else {
+                    like.text = infoContainer[2]
+                }
             } else {
-                like.text = infoContainer[2]
+                //TODO NIE WIEM CO WYSwietlic
+                like.text = "0"
             }
-        } else {
-            //TODO NIE WIEM CO WYSwietlic
-            like.text = "0"
+
+
         }
-
-
 
         return view
     }

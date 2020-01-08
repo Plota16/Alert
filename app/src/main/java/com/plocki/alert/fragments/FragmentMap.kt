@@ -3,14 +3,12 @@ package com.plocki.alert.fragments
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Color
 import android.location.Location
 import androidx.fragment.app.Fragment
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.google.android.gms.location.LocationServices
@@ -23,11 +21,17 @@ import com.plocki.alert.R
 import com.plocki.alert.models.EventMethods
 import com.plocki.alert.adapters.CustomInfoWindowGoogleMap
 import com.plocki.alert.models.EventMethods.Companion.getMarkerIcon
-import kotlinx.android.synthetic.main.fragment_map.*
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import com.google.maps.android.clustering.ClusterManager
+import com.google.android.gms.maps.model.MarkerOptions
+import com.plocki.alert.adapters.MarkerClusterItem
+import com.plocki.alert.adapters.MarkerClusterRenderer
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.CameraUpdateFactory
+
 
 
 class FragmentMap : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
@@ -38,7 +42,9 @@ class FragmentMap : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
 
     private lateinit var mMap: GoogleMap
     private lateinit var lastLocation: Location
+    private lateinit var clusterManager: ClusterManager<MarkerClusterItem>
     private var inst = Global.getInstance()
+    var listMarkers = ArrayList<MarkerOptions>()
 
 
 
@@ -72,11 +78,25 @@ class FragmentMap : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
     override fun onMapReady(p0: GoogleMap?) {
 
         mMap = p0!!
+        clusterManager = ClusterManager(this.context, mMap)
+
+        mMap.setOnCameraIdleListener(clusterManager)
+
         val customInfoWidow = CustomInfoWindowGoogleMap(this.context!!)
         mMap.setInfoWindowAdapter(customInfoWidow)
         mMap.setOnInfoWindowClickListener(this)
 
         mMap.mapType = GoogleMap.MAP_TYPE_NORMAL
+
+        mMap.setOnMarkerClickListener { it: Marker? ->
+            if(it!!.title == null){
+                return@setOnMarkerClickListener true
+            }
+            else{
+                it.showInfoWindow()
+                return@setOnMarkerClickListener false
+            }
+        }
 
         mMap.clear() //clear old markers
 
@@ -115,7 +135,9 @@ class FragmentMap : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
 
     override fun onInfoWindowClick(p0: Marker?) {
         val intent = Intent(activity, Details::class.java)
-        intent.putExtra("Marker", p0!!.id)
+        val extra = p0!!.title
+        val tab = extra.split("~")
+        intent.putExtra("Marker", tab[3])
         startActivity(intent)
     }
 
@@ -136,38 +158,66 @@ class FragmentMap : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
 
     private fun updateMap() {
         mMap.clear()
+        listMarkers.clear()
+        var iterator = 0
         for (event in inst!!.eventList) {
-
+            iterator++
             if(isFilteringPossible) {
                 if(Global.getInstance()!!.filterHashMap[event.category.title]!!){
                     if(EventMethods.calcDistance(event.coordinates) < EventMethods.getMaxDistance(inst!!.currentDistanceFilter) || EventMethods.getMaxDistance(inst!!.currentDistanceFilter) == 0) {
 
-                        val infoContainer = event.category.title + "~" + event.title + "~" + event.totalLikes
-                        val marker = mMap.addMarker(
+                        val infoContainer = event.category.title + "~" + event.title + "~" + event.totalLikes + "~" + "m$iterator"
+                        val markerOptions =
                             MarkerOptions()
                                 .position(event.coordinates)
                                 .title(infoContainer)
                                 .icon(getMarkerIcon(event.category.color))
-                        )
-
-                        inst!!.mapHashMap[marker.id] = event
+                        listMarkers.add(markerOptions)
+                        inst!!.mapHashMap["m$iterator"] = event
                     }
                 }
             }
             else{
 
-                val infoContainer = event.category.title + "~" + event.title + "~" + event.totalLikes
-                val marker = mMap.addMarker(
+                val infoContainer = event.category.title + "~" + event.title + "~" + event.totalLikes + "~" + "m$iterator"
+                val markerOptions =
                     MarkerOptions()
                         .position(event.coordinates)
                         .title(infoContainer)
                         .icon(getMarkerIcon(event.category.color))
-                )
-                inst!!.mapHashMap[marker.id] = event
+                listMarkers.add(markerOptions)
+                inst!!.mapHashMap["m$iterator"] = event
 
             }
         }
         isFilteringPossible = true
+        setupClusterManager()
+    }
+
+    private fun addClusterItems() {
+        for (markerOptions in listMarkers) {
+            val clusterItem = MarkerClusterItem(markerOptions)
+             clusterManager.addItem(clusterItem)
+        }
+    }
+
+    private fun setRenderer() {
+        val clusterRenderer = MarkerClusterRenderer(this.context!!, mMap, clusterManager)
+        clusterManager.renderer = clusterRenderer
+    }
+
+    private fun setupClusterManager() {
+        clusterManager.clearItems()
+        addClusterItems()
+        setClusterManagerClickListener()
+        setRenderer()
+        clusterManager.cluster()
+    }
+
+    private fun setClusterManagerClickListener() {
+        clusterManager.setOnClusterClickListener { cluster ->
+            true
+        }
     }
 
 }

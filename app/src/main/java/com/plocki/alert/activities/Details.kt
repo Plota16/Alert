@@ -55,7 +55,6 @@ class Details : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mMap : GoogleMap
     private lateinit var event : Event
     private var inst = Global.getInstance()
-    var choose = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
