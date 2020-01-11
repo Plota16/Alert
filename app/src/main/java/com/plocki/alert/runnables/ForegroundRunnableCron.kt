@@ -4,7 +4,7 @@ import com.plocki.alert.API.modules.FetchEventsHandler
 import com.plocki.alert.models.Global
 
 class ForegroundRunnableCron : Runnable {
-    var seconds: Long = 5000
+    var seconds: Long = 6000
     var isAlive = true
 
     override fun run() {

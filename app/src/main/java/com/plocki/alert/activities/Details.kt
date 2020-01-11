@@ -3,6 +3,7 @@ package com.plocki.alert.activities
 import android.Manifest
 import android.app.AlertDialog
 import android.app.Dialog
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -12,10 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
-import android.view.ViewGroup
-import android.view.Window
+import android.view.*
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.RelativeLayout
@@ -41,9 +39,6 @@ import com.plocki.alert.type.DeleteLikeDto
 import com.plocki.alert.type.LikeEnum
 import com.plocki.alert.utils.HttpErrorHandler
 import kotlinx.android.synthetic.main.activity_details.*
-import kotlinx.android.synthetic.main.dialog_report.*
-import kotlinx.android.synthetic.main.dialog_report.desc2
-import kotlinx.android.synthetic.main.event.*
 import kotlinx.android.synthetic.main.likebar.*
 import kotlin.math.roundToInt
 
@@ -60,62 +55,31 @@ class Details : AppCompatActivity(), OnMapReadyCallback {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_details)
 
+        setupExtras()
         fetchReportsCategories()
-
-        thump_up.setOnClickListener {
-            likeClicked()
-        }
-        thumb_down.setOnClickListener{
-            dislikeClicked()
-        }
-
-        val bundle :Bundle ?=intent.extras
-
-        val listMarker: String? = bundle!!.getString("pos")
-        val extraMarker : String? = bundle.getString("Marker")
-
-
-        if(extraMarker == null){
-            this.event = inst!!.listHashMap[listMarker]!!
-        }
-        else if(listMarker == null){
-            this.event = inst!!.mapHashMap[extraMarker]!!
-        }
-
+        setOnClickListeners()
         setPreviousRateButton()
+        setupImage()
+
         details_category.text = event.category.title
-        details_desc.text = event.description
+        if(event.description == ""){
+            desc_lay.visibility = View.GONE
+        }
+        else{
+            details_desc.text = event.description
+        }
+
         supportActionBar!!.title = event.title
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
-        val display = windowManager.defaultDisplay
-        val outMetrics = DisplayMetrics()
-        display.getMetrics(outMetrics)
-
-        val dpWidth = outMetrics.widthPixels
-        val dpHeight = dpWidth.toDouble()/4*3
 
 
-        details_image.layoutParams.width = dpWidth
-        details_image.layoutParams.height = dpHeight.roundToInt()
-        details_image.requestLayout()
-
-        Glide.with(this)
-            .load("${Global.photoBaseDomain}${event.image}.jpg")
-            .placeholder(R.drawable.placeholder)
-            .centerCrop()
-            .override(dpWidth ,dpHeight.roundToInt())
-            .into(details_image)
 
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.details_map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
-        details_image.setOnClickListener {
-            if(event.image != null){
-                showImage()
-            }
-        }
+
 
     }
 
@@ -138,16 +102,94 @@ class Details : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onMapReady(p0: GoogleMap?) {
         mMap = p0!!
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(event.coordinates, 14f), 1, null)
+        setupMapSettings()
+        turnOnMyLocation()
+        initMarker()
+        setupOnMapClickListener()
+
+
+    }
+
+    private fun setOnClickListeners(){
+        thump_up.setOnClickListener {
+            likeClicked()
+        }
+        thumb_down.setOnClickListener{
+            dislikeClicked()
+        }
+        details_image.setOnClickListener {
+            if(event.image != null){
+                showImage()
+            }
+        }
+
+    }
+
+    private fun setupExtras(){
+        val bundle :Bundle ?=intent.extras
+
+        val listMarker: String? = bundle!!.getString("pos")
+        val extraMarker : String? = bundle.getString("Marker")
+
+
+        if(extraMarker == null){
+            this.event = inst!!.listHashMap[listMarker]!!
+        }
+        else if(listMarker == null){
+            this.event = inst!!.mapHashMap[extraMarker]!!
+        }
+    }
+
+    private fun setupImage(){
+        val display = windowManager.defaultDisplay
+        val outMetrics = DisplayMetrics()
+        display.getMetrics(outMetrics)
+
+        val dpWidth = outMetrics.widthPixels
+        val dpHeight = dpWidth.toDouble()/4*3
+
+        details_image.layoutParams.width = dpWidth
+        details_image.layoutParams.height = dpHeight.roundToInt()
+        details_image.requestLayout()
+
+        Glide.with(this)
+            .load("${Global.photoBaseDomain}${event.image}.jpg")
+            .placeholder(R.drawable.placeholder)
+            .centerCrop()
+            .override(dpWidth ,dpHeight.roundToInt())
+            .into(details_image)
+    }
+
+    //MAP
+
+    private fun initMarker(){
+        mMap.addMarker(
+            MarkerOptions()
+                .position(event.coordinates)
+                .icon(EventMethods.getMarkerIcon(event.category.color))
+        )
+    }
+
+    private fun setupMapSettings(){
+        mMap.clear()
         mMap.mapType = GoogleMap.MAP_TYPE_NORMAL
-
-        mMap.clear() //clear old markers
-
         mMap.uiSettings.isScrollGesturesEnabled = false
         mMap.uiSettings.isCompassEnabled = false
         mMap.uiSettings.isMyLocationButtonEnabled = false
         mMap.uiSettings.isZoomGesturesEnabled = false
-        mMap.uiSettings.isZoomControlsEnabled = true
+    }
 
+    private fun setupOnMapClickListener(){
+        mMap.setOnMapClickListener {
+            val intent = Intent(this@Details, Location::class.java)
+            val extra = event.coordinates.latitude.toString()+"~~"+event.coordinates.longitude.toString()+"~~"+event.category.color+"~~"+event.title
+            intent.putExtra("cords",extra)
+            startActivity(intent)
+        }
+    }
+
+    private fun turnOnMyLocation(){
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
             == PackageManager.PERMISSION_GRANTED) {
             mMap.isMyLocationEnabled = true
@@ -159,28 +201,11 @@ class Details : AppCompatActivity(), OnMapReadyCallback {
 
             }
         }
-        val fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(event.coordinates, 15f),1, null)
-        fusedLocationClient.lastLocation.addOnSuccessListener {
-            if (it != null) {
-                Add.lastLocation = it
-            }
-        }
-
-
-        mMap.addMarker(
-            MarkerOptions()
-                .position(event.coordinates)
-                .icon(EventMethods.getMarkerIcon(event.category.color))
-        )
-
-        mMap.setOnMapClickListener {
-            val intent = Intent(this@Details, Location::class.java)
-            val extra = event.coordinates.latitude.toString()+"~~"+event.coordinates.longitude.toString()+"~~"+event.category.color
-            intent.putExtra("cords",extra)
-            startActivity(intent)
-        }
     }
+
+
+
+    //LIKES
 
     private fun setPreviousRateButton() {
         rate = event.userLike!!
@@ -198,63 +223,6 @@ class Details : AppCompatActivity(), OnMapReadyCallback {
             removeRate()
         }
         doColor()
-    }
-
-    private fun createReport(report: Report) {
-
-        val createReportDto = report.createReportDto(this)
-        ReportsApi.createReport(
-            createReportDto,
-            object : ApolloCall.Callback<CreateReportMutation.Data>() {
-                override fun onFailure(e: ApolloException) {
-                    HttpErrorHandler.handle(500)
-                }
-
-                override fun onResponse(response: Response<CreateReportMutation.Data>) {
-                    Log.d("SUCCESS", response.data().toString())
-                    if (response.hasErrors()) {
-                        Log.e(
-                            "ERROR ",
-                            response.errors()[0].customAttributes()["statusCode"].toString()
-                        )
-                        val gson = GsonBuilder().create()
-                        val errorMap =
-                            gson.fromJson(response.errors()[0].message(), Map::class.java)
-                        HttpErrorHandler.handle(errorMap["statusCode"].toString().toFloat().toInt())
-                        return
-                    }
-
-                }
-            }
-        )
-    }
-
-    private fun fetchReportsCategories() {
-
-        ReportCategoriesApi.fetchReportCategories(object :
-            ApolloCall.Callback<AllReportCategoriesQuery.Data>() {
-            override fun onResponse(response: Response<AllReportCategoriesQuery.Data>) {
-                if (response.hasErrors()) {
-                    val gson = GsonBuilder().create()
-                    val errorMap = gson.fromJson(response.errors()[0].message(), Map::class.java)
-                    HttpErrorHandler.handle(errorMap["statusCode"].toString().toFloat().toInt())
-                    return
-                }
-                val reports = response.data()!!.reportCategories()
-                Global.getInstance()!!.reportList.clear()
-                for(report in reports){
-                    Global.getInstance()!!.reportList.add(report.title())
-                    Global.getInstance()!!.reportHashMap.put(report.title(), report.uuid().toString())
-                }
-                println("REPORT CATEGORIES " + response.data().toString())
-            }
-
-            override fun onFailure(e: ApolloException) {
-
-                HttpErrorHandler.handle(500)
-            }
-
-        })
     }
 
     private fun removeRate() {
@@ -350,6 +318,33 @@ class Details : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
+    private fun showImage() {
+        val builder = Dialog(this,R.style.MyDialog)
+        builder.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        builder.window!!.setBackgroundDrawable(
+        ColorDrawable(Color.TRANSPARENT)
+        )
+        builder.window!!.setBackgroundDrawableResource(R.color.colorAccent)
+        builder.setOnDismissListener{builder.dismiss()}
+        builder.setCancelable(true)
+
+        val imageView = ImageView(this)
+
+        Glide.with(this)
+            .load("${Global.photoBaseDomain}${event.image}.jpg")
+            .into(imageView)
+
+        imageView.setOnClickListener { builder.dismiss() }
+
+        builder.addContentView(imageView, RelativeLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT))
+        builder.show()
+}
+
+
+    //REPORT
+
     private fun showReportDialog() {
         val dialog = Dialog(this)
         dialog .requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -390,29 +385,62 @@ class Details : AppCompatActivity(), OnMapReadyCallback {
 
     }
 
-    private fun showImage() {
-        val builder = Dialog(this,R.style.MyDialog)
-        builder.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        builder.window!!.setBackgroundDrawable(
-        ColorDrawable(Color.TRANSPARENT)
+    private fun createReport(report: Report) {
+
+        val createReportDto = report.createReportDto(this)
+        ReportsApi.createReport(
+            createReportDto,
+            object : ApolloCall.Callback<CreateReportMutation.Data>() {
+                override fun onFailure(e: ApolloException) {
+                    HttpErrorHandler.handle(500)
+                }
+
+                override fun onResponse(response: Response<CreateReportMutation.Data>) {
+                    Log.d("SUCCESS", response.data().toString())
+                    if (response.hasErrors()) {
+                        Log.e(
+                            "ERROR ",
+                            response.errors()[0].customAttributes()["statusCode"].toString()
+                        )
+                        val gson = GsonBuilder().create()
+                        val errorMap =
+                            gson.fromJson(response.errors()[0].message(), Map::class.java)
+                        HttpErrorHandler.handle(errorMap["statusCode"].toString().toFloat().toInt())
+                        return
+                    }
+
+                }
+            }
         )
-        builder.window!!.setBackgroundDrawableResource(R.color.colorAccent)
-        builder.setOnDismissListener{builder.dismiss()}
-        builder.setCancelable(true)
+    }
 
-        val imageView = ImageView(this)
+    private fun fetchReportsCategories() {
 
-        Glide.with(this)
-            .load("${Global.photoBaseDomain}${event.image}.jpg")
-            .into(imageView)
+        ReportCategoriesApi.fetchReportCategories(object :
+            ApolloCall.Callback<AllReportCategoriesQuery.Data>() {
+            override fun onResponse(response: Response<AllReportCategoriesQuery.Data>) {
+                if (response.hasErrors()) {
+                    val gson = GsonBuilder().create()
+                    val errorMap = gson.fromJson(response.errors()[0].message(), Map::class.java)
+                    HttpErrorHandler.handle(errorMap["statusCode"].toString().toFloat().toInt())
+                    return
+                }
+                val reports = response.data()!!.reportCategories()
+                Global.getInstance()!!.reportList.clear()
+                for(report in reports){
+                    Global.getInstance()!!.reportList.add(report.title())
+                    Global.getInstance()!!.reportHashMap.put(report.title(), report.uuid().toString())
+                }
+                println("REPORT CATEGORIES " + response.data().toString())
+            }
 
-        imageView.setOnClickListener { builder.dismiss() }
+            override fun onFailure(e: ApolloException) {
 
-        builder.addContentView(imageView, RelativeLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT))
-        builder.show()
-}
+                HttpErrorHandler.handle(500)
+            }
+
+        })
+    }
 
     private fun onChooseReportCategoryClick(dialog: Dialog) {
         var choose = 0

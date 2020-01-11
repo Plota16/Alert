@@ -21,7 +21,7 @@ class ApplicationObserver : LifecycleObserver {
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     fun onForeground() {
         Global.getInstance()!!.isAppClosed = false
-        foregroundRunnable.seconds = 2000
+        foregroundRunnable.seconds = 6000
 
         foregroundthread = Thread(foregroundRunnable)
         connectionThread = Thread(connectionObserver)

@@ -128,8 +128,6 @@ class FragmentMap : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
 
             }
         }
-
-
         updateMap()
     }
 

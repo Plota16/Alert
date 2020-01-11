@@ -15,6 +15,12 @@ import android.net.ConnectivityManager
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.jaychang.sa.Initializer
+import android.opengl.ETC1.getHeight
+import android.opengl.ETC1.getWidth
+import android.graphics.Bitmap
+import android.graphics.Matrix
+
+
 class EventMethods {
 
     companion object {
@@ -40,16 +46,27 @@ class EventMethods {
             val columnIndex = cursor.getColumnIndex(filePathColumn[0])
             val picturePath = cursor.getString(columnIndex)
             cursor.close()
-            val mBitmap = ThumbnailUtils.extractThumbnail(
+            var mBitmap = ThumbnailUtils.extractThumbnail(
                 BitmapFactory.decodeFile(picturePath),
                 256, 256
             )
+//            if(mBitmap.height > mBitmap.width){
+//                mBitmap = rotateImage(mBitmap)
+//            }
 
             return BitmapDrawable(context.resources, mBitmap)
 
 
         }
-
+        private fun rotateImage(source: Bitmap): Bitmap {
+            val matrix = Matrix()
+            val angle= 270
+            matrix.postRotate(angle.toFloat())
+            return Bitmap.createBitmap(
+                source, 0, 0, source.width, source.height,
+                matrix, true
+            )
+        }
 
         fun calcDistance(point: LatLng) : Int{
             val inst = Global.getInstance()

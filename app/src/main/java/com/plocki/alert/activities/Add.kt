@@ -25,6 +25,7 @@ import androidx.core.content.ContextCompat
 import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
+import com.bumptech.glide.Glide
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -79,9 +80,8 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add)
 
-        lat = 0.0
-        long = 0.0
 
+        setupListeners()
         supportActionBar!!.title = this.getString(R.string.add_menu_title)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
@@ -89,18 +89,7 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
             .findFragmentById(R.id.fragmini) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
-        add_title.setOnFocusChangeListener { _, b ->
-            if(!b){
-                validateTitle()
-            }
 
-        }
-
-        category_in.keyListener = null
-        category.setOnClickListener{ onChooseCategoryClick() }
-        category_in.setOnClickListener{ onChooseCategoryClick() }
-
-        imageclick.setOnClickListener{ onAddImageClick() }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -171,16 +160,17 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
                 image_uri = data.data!!
             }
 
-            image.background = thumbnailFromUri(this, uri)
-
             add_photo_text.text = ""
             imageButton.visibility = View.INVISIBLE
+            image.visibility = View.INVISIBLE
+            Glide.with(this).load(image_uri).into(toload)
         }
         if (resultCode == Activity.RESULT_OK && requestCode == CAMERA_CODE){
-            image.background = thumbnailFromUri(this, image_uri)
 
             add_photo_text.text = ""
             imageButton.visibility = View.INVISIBLE
+            image.visibility = View.INVISIBLE
+            Glide.with(this).load(image_uri).into(imageButton)
         }
         if (resultCode == Activity.RESULT_OK && requestCode == PICK_CODE){
 
@@ -304,6 +294,32 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
     }
 
     //PRIVATES
+
+    private fun setupListeners(){
+        add_title.setOnFocusChangeListener { _, b ->
+            if(!b){
+                validateTitle()
+            }
+        }
+        category_in.keyListener = null
+        category.setOnClickListener{
+            onChooseCategoryClick()
+        }
+
+
+        category_in.setOnClickListener{
+            onChooseCategoryClick()
+        }
+
+        imageclick.setOnClickListener{
+            onAddImageClick()
+        }
+        toload.setOnClickListener {
+            onAddImageClick()
+        }
+
+    }
+
     private fun launchCamera() {
         val values = ContentValues()
         values.put(MediaStore.Images.Media.TITLE, "New Picture")

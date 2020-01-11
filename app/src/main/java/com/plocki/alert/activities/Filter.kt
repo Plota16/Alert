@@ -65,6 +65,15 @@ class Filter : AppCompatActivity() {
 
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id = item.itemId
+
+        if (id == android.R.id.home) {
+            finish()
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
 
     private fun onDistanceChoose() {
 
@@ -133,16 +142,6 @@ class Filter : AppCompatActivity() {
                 chipGroup.addView(chip)
             }
         }
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val id = item.itemId
-
-        if (id == android.R.id.home) {
-            finish()
-        }
-
-        return super.onOptionsItemSelected(item)
     }
 
     private fun confirm(){
