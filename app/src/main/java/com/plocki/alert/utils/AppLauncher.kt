@@ -17,6 +17,7 @@ import com.plocki.alert.CreateUserMutation
 import com.plocki.alert.MyApplication
 import com.plocki.alert.activities.LoginPanel
 import com.plocki.alert.activities.Splash
+import com.plocki.alert.fragments.FragmentProfile
 import com.plocki.alert.models.Global
 import com.plocki.alert.models.ProviderUser
 import com.plocki.alert.services.FacebookService
@@ -54,7 +55,7 @@ AppLauncher {
                     store.storeProvider(providerUser.providerType.toString())
                     Global.getInstance()!!.userName = response.data()!!.createUser().data().username()
                     Global.getInstance()!!.userToken = response.data()!!.createUser().token().accessToken()
-                    println("CREATE USER STATS: " +  response.data()!!.createUser().stats())
+                    println("User Token: " +  response.data()!!.createUser().token())
                     store.storeToken(Global.getInstance()!!.userToken)
                     Global.getInstance()!!.isUserSigned = true
 
@@ -64,7 +65,7 @@ AppLauncher {
         )
     }
 
-    fun logOut() {
+    fun logOut(logOutUsingButton: Boolean = false) {
         val sharedStore = Store(MyApplication.getAppContext())
         val currentActivity = Global.getInstance()!!.currentActivity!!
         sharedStore.removeToken()
@@ -85,7 +86,7 @@ AppLauncher {
         googleService.signOut()
         twitterService.signOut()
         facebookService.signOut()
-        if (currentActivity::class != LoginPanel::class || currentActivity::class != Splash::class) {
+        if (!logOutUsingButton) {
             currentActivity.runOnUiThread {
                 Toast.makeText(
                     currentActivity.applicationContext,
@@ -93,17 +94,18 @@ AppLauncher {
                     Toast.LENGTH_SHORT
                 ).show()
             }
-            val intent = Intent(Global.getInstance()!!.currentActivity!!, LoginPanel::class.java)
-            intent.putExtra("SHOW_WELCOME", true)
-            currentActivity.startActivity(intent)
-            currentActivity.finish()
-            return
+
         }
+
         currentActivity.runOnUiThread {
             currentActivity.progressBar.visibility = View.INVISIBLE
             currentActivity.window.clearFlags(
                 WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
             )
         }
+        val intent = Intent(Global.getInstance()!!.currentActivity!!, LoginPanel::class.java)
+        intent.putExtra("SHOW_WELCOME", true)
+        currentActivity.startActivity(intent)
+        currentActivity.finish()
     }
 }

@@ -37,8 +37,7 @@ class GoogleService(activity: Activity) {
                 Toast.makeText(mActivity, "Cancel wylogowany", Toast.LENGTH_LONG).show()
             }
             task.addOnSuccessListener {
-                Toast.makeText(mActivity, "wylogowany", Toast.LENGTH_LONG).show()
-
+                logger.info("wylogowany")
             }
             task.addOnFailureListener {
                 Toast.makeText(mActivity, "Fail", Toast.LENGTH_LONG).show()

@@ -2,14 +2,23 @@ package com.plocki.alert.fragments
 
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.apollographql.apollo.ApolloCall
+import com.apollographql.apollo.api.Response
+import com.apollographql.apollo.exception.ApolloException
+import com.google.gson.GsonBuilder
+import com.google.gson.JsonSyntaxException
+import com.plocki.alert.API.modules.UserApi
+import com.plocki.alert.DeleteUserMutation
 import com.plocki.alert.R
 import com.plocki.alert.models.Global
 import com.plocki.alert.utils.AppLauncher
+import com.plocki.alert.utils.HttpErrorHandler
 import com.plocki.alert.utils.Store
 import kotlinx.android.synthetic.main.fragment_profile.*
 
@@ -24,11 +33,14 @@ class FragmentProfile : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         if(Global.getInstance()!!.userToken != "") {
-            println(Global.getInstance()!!.userToken)
             updateProfile()
         }
         siqn_out_button.setOnClickListener{
-            AppLauncher.logOut()
+            AppLauncher.logOut(true)
+        }
+
+        delete_user_button.setOnClickListener{
+            deleteUser()
         }
     }
 
@@ -61,5 +73,34 @@ class FragmentProfile : Fragment() {
         profile_statistic_rate_num.text = Global.getInstance()!!.userData.likesGiven.toString()
         profile_statistic_report_num.text = Global.getInstance()!!.userData.reportsReported.toString()
 
+    }
+
+    fun deleteUser() {
+        val deleteUser = UserApi.deleteUser(
+            object : ApolloCall.Callback<DeleteUserMutation.Data>() {
+                override fun onFailure(e: ApolloException) {
+                }
+
+                override fun onResponse(response: Response<DeleteUserMutation.Data>) {
+                    if (response.hasErrors()) {
+                        Log.e("ERROR ", response.errors()[0].customAttributes()["statusCode"].toString())
+                        val gson = GsonBuilder().create()
+                        try {
+                            val errorMap =
+                                gson.fromJson(response.errors()[0].message(), Map::class.java)
+                            HttpErrorHandler.handle(errorMap["statusCode"].toString().toFloat().toInt())
+                        } catch (e: JsonSyntaxException) {
+
+                            HttpErrorHandler.handle(500)
+                            Log.e("ERROR ","Błąd bazy danych")
+
+                        }
+                        return
+                    }
+                    AppLauncher.logOut(true)
+
+                }
+            }
+        )
     }
 }
