@@ -3,6 +3,7 @@ package com.plocki.alert.API.modules
 import com.apollographql.apollo.ApolloCall
 import com.plocki.alert.API.ApolloInstance
 import com.plocki.alert.CreateUserMutation
+import com.plocki.alert.DeleteUserMutation
 import com.plocki.alert.WhoAmIQuery
 import com.plocki.alert.models.ProviderUser
 
@@ -20,6 +21,14 @@ object UserApi {
 
         ApolloInstance.query(
             query,
+            callback
+        )
+    }
+    fun deleteUser(callback: ApolloCall.Callback<DeleteUserMutation.Data>) {
+        val mutation = DeleteUserMutation.builder().build()
+
+        ApolloInstance.mutate(
+            mutation,
             callback
         )
     }
