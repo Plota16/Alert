@@ -25,7 +25,6 @@ class FacebookService(activity: Activity) {
         if (AccessToken.getCurrentAccessToken() != null) {
             getUserProfile(AccessToken.getCurrentAccessToken())
         }
-        getUserProfile(AccessToken.getCurrentAccessToken())
     }
 
     private fun handleSignIn() {
@@ -37,14 +36,10 @@ class FacebookService(activity: Activity) {
                 getUserProfile(result.accessToken)
             }
             override fun onCancel() {
-                //TODO CZY COS Z TYM ROBIć
-//                Toast.makeText(mActivity, "Cancel", Toast.LENGTH_LONG).show()
             }
             override fun onError(error: FacebookException?) {
                 error!!.printStackTrace()
                 Toast.makeText(mActivity, "Nie można połączyć się przy pomocy Facebook", Toast.LENGTH_LONG).show()
-                throw error
-
             }
         })
     }
