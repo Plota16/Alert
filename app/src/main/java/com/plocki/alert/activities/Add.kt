@@ -315,7 +315,6 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
         Glide.with(this).load(image_uri).into(toload)
     }
 
-
     private fun launchCamera() {
         val values = ContentValues()
         values.put(MediaStore.Images.Media.TITLE, "New Picture")

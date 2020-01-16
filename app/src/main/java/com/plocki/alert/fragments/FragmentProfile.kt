@@ -1,6 +1,8 @@
 package com.plocki.alert.fragments
 
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -40,7 +42,7 @@ class FragmentProfile : Fragment() {
         }
 
         delete_user_button.setOnClickListener{
-            deleteUser()
+            deleteUserDialog()
         }
     }
 
@@ -73,6 +75,28 @@ class FragmentProfile : Fragment() {
         profile_statistic_rate_num.text = Global.getInstance()!!.userData.likesGiven.toString()
         profile_statistic_report_num.text = Global.getInstance()!!.userData.reportsReported.toString()
 
+    }
+
+    private fun deleteUserDialog(){
+        val tmp = AlertDialog.Builder(this.context, R.style.CustomDialogTheme)
+            .setTitle("Czy chcesz usunąć konto")
+            .setPositiveButton("TAK") {
+                    _, _ ->
+                deleteUser() }
+            .setNegativeButton("" +
+                    "Nie") {
+                    _, _ ->
+                 }
+            .setOnDismissListener {
+
+            }
+            .show()
+
+
+        val but = tmp.getButton(DialogInterface.BUTTON_POSITIVE)
+        but.setTextColor(ContextCompat.getColor(this.context!!,R.color.red))
+        val but2 = tmp.getButton(DialogInterface.BUTTON_NEGATIVE)
+        but2.setTextColor(ContextCompat.getColor(this.context!!,R.color.colorPrimary))
     }
 
     private fun deleteUser() {
