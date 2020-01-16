@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.plocki.alert.R
@@ -14,11 +13,6 @@ import com.plocki.alert.services.GoogleService
 import com.plocki.alert.services.TwitterService
 import com.twitter.sdk.android.core.Twitter
 import kotlinx.android.synthetic.main.activity_login_panel.*
-import kotlinx.coroutines.Dispatchers.Main
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-
 
 class LoginPanel : AppCompatActivity() {
 

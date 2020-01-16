@@ -71,13 +71,7 @@ AppLauncher {
         sharedStore.removeToken()
         sharedStore.removeDistance()
         sharedStore.removeProvider()
-        Global.getInstance()!!.isUserSigned = false
-        Global.getInstance()!!.userToken = ""
-
-        Global.getInstance()!!.isUserSigned = false
-        Global.getInstance()!!.isDataChanged = false
-        Global.getInstance()!!.isDataLoadedFirstTime = true
-        Global.getInstance()!!.isMapCreated = true
+        Global.getInstance()!!.resetStateVariables()
 
         val googleService = GoogleService(currentActivity)
         val twitterService = TwitterService(currentActivity)

@@ -2,7 +2,6 @@ package com.plocki.alert.activities
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
@@ -19,12 +18,11 @@ import com.plocki.alert.models.EventMethods
 class Location : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap :GoogleMap
-    private lateinit var lastLocation: Location
 
-    var long = 0.0
-    var lat = 0.0
-    var color = ""
-    var title = ""
+    private var long = 0.0
+    private var lat = 0.0
+    private var color = ""
+    private var title = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

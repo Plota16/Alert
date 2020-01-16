@@ -7,7 +7,6 @@ import android.content.ContentValues
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Color
 import android.location.Location
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
@@ -36,13 +35,10 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.gson.GsonBuilder
 import com.plocki.alert.API.modules.EventsApi
 import com.plocki.alert.API.modules.FetchEventsHandler
-import com.plocki.alert.AllEventsQuery
 import com.plocki.alert.CreateEventMutation
-import com.plocki.alert.MyApplication.Companion.context
 import com.plocki.alert.R
 import com.plocki.alert.models.Event
 import kotlinx.android.synthetic.main.activity_add.*
-import com.plocki.alert.models.EventMethods.Companion.thumbnailFromUri
 import com.plocki.alert.models.Global
 import com.plocki.alert.utils.FileGetter
 import com.plocki.alert.utils.HttpErrorHandler
@@ -80,8 +76,10 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add)
 
-
+        lat = 0.0
+        long = 0.0
         setupListeners()
+
         supportActionBar!!.title = this.getString(R.string.add_menu_title)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
@@ -154,23 +152,13 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE){
-            val uri = data?.data
+            image_uri = data!!.data!!
+            loadImageIntoView()
 
-            if (uri != null) {
-                image_uri = data.data!!
-            }
-
-            add_photo_text.text = ""
-            imageButton.visibility = View.INVISIBLE
-            image.visibility = View.INVISIBLE
-            Glide.with(this).load(image_uri).into(toload)
         }
         if (resultCode == Activity.RESULT_OK && requestCode == CAMERA_CODE){
+            loadImageIntoView()
 
-            add_photo_text.text = ""
-            imageButton.visibility = View.INVISIBLE
-            image.visibility = View.INVISIBLE
-            Glide.with(this).load(image_uri).into(imageButton)
         }
         if (resultCode == Activity.RESULT_OK && requestCode == PICK_CODE){
 
@@ -186,12 +174,12 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
                     .position(LatLng(lat, long))
                     .title(this.getString(R.string.add_location_pin_text))
             )
+
+            if(hasLocation){
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(lat,long), 14f),1, null)
+            }
         }
 
-        if(hasLocation){
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(lat,long), 14f),1, null)
-        }
-        validateLocation()
         super.onActivityResult(requestCode, resultCode, data)
     }
 
@@ -319,6 +307,14 @@ class Add : AppCompatActivity(), OnMapReadyCallback {
         }
 
     }
+
+    private fun loadImageIntoView(){
+        add_photo_text.text = ""
+        imageButton.visibility = View.INVISIBLE
+        image.visibility = View.INVISIBLE
+        Glide.with(this).load(image_uri).into(toload)
+    }
+
 
     private fun launchCamera() {
         val values = ContentValues()

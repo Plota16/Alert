@@ -3,7 +3,6 @@ package com.plocki.alert.activities
 import android.Manifest
 import android.app.AlertDialog
 import android.app.Dialog
-import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -22,7 +21,6 @@ import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
 import com.bumptech.glide.Glide
-import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -304,17 +302,19 @@ class Details : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun doColor(){
-        if(rate == LikeType.NONE){
-            thumb_down.foreground.alpha = 255
-            thump_up.foreground.alpha = 255
-        }
-        else if(rate == LikeType.LIKE){
-            thump_up.foreground.alpha = 255
-            thumb_down.foreground.alpha = 128
-        }
-        else if(rate == LikeType.DISLIKE){
-            thump_up.foreground.alpha = 128
-            thumb_down.foreground.alpha = 255
+        when (rate) {
+            LikeType.NONE -> {
+                thumb_down.foreground.alpha = 255
+                thump_up.foreground.alpha = 255
+            }
+            LikeType.LIKE -> {
+                thump_up.foreground.alpha = 255
+                thumb_down.foreground.alpha = 128
+            }
+            LikeType.DISLIKE -> {
+                thump_up.foreground.alpha = 128
+                thumb_down.foreground.alpha = 255
+            }
         }
     }
 
@@ -376,7 +376,7 @@ class Details : AppCompatActivity(), OnMapReadyCallback {
             validateDescription(dialog)
 
             if(validateCategory(dialog) && validateDescription(dialog)){
-                val uuid = Global.getInstance()!!.reportHashMap.get(cat)!!
+                val uuid = Global.getInstance()!!.reportHashMap[cat]!!
                 createReport(Report(description = desc,category = uuid, event = event))
                 dialog .dismiss()
             }
@@ -429,7 +429,7 @@ class Details : AppCompatActivity(), OnMapReadyCallback {
                 Global.getInstance()!!.reportList.clear()
                 for(report in reports){
                     Global.getInstance()!!.reportList.add(report.title())
-                    Global.getInstance()!!.reportHashMap.put(report.title(), report.uuid().toString())
+                    Global.getInstance()!!.reportHashMap[report.title()] = report.uuid().toString()
                 }
                 println("REPORT CATEGORIES " + response.data().toString())
             }

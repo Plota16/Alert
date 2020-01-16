@@ -37,37 +37,6 @@ class EventMethods {
 
 
 
-
-        fun thumbnailFromUri(context: Context, uri : Uri?): BitmapDrawable {
-            val filePathColumn = arrayOf(MediaStore.Images.Media.DATA)
-            val cursor = context.contentResolver.query(uri!!, filePathColumn, null, null, null)
-            cursor!!.moveToFirst()
-
-            val columnIndex = cursor.getColumnIndex(filePathColumn[0])
-            val picturePath = cursor.getString(columnIndex)
-            cursor.close()
-            var mBitmap = ThumbnailUtils.extractThumbnail(
-                BitmapFactory.decodeFile(picturePath),
-                256, 256
-            )
-//            if(mBitmap.height > mBitmap.width){
-//                mBitmap = rotateImage(mBitmap)
-//            }
-
-            return BitmapDrawable(context.resources, mBitmap)
-
-
-        }
-        private fun rotateImage(source: Bitmap): Bitmap {
-            val matrix = Matrix()
-            val angle= 270
-            matrix.postRotate(angle.toFloat())
-            return Bitmap.createBitmap(
-                source, 0, 0, source.width, source.height,
-                matrix, true
-            )
-        }
-
         fun calcDistance(point: LatLng) : Int{
             val inst = Global.getInstance()
 

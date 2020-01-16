@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.transition.TransitionManager
 import android.view.MenuItem
-import androidx.core.view.marginBottom
 import com.google.android.material.chip.Chip
 import com.plocki.alert.R
 import com.plocki.alert.models.Global

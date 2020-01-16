@@ -44,7 +44,16 @@ class Global {
     val filterHashMap = HashMap<String, Boolean>()
     val titleUUIDHashMap = HashMap<String, String>()
 
-
+    fun resetStateVariables(){
+        isErrorActivityOpen = false
+        isUserSigned = false
+        isDataChanged = false
+        isDataLoadedFirstTime = true
+        isMapCreated = true
+        areCategoriesLoaded = false
+        isAppClosed = false
+        isFirstStart = true
+    }
 
     companion object {
         const val ip = "alert-api-staging.eu-central-1.elasticbeanstalk.com"
