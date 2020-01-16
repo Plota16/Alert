@@ -1,20 +1,21 @@
 package com.plocki.alert.runnables
 
-class BackgroundRunnableCron : Runnable {
-    var isAppClose: Boolean = false
+import com.plocki.alert.api.modules.FetchEventsHandler
 
+class BackgroundRunnableCron : Runnable {
     var seconds: Long = 2000
+    private var isAlive = true
 
     override fun run() {
         var i = 0
-        while (isAppClose) {
-//                    Handler threadHandler = new Handler(Looper.getMainLooper());
-//                    threadHandler.post(new Runnable() {
-            println("Pobieram dane z serwera: $i" )
+        while (isAlive) {
+            println("Pobieram back dane z serwera: $i" )
+            FetchEventsHandler.fetchEvents()
             try {
                 Thread.sleep(seconds)
             } catch (e: InterruptedException) {
-                e.printStackTrace()
+                println("Tylni wątek aktualizujący zakończony")
+                break
             }
             i++
         }

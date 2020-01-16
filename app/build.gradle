@@ -4,6 +4,9 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'com.apollographql.android'
+
+
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -14,7 +17,7 @@ android {
                 twitterConsumerSecret: "Yczx4FBpVhmXrhfdLFhbJ2gSFgo2mAY1OmofM9lnyljxkWDuXY",
         ]
         applicationId "com.plocki.alert"
-        minSdkVersion 23
+        minSdkVersion 24
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -25,6 +28,15 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
+    apollo {
+        customTypeMapping = [
+                "Upload": "com.apollographql.apollo.api.FileUpload"
+        ]
     }
 }
 
@@ -57,4 +69,17 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-runtime:2.0.0"
     implementation "androidx.lifecycle:lifecycle-extensions:2.0.0"
     annotationProcessor "androidx.lifecycle:lifecycle-compiler:2.0.0"
+    implementation 'com.android.support:design:28.1.0'
+    implementation 'com.google.android.material:material:1.1.0-alpha04'
+    implementation("com.apollographql.apollo:apollo-runtime:1.2.1")
+    implementation "org.jetbrains.anko:anko-coroutines:0.10.4"
+    // If not already on your classpath, you might need the jetbrains annotations
+    compileOnly("org.jetbrains:annotations:13.0")
+    testCompileOnly("org.jetbrains:annotations:13.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.2.1")
+    implementation 'id.zelory:compressor:2.1.0'
+    implementation("io.coil-kt:coil:0.8.0")
+    implementation 'com.google.code.gson:gson:2.8.5'
+    implementation 'com.google.maps.android:android-maps-utils:0.5+'
+
 }

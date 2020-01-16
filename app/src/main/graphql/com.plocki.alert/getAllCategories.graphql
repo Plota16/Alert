@@ -1,0 +1,7 @@
+query AllCategoriesQuery {
+    categories {
+        uuid,
+        title,
+        color
+    }
+}

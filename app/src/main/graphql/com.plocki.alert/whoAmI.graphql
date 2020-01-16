@@ -1,0 +1,12 @@
+query whoAmI {
+  whoAmI {
+    username,
+    uuid
+  }
+  myStats {
+    reputation,
+    createdEvents,
+    likesGiven,
+    reportsReported
+  }
+}

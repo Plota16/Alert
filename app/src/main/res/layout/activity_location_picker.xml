@@ -23,8 +23,9 @@
     <Button
             android:text="@string/LocationPicker_button_text"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:id="@+id/but"
-            style="@style/Widget.MaterialComponents.Button.UnelevatedButton" android:onClick="onPick"
+            android:layout_height="wrap_content"
+            android:id="@+id/but"
+            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
             app:layout_constraintEnd_toEndOf="@+id/fragpick"
             app:layout_constraintStart_toStartOf="@+id/fragpick"
             app:layout_constraintBottom_toBottomOf="@+id/fragpick"

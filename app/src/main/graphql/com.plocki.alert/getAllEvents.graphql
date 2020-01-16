@@ -1,0 +1,19 @@
+query AllEventsQuery {
+  events {
+    uuid,
+    title,
+    coords {
+      x,
+      y
+    },
+    description,
+    image,
+    totalLikes,
+    userLike,
+    category{
+        uuid,
+        title,
+        color
+    },
+  }
+}

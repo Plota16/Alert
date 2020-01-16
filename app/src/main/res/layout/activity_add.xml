@@ -3,10 +3,12 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:outlineProvider="bounds"
+        android:background="@android:color/white"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 <ScrollView
-
+        android:outlineProvider="bounds"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".activities.Add">
@@ -16,6 +18,7 @@
             android:layout_height="wrap_content">
 
         <com.google.android.material.textfield.TextInputLayout
+                app:boxBackgroundColor="@android:color/white"
                 android:id="@+id/lay_title"
                 android:textColorHint="@color/colorPrimary"
                 android:layout_width="match_parent"
@@ -28,19 +31,22 @@
 
             <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/add_title"
-                    app:boxStrokeWidth="2dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    app:boxStrokeWidth="2dp" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
+                android:outlineProvider="bounds"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
 
             <com.google.android.material.textfield.TextInputLayout
+
+                    android:outlineProvider="bounds"
                     android:id="@+id/lay"
                     style="@style/MyTextInputLayout"
                     android:layout_width="match_parent"
@@ -58,85 +64,103 @@
                     app:layout_constraintTop_toTopOf="parent">
 
                 <com.google.android.material.textfield.TextInputEditText
+                        android:outlineProvider="bounds"
                         android:id="@+id/desc2"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:drawableEnd="@drawable/ic_keyboard_arrow_up_24px"
-                        android:drawablePadding="100dp"
-                        android:minHeight="120dp" />
+                        android:drawablePadding="130dp"
+                        android:minHeight="150dp" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <TextView
-                    android:id="@+id/add_photo_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:elevation="3dp"
-                    android:text="@string/add_addphoto_text"
-                    android:textSize="12sp"
-                    app:layout_constraintBottom_toBottomOf="@id/image"
-                    app:layout_constraintEnd_toEndOf="@id/image"
-                    app:layout_constraintStart_toStartOf="@id/image"
-                    app:layout_constraintTop_toBottomOf="@id/imageButton"
-                    app:layout_constraintVertical_bias="0.0"
+                    <ImageView
+                            android:id="@+id/toload"
+                            android:layout_width="120dp"
+                            android:layout_height="90dp"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginTop="12dp"
+                            android:layout_marginRight="16dp"
+                            android:layout_marginBottom="16dp"
+                            android:background="@color/white"
+                            android:rotation="0"
+                            android:scaleType="centerCrop"
+                            android:clickable="true"
+                            android:focusable="true"
+                            app:layout_constraintBottom_toBottomOf="@id/lay"
+                            app:layout_constraintEnd_toEndOf="@id/lay"
+                            app:layout_constraintHorizontal_bias="1"
+                            app:layout_constraintStart_toStartOf="@id/lay"
+                            app:layout_constraintTop_toTopOf="@id/lay"
+                            app:layout_constraintVertical_bias="0.26"
+                            android:contentDescription="@string/Add_toload_desc" />
 
-                    />
-
-            <ImageButton
-
+            <com.google.android.material.card.MaterialCardView
                     android:id="@+id/image"
-                    style="@android:style/Widget.Material.Light.ImageButton"
                     android:layout_width="120dp"
                     android:layout_height="90dp"
-                    android:layout_margin="16dp"
-                    android:background="@drawable/ic_img_bckg"
-                    android:contentDescription="@string/add_image_desc"
-                    android:elevation="2dp"
-                    android:minWidth="64dp"
-                    android:minHeight="64dp"
-                    android:onClick="onAddImageClick"
-                    android:scaleType="centerInside"
-                    android:textAlignment="viewStart"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="@color/white"
+                    android:rotation="0"
+                    android:scaleType="centerCrop"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="5dp"
                     app:layout_constraintBottom_toBottomOf="@id/lay"
                     app:layout_constraintEnd_toEndOf="@id/lay"
-                    app:layout_constraintHorizontal_bias="0.95"
+                    app:layout_constraintHorizontal_bias="1"
                     app:layout_constraintStart_toStartOf="@id/lay"
-                    app:layout_constraintTop_toTopOf="@id/lay" />
+                    app:layout_constraintTop_toTopOf="@id/lay"
+                    app:layout_constraintVertical_bias="0.26">
 
-            <ImageButton
-                    android:id="@+id/imageButton"
-                    android:layout_width="80dp"
-                    android:layout_height="60dp"
-                    android:layout_weight="1"
-                    android:onClick="onAddImageClick"
-                    android:scaleType="centerCrop"
-                    android:elevation="2dp"
-                    app:layout_constraintBottom_toBottomOf="@id/image"
-                    app:layout_constraintEnd_toEndOf="@id/image"
-                    app:layout_constraintStart_toStartOf="@id/image"
-                    app:layout_constraintTop_toTopOf="@id/image"
-                    app:layout_constraintVertical_bias="0.18"
-                    app:srcCompat="@drawable/placeholder"
-                    />
+                <LinearLayout
+                        android:id="@+id/imageclick"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:clickable="true"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:orientation="vertical"
+                        android:focusable="true">
+
+
+
+                    <ImageButton
+                            android:id="@+id/imageButton"
+                            android:layout_width="80dp"
+                            android:layout_height="60dp"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:clickable="false"
+                            android:elevation="2dp"
+                            android:scaleType="centerInside"
+                            app:srcCompat="@drawable/placeholder"
+                            android:contentDescription="@string/Add_toload_desc" />
+
+                    <TextView
+                            android:id="@+id/add_photo_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:text="@string/add_addphoto_text"
+                            android:textSize="12sp" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
+                android:outlineProvider="bounds"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-
-            <ImageView
-                    android:id="@+id/imageView3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/add_category_image_desc"
-                    app:layout_constraintBottom_toBottomOf="@+id/category"
-                    app:layout_constraintEnd_toEndOf="@+id/category"
-                    app:layout_constraintHorizontal_bias="1.0"
-                    app:layout_constraintStart_toStartOf="@+id/category"
-                    app:layout_constraintTop_toTopOf="@+id/category"
-                    app:srcCompat="@drawable/ic_expand_more_24px" />
 
             <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/category"
@@ -145,6 +169,7 @@
                     android:layout_margin="16dp"
                     android:hint="@string/add_category_hint"
                     android:textColorHint="@color/colorPrimary"
+                    app:boxBackgroundColor="@android:color/white"
                     app:errorEnabled="true"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -159,18 +184,41 @@
                         android:focusable="false" />
 
             </com.google.android.material.textfield.TextInputLayout>
+
+            <ImageView
+                    android:id="@+id/imageView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_expand_more_24px"
+                    android:backgroundTint="@color/colorAccent"
+                    android:contentDescription="@string/add_category_image_desc"
+                    app:layout_constraintBottom_toBottomOf="@+id/category"
+                    app:layout_constraintEnd_toEndOf="@+id/category"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="@+id/category"
+                    app:layout_constraintTop_toTopOf="@+id/category" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <TextView
-                android:id="@+id/textView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="16dp"
+        <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/localization_lay"
+                android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
-                android:text="@string/add_location_text"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                android:textColor="@color/colorPrimary" />
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent">
+
+            <TextView
+
+                    android:id="@+id/localization_textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:text="@string/add_location_text"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                    android:textColor="@color/colorPrimary"
+                    app:errorEnabled="true" />
 
         <fragment
                 android:id="@+id/fragmini"
@@ -183,7 +231,12 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+        </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
 </ScrollView>
+    <include
+            android:id="@+id/progressBar"
+            android:visibility="gone"
+            layout="@layout/progres_bar"/>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

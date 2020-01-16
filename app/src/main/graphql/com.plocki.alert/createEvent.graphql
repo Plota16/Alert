@@ -1,0 +1,5 @@
+mutation createEvent($eventData:CreateEventDto!) {
+    createEvent(eventData:$eventData) {
+        title,
+    }
+}

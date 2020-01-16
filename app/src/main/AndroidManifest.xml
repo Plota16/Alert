@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <uses-feature
             android:glEsVersion="0x00020000"
@@ -16,12 +17,24 @@
     <application
             android:name=".MyApplication"
             android:allowBackup="true"
-            android:icon="@mipmap/ic_launcher"
+            android:icon="@mipmap/ic_icon"
             android:label="@string/app_name"
+            android:networkSecurityConfig="@xml/network_security_config"
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".activities.Filter"></activity>
+        <activity android:name=".activities.Location"></activity>
+        <activity android:name=".activities.ConnectionError" />
+
+        <receiver
+                android:name=".utils.ConnectivityReceiver"
+                android:enabled="true">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+
+        <activity android:name=".activities.Filter" />
         <activity android:name=".fragments.FragmentProfile" />
         <activity android:name=".activities.LoginPanel" />
         <activity android:name=".activities.Details" />

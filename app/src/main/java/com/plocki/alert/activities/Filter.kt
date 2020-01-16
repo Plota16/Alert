@@ -1,27 +1,39 @@
 package com.plocki.alert.activities
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.transition.TransitionManager
-import android.view.View
+import android.view.MenuItem
 import com.google.android.material.chip.Chip
 import com.plocki.alert.R
 import com.plocki.alert.models.Global
+import com.plocki.alert.utils.Store
 import kotlinx.android.synthetic.main.activity_filter.*
 
 class Filter : AppCompatActivity() {
 
     private val inst = Global.getInstance()
+    @SuppressLint("UseSparseArrays")
     private var chipList = HashMap<Int, Chip>()
     private var distance = 0
-    lateinit var checkedList : BooleanArray
+    private var filterList = booleanArrayOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_filter)
+
+        resetButton.setOnClickListener {
+            reset()
+        }
+
+        confirmButton.setOnClickListener {
+            confirm()
+        }
+
 
         supportActionBar!!.title = this.getString(R.string.filter_title)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
@@ -29,8 +41,13 @@ class Filter : AppCompatActivity() {
         filter_distance.keyListener = null
         filter_category.keyListener = null
 
-        distance = inst!!.distanceList.indexOf(inst.filterdDistnance)
-        checkedList = inst.FilterList
+
+        val boolContainer = ArrayList<Boolean>()
+        distance = inst!!.distanceList.indexOf(inst.currentDistanceFilter)
+        for (category in Global.getInstance()!!.categoryList){
+            boolContainer.add(Global.getInstance()!!.filterHashMap[category]!!)
+        }
+        filterList = boolContainer.toBooleanArray()
         if(distance != 0){
             filter_distance.setText(inst.distanceList[distance])
         }
@@ -47,6 +64,15 @@ class Filter : AppCompatActivity() {
 
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id = item.itemId
+
+        if (id == android.R.id.home) {
+            finish()
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
 
     private fun onDistanceChoose() {
 
@@ -54,9 +80,9 @@ class Filter : AppCompatActivity() {
         val tmp = AlertDialog.Builder(this, R.style.CustomDialogTheme)
             .setTitle(this.getString(R.string.filter_dostance_title))
             .setSingleChoiceItems(inst!!.distanceList, itemSelected) {
-                    dialogInterface, selectedIndex -> distance = selectedIndex}
+                    _, selectedIndex -> distance = selectedIndex}
             .setPositiveButton(this.getString(R.string.add_dialog_positive)) {
-                    dialog, which ->
+                    _, _ ->
                 filter_distance.setText(inst.distanceList[distance])  }
             .setNegativeButton(this.getString(R.string.add_dialog_negative), null)
             .show()
@@ -68,22 +94,22 @@ class Filter : AppCompatActivity() {
         but2.setTextColor(Color.parseColor("#6200EE"))
     }
 
-    fun onCategoryMark() {
+    private fun onCategoryMark() {
 
+        val multiChoiceList = inst!!.categoryList.toTypedArray()
         val tmp = AlertDialog.Builder(this, R.style.CustomDialogTheme)
             .setTitle(this.getString(R.string.add_dialog_title))
-            .setMultiChoiceItems(inst!!.CategoryList, checkedList) {
-                dialog : DialogInterface, which : Int, isChecked : Boolean ->
-
-                checkedList[which] = isChecked
+            .setMultiChoiceItems(multiChoiceList, filterList) {
+                    _: DialogInterface, which : Int, isChecked : Boolean ->
+                filterList[which] = isChecked
             }
 
             .setPositiveButton(this.getString(R.string.add_dialog_positive)) {
-                    dialog, which ->
+                    _, _ ->
 
-               for(i in checkedList.indices)
+               for(i in filterList.indices)
                {
-                   chipGroup.removeView(chipList.get(1000+i))
+                   chipGroup.removeView(chipList[1000+i])
                }
                 generateChips()
             }
@@ -98,38 +124,42 @@ class Filter : AppCompatActivity() {
     }
 
     private fun generateChips(){
-        for(i in inst!!.CategoryList.indices){
-            if(inst.FilterList[i]){
+        for(i in inst!!.categoryList.indices){
+            if(filterList[i]){
                 val chip = Chip(this)
                 val id = 1000 + i
 
-                chip.text = inst.CategoryList[i]
+                chip.text = inst.categoryList[i]
                 chip.isCloseIconVisible = true
 
                 chip.setOnCloseIconClickListener{
                     TransitionManager.beginDelayedTransition(chipGroup)
                     chipGroup.removeView(chip)
-                    checkedList[i] = false
+                    filterList[i] = false
                 }
-                chipList.put(id,chip)
+                chipList[id] = chip
                 chipGroup.addView(chip)
             }
         }
     }
 
-    fun confirm(v: View){
-        inst!!.filterdDistnance = inst.distanceList[distance]
-        inst.FilterList = checkedList
+    private fun confirm(){
+        val store = Store(this)
+        inst!!.currentDistanceFilter = inst.distanceList[distance]
+        store.storeDistance(inst.distanceList[distance])
+        for(i in inst.categoryList){
+            inst.filterHashMap[i] = filterList[inst.categoryList.indexOf(i)]
+        }
         finish()
     }
 
-    fun reset(v: View){
+    private fun reset(){
         distance = 0
         filter_distance.setText("")
-        for(i in inst!!.FilterList.indices){
-            checkedList[i] = true
+        for(i in inst!!.categoryList.indices){
+            filterList[i] = true
         }
-        for(i in checkedList.indices)
+        for(i in filterList.indices)
         {
             chipGroup.removeView(chipList[1000+i])
         }

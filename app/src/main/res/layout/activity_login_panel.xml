@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+        android:outlineProvider="bounds"
+        android:background="@android:color/white"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+<androidx.constraintlayout.widget.ConstraintLayout
+        android:outlineProvider="bounds"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -30,16 +35,16 @@
                 android:orientation="vertical">
 
 
-            <ImageButton
+            <ImageView
                     android:id="@+id/logo"
                     android:layout_width="24pt"
                     android:layout_height="24pt"
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="16dp"
                     android:background="@drawable/circle_image"
-                    android:onClick="logoClicked"
                     android:rotation="-40"
-                    android:src="@drawable/ic_notification" />
+                    android:src="@drawable/ic_notification"
+                    android:contentDescription="@string/Login_logo_desc" />
 
             <com.google.android.material.button.MaterialButton
                     android:id="@+id/face_login_button"
@@ -50,13 +55,13 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="32dp"
                     android:layout_marginBottom="8dp"
-                    android:onClick="connectFacebook"
-                    android:text="Zaloguj się z Facebook"
+                    android:text="@string/login_facebookButton_text"
                     android:textAlignment="textStart"
                     android:textAllCaps="false"
+                    android:textColor="@color/colorAccent"
                     android:textSize="13sp"
-                    app:icon="@drawable/ic_facebook"
 
+                    app:icon="@drawable/ic_facebook"
                     app:iconPadding="16dp" />
 
             <com.google.android.material.button.MaterialButton
@@ -68,10 +73,10 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="32dp"
                     android:layout_marginBottom="8dp"
-                    android:onClick="connectGoogle"
-                    android:text="Zaloguj się z Google"
+                    android:text="@string/Login_googleButton_text"
                     android:textAlignment="textStart"
                     android:textAllCaps="false"
+                    android:textColor="@color/colorAccent"
                     android:textSize="13sp"
                     app:icon="@drawable/ic_google"
                     app:iconPadding="16dp" />
@@ -85,10 +90,10 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="32dp"
                     android:layout_marginBottom="32dp"
-                    android:onClick="connectTwitter"
-                    android:text="Zaloguj się z Twitter"
+                    android:text="@string/Login_twitterButton_text"
                     android:textAlignment="textStart"
                     android:textAllCaps="false"
+                    android:textColor="@color/colorAccent"
                     android:textSize="13sp"
                     app:icon="@drawable/ic_twitter"
                     app:iconPadding="16dp" />
@@ -96,3 +101,8 @@
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 </androidx.constraintlayout.widget.ConstraintLayout>
+<include
+android:id="@+id/progressBar"
+android:visibility="gone"
+layout="@layout/progres_bar"/>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -49,7 +49,13 @@
             android:layout_marginBottom="70dp"
             android:clickable="true"
             android:focusable="true"
+            android:foreground="@drawable/ic_plus"
             android:tint="@color/white"
-            app:backgroundTint="@color/colorPrimary"
-            app:srcCompat="@drawable/ic_plus" />
+            app:backgroundTint="@color/colorPrimary" />
+    <include
+            android:id="@+id/progressBarMap"
+            android:visibility="gone"
+            layout="@layout/progres_bar"/>
+
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

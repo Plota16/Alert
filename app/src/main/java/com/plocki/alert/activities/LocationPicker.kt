@@ -8,7 +8,6 @@ import android.location.Location
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import androidx.core.content.ContextCompat
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -16,8 +15,8 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
 import com.plocki.alert.R
+import kotlinx.android.synthetic.main.activity_location_picker.*
 
 class LocationPicker : AppCompatActivity(), OnMapReadyCallback {
 
@@ -30,7 +29,9 @@ class LocationPicker : AppCompatActivity(), OnMapReadyCallback {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_location_picker)
 
-
+        but.setOnClickListener {
+            onPick()
+        }
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.fragpick) as SupportMapFragment
         mapFragment.getMapAsync(this)
@@ -51,9 +52,6 @@ class LocationPicker : AppCompatActivity(), OnMapReadyCallback {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
                 mMap.isMyLocationEnabled = true
-
-            } else {
-
             }
         }
 
@@ -65,11 +63,9 @@ class LocationPicker : AppCompatActivity(), OnMapReadyCallback {
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 16f), 1 , null)
             }
         }
-
-
     }
 
-    fun onPick(v: View?) {
+    private fun onPick() {
         val center = mMap.cameraPosition.target
         val intent = Intent()
         val res = center.latitude.toString() +"+"+center.longitude.toString()
