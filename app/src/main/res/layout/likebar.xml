@@ -41,7 +41,8 @@
                 android:foreground="@drawable/ic_thumb_up"
                 android:foregroundTint="@color/green"
                 android:padding="6dp"
-                android:src="#00FFFFFF" />
+                android:src="#00FFFFFF"
+                android:contentDescription="@string/likebar_like_text" />
 
         <ImageButton
                 android:id="@+id/thumb_down"
@@ -57,7 +58,8 @@
                 android:foreground="@drawable/ic_thumb_down"
                 android:foregroundTint="@color/red"
                 android:padding="4dp"
-                android:src="#00FFFFFF" />
+                android:src="#00FFFFFF"
+                android:contentDescription="@string/likebar_dislike_text" />
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>
 

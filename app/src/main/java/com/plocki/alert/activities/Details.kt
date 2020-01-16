@@ -30,11 +30,12 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.gson.GsonBuilder
 import com.plocki.alert.*
-import com.plocki.alert.API.modules.*
+import com.plocki.alert.api.modules.*
 import com.plocki.alert.models.*
 import com.plocki.alert.type.CreateLikeDto
 import com.plocki.alert.type.DeleteLikeDto
 import com.plocki.alert.type.LikeEnum
+import com.plocki.alert.utils.EventMethods
 import com.plocki.alert.utils.HttpErrorHandler
 import kotlinx.android.synthetic.main.activity_details.*
 import kotlinx.android.synthetic.main.likebar.*
@@ -387,7 +388,7 @@ class Details : AppCompatActivity(), OnMapReadyCallback {
 
     private fun createReport(report: Report) {
 
-        val createReportDto = report.createReportDto(this)
+        val createReportDto = report.createReportDto()
         ReportsApi.createReport(
             createReportDto,
             object : ApolloCall.Callback<CreateReportMutation.Data>() {

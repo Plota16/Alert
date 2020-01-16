@@ -11,7 +11,7 @@ import android.preference.PreferenceManager
 class Store(context: Context) {
 
     private val encryptor = Encryptor()
-    val decryptor  = Decryptor()
+    private val decryptor  = Decryptor()
 
     private val pref  = PreferenceManager.getDefaultSharedPreferences(context)
     private val editor : SharedPreferences.Editor = pref.edit()

@@ -18,10 +18,12 @@
     <string name="add_category_error">Musisz podać kategorię</string>
     <string name="add_location_error">Musisz podać lokalizację</string>
     <string name="add_location_pin_text">Lokalizacja</string>
-
+    <string name="Add_toload_desc">obraz od użytkownika</string>
     <string name="add_dialog_title">Wybierz kategorię</string>
     <string name="add_dialog_positive">OK</string>
     <string name="add_dialog_negative">Anuluj</string>
+    <string name="add_category_hint">Kategoria</string>
+    <string name="add_addphoto_text">Dodaj zdjęcie</string>
 
     <string name="detail_image_desc">Obraz wydarzenia</string>
     <string name="detail_menu_title">Szczegóły wydarzenia</string>
@@ -32,15 +34,10 @@
     <string name="Event_image_desc">Obraz wydarzenia</string>
 
     <string name="Login_textView_text">Zaloguj się</string>
-    <string name="login_email_text">Email</string>
-    <string name="Login_password_text">Hasło</string>
-    <string name="login_loginButton_text">Zaloguj</string>
-    <string name="Login_registerButton_text">Zarejestruj</string>
+
     <string name="detail_image_title">Opis</string>
     <string name="detail_localisacion_title">Lokalizacja</string>
     <string name="detail_bottombar_text">Czy informacja była pomocna?</string>
-    <string name="add_category_hint">Kategoria</string>
-    <string name="add_addphoto_text">Dodaj zdjęcie</string>
 
     <string name="filter_fitrcateegory">Filtruj Kategorię</string>
     <string name="filter_maxdistance">Maksymalna odległość</string>
@@ -53,8 +50,30 @@
 
     <string name="internet_dialog_title">"Brak Połączenia z Internetem"</string>
     <string name="internet_dialog_text">"Nie wykryto połączenia z Internetem. Czy chesz je włączyć?"</string>
+
     <string name="splash_load_text">POBIERANIE WYDARZEŃ</string>
-    <!--    <string name="Login_facebookButton_text">Zarejestruj się</string>-->
-    <!--    <string name="Login_googleButton_text">Zarejestruj się</string>-->
+
+    <string name="conError_desc_text">Wykryto następujące problemy z połączeniem</string>
+    <string name="conError_internet_text">Brak Internetu</string>
+    <string name="conError_connectButton_text">Połącz</string>
+    <string name="conError_GPS_text">Brak połączenia GPS</string>
+
+    <string name="Login_logo_desc">Logo</string>
+    <string name="login_facebookButton_text">Zaloguj się z Facebook</string>
+    <string name="Login_googleButton_text">Zaloguj się z Google</string>
+    <string name="Login_twitterButton_text">Zaloguj się z Twitter</string>
+    <string name="report_event_title">Zgłoś wydarzenie</string>
+    <string name="report_buttonNegative_text">Anuluj</string>
+    <string name="report_buttonPositive_text">Zgłoś</string>
+    <string name="likebar_like_text">Lubię</string>
+    <string name="likebar_dislike_text">Nie Lubię</string>
+    <string name="profile_reputation_text">Twoja reputacja</string>
+    <string name="profile_statistic_text">Statystyki</string>
+    <string name="profile_added_text">Dodanych wydarzeń</string>
+    <string name="profile_rated_text">Ocenionych wydarzeń</string>
+    <string name="profile_reported_text">Zgłoszonych wydarzeń</string>
+    <string name="profile_service_text">Zalogowano przez</string>
+    <string name="login_deleteButton_text">USUŃ KONTO</string>
+    <string name="login_delete_text">Usuń konto:</string>
 
 </resources>

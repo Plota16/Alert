@@ -2,14 +2,15 @@ package com.plocki.alert.ciphers
 
 import android.security.keystore.KeyProperties
 import android.security.keystore.KeyGenParameterSpec
+import com.plocki.alert.models.EncryptionResult
 import java.io.IOException
 import java.security.*
 import javax.crypto.*
 
 
 class Encryptor {
-    private val TRANSFORMATION = "AES/GCM/NoPadding"
-    private val ANDROID_KEY_STORE = "AndroidKeyStore"
+    private val transformation = "AES/GCM/NoPadding"
+    private val androidKeyStore = "AndroidKeyStore"
 
     private var encryption: ByteArray? = null
     private var iv: ByteArray? = null
@@ -29,13 +30,13 @@ class Encryptor {
     )
     fun encryptText(alias: String, textToEncrypt: String): EncryptionResult {
 
-        val cipher = Cipher.getInstance(TRANSFORMATION)
+        val cipher = Cipher.getInstance(transformation)
         cipher.init(Cipher.ENCRYPT_MODE, getSecretKey(alias))
 
         iv = cipher.iv
         encryption = cipher.doFinal(textToEncrypt.toByteArray(charset("UTF-8")))
 
-        return EncryptionResult(encryption!!,iv!!)
+        return EncryptionResult(encryption!!, iv!!)
     }
 
     @Throws(
@@ -46,7 +47,7 @@ class Encryptor {
     private fun getSecretKey(alias: String): SecretKey {
 
         val keyGenerator = KeyGenerator
-            .getInstance(KeyProperties.KEY_ALGORITHM_AES, ANDROID_KEY_STORE)
+            .getInstance(KeyProperties.KEY_ALGORITHM_AES, androidKeyStore)
 
         keyGenerator.init(
             KeyGenParameterSpec.Builder(
@@ -61,11 +62,4 @@ class Encryptor {
         return keyGenerator.generateKey()
     }
 
-    fun getEncryption(): ByteArray? {
-        return encryption
-    }
-
-    fun getIv(): ByteArray? {
-        return iv
-    }
 }

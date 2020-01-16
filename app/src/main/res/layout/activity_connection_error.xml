@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -22,7 +21,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto"
-                android:text="Wykryto następujące problemy z połączeniem"
+                android:text="@string/conError_desc_text"
                 android:textAlignment="center"
                 android:layout_marginBottom="32dp"
                 android:textSize="18sp" />
@@ -36,16 +35,16 @@
 
             <TextView
                     android:id="@+id/networkText"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Brak Internetu" />
+                    android:text="@string/conError_internet_text" />
 
             <Button
                     android:id="@+id/networkButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Połącz" />
+                    android:text="@string/conError_connectButton_text" />
         </LinearLayout>
 
         <LinearLayout
@@ -57,17 +56,17 @@
 
             <TextView
                     android:id="@+id/gpsText"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Brak połączenia GPS" />
+                    android:text="@string/conError_GPS_text" />
 
             <Button
                     android:id="@+id/gpsButton"
                     style="@style/Widget.MaterialComponents.Button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Połącz" />
+                    android:text="@string/conError_connectButton_text" />
         </LinearLayout>
     </LinearLayout>
 

@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.View
 import com.plocki.alert.MyApplication
 import com.plocki.alert.R
-import com.plocki.alert.models.EventMethods
+import com.plocki.alert.utils.EventMethods
 import com.plocki.alert.models.Global
 import kotlinx.android.synthetic.main.activity_connection_error.*
 import kotlinx.coroutines.Dispatchers

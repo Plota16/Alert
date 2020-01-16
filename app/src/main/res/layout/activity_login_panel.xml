@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:outlineProvider="bounds"
         android:background="@android:color/white"
         android:layout_width="match_parent"
@@ -37,16 +35,16 @@
                 android:orientation="vertical">
 
 
-            <ImageButton
+            <ImageView
                     android:id="@+id/logo"
                     android:layout_width="24pt"
                     android:layout_height="24pt"
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="16dp"
                     android:background="@drawable/circle_image"
-                    android:onClick="logoClicked"
                     android:rotation="-40"
-                    android:src="@drawable/ic_notification" />
+                    android:src="@drawable/ic_notification"
+                    android:contentDescription="@string/Login_logo_desc" />
 
             <com.google.android.material.button.MaterialButton
                     android:id="@+id/face_login_button"
@@ -57,8 +55,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="32dp"
                     android:layout_marginBottom="8dp"
-                    android:onClick="connectFacebook"
-                    android:text="Zaloguj się z Facebook"
+                    android:text="@string/login_facebookButton_text"
                     android:textAlignment="textStart"
                     android:textAllCaps="false"
                     android:textColor="@color/colorAccent"
@@ -76,8 +73,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="32dp"
                     android:layout_marginBottom="8dp"
-                    android:onClick="connectGoogle"
-                    android:text="Zaloguj się z Google"
+                    android:text="@string/Login_googleButton_text"
                     android:textAlignment="textStart"
                     android:textAllCaps="false"
                     android:textColor="@color/colorAccent"
@@ -94,8 +90,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="32dp"
                     android:layout_marginBottom="32dp"
-                    android:onClick="connectTwitter"
-                    android:text="Zaloguj się z Twitter"
+                    android:text="@string/Login_twitterButton_text"
                     android:textAlignment="textStart"
                     android:textAllCaps="false"
                     android:textColor="@color/colorAccent"

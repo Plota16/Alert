@@ -1,4 +1,4 @@
-package com.plocki.alert.API
+package com.plocki.alert.api
 
 import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.ApolloClient

@@ -14,7 +14,7 @@ class FileGetter {
 
                 val proj = arrayOf(MediaStore.Images.Media.DATA)
                 val cursor = contentResolver.query(uri, proj, null, null, null, null)
-                if (cursor.moveToFirst()) {
+                if (cursor!!.moveToFirst()) {
                     val column = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
                     realPath = cursor.getString(column)
                 }

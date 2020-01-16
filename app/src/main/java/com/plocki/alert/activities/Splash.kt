@@ -17,7 +17,7 @@ import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
 import com.plocki.alert.*
-import com.plocki.alert.API.modules.UserApi
+import com.plocki.alert.api.modules.UserApi
 import com.plocki.alert.models.Global
 import com.plocki.alert.utils.Store
 import kotlinx.android.synthetic.main.splash.*
@@ -25,7 +25,7 @@ import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import com.google.gson.GsonBuilder
-import com.plocki.alert.API.modules.FetchCategoriesHandler.fetchCategories
+import com.plocki.alert.api.modules.FetchCategoriesHandler.fetchCategories
 import com.plocki.alert.utils.HttpErrorHandler
 
 class Splash : Activity() {

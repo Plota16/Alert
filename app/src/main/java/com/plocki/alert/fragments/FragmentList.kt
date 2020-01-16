@@ -12,7 +12,7 @@ import com.plocki.alert.MyApplication
 import com.plocki.alert.adapters.ListAdapter
 import com.plocki.alert.R
 import com.plocki.alert.models.Event
-import com.plocki.alert.models.EventMethods
+import com.plocki.alert.utils.EventMethods
 import com.plocki.alert.models.Global
 import kotlinx.android.synthetic.main.fragment_list.*
 import kotlinx.coroutines.Dispatchers.Main

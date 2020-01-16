@@ -11,25 +11,22 @@ import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonSyntaxException
-import com.plocki.alert.API.modules.FetchEventsHandler
-import com.plocki.alert.API.modules.UserApi
+import com.plocki.alert.api.modules.FetchEventsHandler
+import com.plocki.alert.api.modules.UserApi
 import com.plocki.alert.CreateUserMutation
 import com.plocki.alert.MyApplication
 import com.plocki.alert.activities.LoginPanel
-import com.plocki.alert.activities.Splash
-import com.plocki.alert.fragments.FragmentProfile
 import com.plocki.alert.models.Global
 import com.plocki.alert.models.ProviderUser
 import com.plocki.alert.services.FacebookService
 import com.plocki.alert.services.GoogleService
 import com.plocki.alert.services.TwitterService
 import kotlinx.android.synthetic.main.activity_login_panel.*
-import java.lang.Exception
 
 object
 AppLauncher {
     fun launchApp(activity:  Activity, providerUser: ProviderUser) {
-        val createUser = UserApi.createUser(
+        UserApi.createUser(
             providerUser,
             object : ApolloCall.Callback<CreateUserMutation.Data>() {
                 override fun onFailure(e: ApolloException) {

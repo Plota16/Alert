@@ -18,9 +18,9 @@ import com.plocki.alert.MyApplication
 import com.plocki.alert.activities.Details
 import com.plocki.alert.models.Global
 import com.plocki.alert.R
-import com.plocki.alert.models.EventMethods
+import com.plocki.alert.utils.EventMethods
 import com.plocki.alert.adapters.CustomInfoWindowGoogleMap
-import com.plocki.alert.models.EventMethods.Companion.getMarkerIcon
+import com.plocki.alert.utils.EventMethods.Companion.getMarkerIcon
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay

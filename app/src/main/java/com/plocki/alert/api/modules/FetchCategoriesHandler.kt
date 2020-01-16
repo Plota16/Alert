@@ -1,13 +1,12 @@
-package com.plocki.alert.API.modules
+package com.plocki.alert.api.modules
 
 import android.app.Activity
 import android.util.Log
 import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
-import com.apollographql.apollo.exception.ApolloHttpException
 import com.google.gson.GsonBuilder
-import com.plocki.alert.API.ApolloInstance
+import com.plocki.alert.api.ApolloInstance
 import com.plocki.alert.AllCategoriesQuery
 import com.plocki.alert.models.Category
 import com.plocki.alert.models.Global

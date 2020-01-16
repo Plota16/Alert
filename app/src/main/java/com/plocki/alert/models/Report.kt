@@ -1,6 +1,5 @@
 package com.plocki.alert.models
 
-import android.content.Context
 import com.plocki.alert.type.CreateReportDto
 
 class Report(
@@ -9,7 +8,7 @@ class Report(
     var event: Event
 ) {
 
-    fun createReportDto(context: Context?): CreateReportDto {
+    fun createReportDto(): CreateReportDto {
         val reportBuilder = CreateReportDto.builder()
             .description(this.description)
             .event(this.event.UUID.toString())

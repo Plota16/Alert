@@ -1,12 +1,7 @@
-package com.plocki.alert.models
+package com.plocki.alert.utils
 
 import android.content.Context
-import android.graphics.BitmapFactory
 import android.graphics.Color
-import android.graphics.drawable.BitmapDrawable
-import android.media.ThumbnailUtils
-import android.net.Uri
-import android.provider.MediaStore
 import com.google.android.gms.maps.model.LatLng
 import kotlin.math.roundToInt
 import android.location.Location
@@ -15,10 +10,7 @@ import android.net.ConnectivityManager
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.jaychang.sa.Initializer
-import android.opengl.ETC1.getHeight
-import android.opengl.ETC1.getWidth
-import android.graphics.Bitmap
-import android.graphics.Matrix
+import com.plocki.alert.models.Global
 
 
 class EventMethods {

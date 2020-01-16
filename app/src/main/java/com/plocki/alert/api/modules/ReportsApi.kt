@@ -1,7 +1,7 @@
-package com.plocki.alert.API.modules
+package com.plocki.alert.api.modules
 
 import com.apollographql.apollo.ApolloCall
-import com.plocki.alert.API.ApolloInstance
+import com.plocki.alert.api.ApolloInstance
 import com.plocki.alert.CreateReportMutation
 import com.plocki.alert.type.CreateReportDto
 

@@ -1,4 +1,4 @@
-package com.plocki.alert.API.modules
+package com.plocki.alert.api.modules
 
 import android.app.Activity
 import android.content.Intent
@@ -6,11 +6,9 @@ import android.util.Log
 import android.widget.Toast
 import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.api.Response
-import com.apollographql.apollo.exception.ApolloCanceledException
 import com.apollographql.apollo.exception.ApolloException
-import com.apollographql.apollo.exception.ApolloHttpException
 import com.google.gson.GsonBuilder
-import com.plocki.alert.API.ApolloInstance
+import com.plocki.alert.api.ApolloInstance
 import com.plocki.alert.AllEventsQuery
 import com.plocki.alert.MyApplication
 import com.plocki.alert.activities.MainActivity

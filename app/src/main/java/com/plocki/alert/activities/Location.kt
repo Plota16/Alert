@@ -13,7 +13,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.plocki.alert.R
-import com.plocki.alert.models.EventMethods
+import com.plocki.alert.utils.EventMethods
 
 class Location : AppCompatActivity(), OnMapReadyCallback {
 

@@ -1,4 +1,4 @@
-package com.plocki.alert
+package com.plocki.alert.adapters
 
 import android.content.Context
 import android.content.Intent
@@ -10,12 +10,14 @@ import android.widget.TextView
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.plocki.alert.R
 import com.plocki.alert.activities.Details
 import com.plocki.alert.models.Event
-import com.plocki.alert.models.EventMethods
+import com.plocki.alert.utils.EventMethods
 import com.plocki.alert.models.Global
 import java.math.BigDecimal
 import java.math.RoundingMode
+import java.util.*
 import kotlin.math.roundToInt
 
 class EventViewHolder(inflater: LayoutInflater, parent: ViewGroup, act: FragmentActivity, cont : Context) :
@@ -57,9 +59,9 @@ class EventViewHolder(inflater: LayoutInflater, parent: ViewGroup, act: Fragment
 
 
     fun bind(event: Event) {
-        inst!!.listHashMap.put(layoutPosition.toString(),event)
+        inst!!.listHashMap[layoutPosition.toString()] = event
 
-        var res = ""
+        val res: String
         val dist = EventMethods.calcDistance(event.coordinates)
         if(dist < 1000){
             var dintInDouble = dist.toDouble()
@@ -75,7 +77,7 @@ class EventViewHolder(inflater: LayoutInflater, parent: ViewGroup, act: Fragment
             res = "$distInInt km"
         }
 
-        val categoryContainer = event.category.title.toUpperCase()  + " ($res)"
+        val categoryContainer = event.category.title.toUpperCase(Locale.ENGLISH)  + " ($res)"
         eventCategory?.text = categoryContainer
         eventTitle?.text = event.title
 

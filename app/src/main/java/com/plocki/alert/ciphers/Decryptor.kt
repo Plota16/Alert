@@ -8,9 +8,8 @@ import javax.crypto.spec.GCMParameterSpec
 
 class Decryptor {
 
-    private val TRANSFORMATION = "AES/GCM/NoPadding"
-    private val ANDROID_KEY_STORE = "AndroidKeyStore"
-
+    private val transformation = "AES/GCM/NoPadding"
+    private val androidKeyStore = "AndroidKeyStore"
     private var keyStore: KeyStore? = null
 
     init {
@@ -23,7 +22,7 @@ class Decryptor {
         IOException::class
     )
     private fun initKeyStore() {
-        keyStore = KeyStore.getInstance(ANDROID_KEY_STORE)
+        keyStore = KeyStore.getInstance(androidKeyStore)
         keyStore!!.load(null)
     }
 
@@ -40,7 +39,7 @@ class Decryptor {
         InvalidAlgorithmParameterException::class
     )
     fun decryptData(alias: String, encryptedData: ByteArray, encryptionIv: ByteArray): String {
-            val cipher = Cipher.getInstance(TRANSFORMATION)
+            val cipher = Cipher.getInstance(transformation)
             val spec = GCMParameterSpec(128, encryptionIv)
             cipher.init(Cipher.DECRYPT_MODE, getSecretKey(alias), spec)
         return cipher.doFinal(encryptedData).toString(Charsets.UTF_8)
@@ -52,6 +51,6 @@ class Decryptor {
         KeyStoreException::class
     )
     private fun getSecretKey(alias: String): SecretKey {
-        return (keyStore!!.getEntry(alias, null) as KeyStore.SecretKeyEntry).getSecretKey()
+        return (keyStore!!.getEntry(alias, null) as KeyStore.SecretKeyEntry).secretKey
     }
 }

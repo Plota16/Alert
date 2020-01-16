@@ -14,9 +14,9 @@ class ApplicationObserver : LifecycleObserver {
     private val backgroundRunnable: BackgroundRunnableCron = BackgroundRunnableCron()
     private val connectionObserver: ConnectionObserver = ConnectionObserver()
 
-    var foregroundthread = Thread(foregroundRunnable)
-    var connectionThread = Thread(connectionObserver)
-    var backgroudthread = Thread(backgroundRunnable)
+    private var foregroundthread = Thread(foregroundRunnable)
+    private var connectionThread = Thread(connectionObserver)
+    private var backgroudthread = Thread(backgroundRunnable)
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     fun onForeground() {

@@ -13,8 +13,8 @@ import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
 import com.google.gson.GsonBuilder
-import com.plocki.alert.API.ApolloInstance
-import com.plocki.alert.API.modules.EventsApi
+import com.plocki.alert.api.ApolloInstance
+import com.plocki.alert.api.modules.EventsApi
 import com.plocki.alert.AllEventsQuery
 import com.plocki.alert.R
 import com.plocki.alert.fragments.FragmentList

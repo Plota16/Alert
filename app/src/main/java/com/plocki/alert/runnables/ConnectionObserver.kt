@@ -3,8 +3,8 @@ package com.plocki.alert.runnables
 import android.content.Intent
 import com.plocki.alert.MyApplication
 import com.plocki.alert.activities.ConnectionError
-import com.plocki.alert.models.EventMethods.Companion.isGpsOn
-import com.plocki.alert.models.EventMethods.Companion.isNetworkOn
+import com.plocki.alert.utils.EventMethods.Companion.isGpsOn
+import com.plocki.alert.utils.EventMethods.Companion.isNetworkOn
 import com.plocki.alert.models.Global
 
 
@@ -12,7 +12,7 @@ class ConnectionObserver : Runnable {
 
     private var gpsEnabled = false
     private var networkEnabled = false
-    var isAlive = true
+    private var isAlive = true
 
     override fun run() {
         //Thread.sleep(1000)

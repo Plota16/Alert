@@ -13,7 +13,7 @@ import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonSyntaxException
-import com.plocki.alert.API.modules.UserApi
+import com.plocki.alert.api.modules.UserApi
 import com.plocki.alert.DeleteUserMutation
 import com.plocki.alert.R
 import com.plocki.alert.models.Global
@@ -75,8 +75,8 @@ class FragmentProfile : Fragment() {
 
     }
 
-    fun deleteUser() {
-        val deleteUser = UserApi.deleteUser(
+    private fun deleteUser() {
+        UserApi.deleteUser(
             object : ApolloCall.Callback<DeleteUserMutation.Data>() {
                 override fun onFailure(e: ApolloException) {
                 }

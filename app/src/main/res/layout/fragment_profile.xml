@@ -42,7 +42,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/roboto"
-                        android:text="Twoja reputacja"
+                        android:text="@string/profile_reputation_text"
                         android:textColor="@color/colorPrimary" />
 
                 <TextView
@@ -51,7 +51,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:fontFamily="@font/roboto"
-                        android:text="+4762"
                         android:textColor="@android:color/black"
                         android:textSize="24sp" />
 
@@ -72,7 +71,8 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="1.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:contentDescription="@string/Login_logo_desc" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.card.MaterialCardView>
@@ -100,7 +100,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:fontFamily="@font/roboto"
-                    android:text="Statystyki"
+                    android:text="@string/profile_statistic_text"
                     android:textColor="@color/colorPrimary" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -112,7 +112,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/roboto"
-                        android:text="Dodanych wydarzeń"
+                        android:text="@string/profile_added_text"
                         android:textColor="@color/colorAccent"
                         android:textSize="16sp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -126,9 +126,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="20dp"
                         android:fontFamily="@font/roboto"
-                        android:text="21"
                         android:textColor="@color/colorAccent"
-                        android:textSize="16dp"
+                        android:textSize="16sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="1.0"
@@ -145,7 +144,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/roboto"
-                        android:text="Ocenionych wydarzeń"
+                        android:text="@string/profile_rated_text"
                         android:textColor="@color/colorAccent"
                         android:textSize="16sp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -159,9 +158,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="20dp"
                         android:fontFamily="@font/roboto"
-                        android:text="234"
                         android:textColor="@color/colorAccent"
-                        android:textSize="16dp"
+                        android:textSize="16sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="1.0"
@@ -178,7 +176,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/roboto"
-                        android:text="Zgłoszonych wydarzeń"
+                        android:text="@string/profile_reported_text"
                         android:textColor="@color/colorAccent"
                         android:textSize="16sp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -192,9 +190,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="20dp"
                         android:fontFamily="@font/roboto"
-                        android:text="5"
                         android:textColor="@color/colorAccent"
-                        android:textSize="16dp"
+                        android:textSize="16sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="1.0"
@@ -247,7 +244,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/roboto"
-                        android:text="Zalogowano przez"
+                        android:text="@string/profile_service_text"
                         android:textColor="@color/colorPrimary" />
 
                 <TextView
@@ -256,7 +253,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:fontFamily="@font/roboto"
-                        android:text="Google"
                         android:textColor="@color/colorAccent"
                         android:textSize="24sp" />
             </LinearLayout>
@@ -282,12 +278,12 @@
                 android:layout_height="wrap_content">
 
             <Button
-                    android:id="@+id/button2"
+                    android:id="@+id/delete_user_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
                     android:backgroundTint="#F44336"
-                    android:text="USUŃ KONTO"
+                    android:text="@string/login_deleteButton_text"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="1.0"
@@ -300,7 +296,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:fontFamily="@font/roboto"
-                    android:text="Usuń konto:"
+                    android:text="@string/login_delete_text"
                     android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

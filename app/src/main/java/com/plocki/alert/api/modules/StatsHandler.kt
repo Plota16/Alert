@@ -1,10 +1,10 @@
-package com.plocki.alert.API.modules
+package com.plocki.alert.api.modules
 
 import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
 import com.google.gson.GsonBuilder
-import com.plocki.alert.API.ApolloInstance
+import com.plocki.alert.api.ApolloInstance
 import com.plocki.alert.MyStatsQuery
 import com.plocki.alert.models.Global
 import com.plocki.alert.utils.HttpErrorHandler

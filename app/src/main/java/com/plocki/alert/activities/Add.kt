@@ -33,8 +33,8 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.gson.GsonBuilder
-import com.plocki.alert.API.modules.EventsApi
-import com.plocki.alert.API.modules.FetchEventsHandler
+import com.plocki.alert.api.modules.EventsApi
+import com.plocki.alert.api.modules.FetchEventsHandler
 import com.plocki.alert.CreateEventMutation
 import com.plocki.alert.R
 import com.plocki.alert.models.Event
