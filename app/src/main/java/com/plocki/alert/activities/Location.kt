@@ -96,5 +96,6 @@ class Location : AppCompatActivity(), OnMapReadyCallback {
         mMap.uiSettings.isCompassEnabled = false
         mMap.uiSettings.isMyLocationButtonEnabled = false
         mMap.uiSettings.isZoomGesturesEnabled = false
+        mMap.uiSettings.isZoomControlsEnabled = true
     }
 }

@@ -48,7 +48,9 @@ class FragmentProfile : Fragment() {
 
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
-        updateProfile()
+        if(!hidden){
+            updateProfile()
+        }
     }
 
     private fun updateProfile(){

@@ -96,6 +96,7 @@ AppLauncher {
         }
         val intent = Intent(Global.getInstance()!!.currentActivity!!, LoginPanel::class.java)
         intent.putExtra("SHOW_WELCOME", true)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         currentActivity.startActivity(intent)
         currentActivity.finish()
     }

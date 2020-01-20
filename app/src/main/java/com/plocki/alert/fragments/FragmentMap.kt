@@ -141,7 +141,9 @@ class FragmentMap : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
 
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
-       updateMap()
+       if(!hidden){
+           updateMap()
+       }
     }
 
     override fun onResume() {

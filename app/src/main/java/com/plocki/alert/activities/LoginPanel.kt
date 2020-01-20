@@ -83,7 +83,8 @@ class LoginPanel : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        finishAffinity()
+        android.os.Process.killProcess(android.os.Process.myPid())
+        finish()
     }
 
 }
