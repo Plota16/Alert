@@ -13,6 +13,7 @@ import com.plocki.alert.services.GoogleService
 import com.plocki.alert.services.TwitterService
 import com.twitter.sdk.android.core.Twitter
 import kotlinx.android.synthetic.main.activity_login_panel.*
+import kotlin.system.exitProcess
 
 class LoginPanel : AppCompatActivity() {
 
@@ -83,8 +84,7 @@ class LoginPanel : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        android.os.Process.killProcess(android.os.Process.myPid())
-        finish()
+        exitProcess(0)
     }
 
 }

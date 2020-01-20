@@ -23,8 +23,8 @@ import kotlinx.coroutines.launch
 
 class FragmentList : Fragment(){
 
-    val inst = Global.getInstance()
-
+    private val inst = Global.getInstance()
+    private var isFilteringPossible = false
 
 
     override fun onCreateView(inflater: LayoutInflater,
@@ -83,15 +83,28 @@ class FragmentList : Fragment(){
     private fun updateList(){
 
         val filteredList = ArrayList<Event>()
-        for (event in inst!!.eventList) {
-            if (inst.filterHashMap.get(event.category.title)!!) {
-                if (EventMethods.calcDistance(event.coordinates) < EventMethods.getMaxDistance(inst.currentDistanceFilter) || EventMethods.getMaxDistance(
-                        inst.currentDistanceFilter
-                    ) == 0
-                ) {
-                    filteredList.add(event)
+        if(isFilteringPossible){
+            for (event in inst!!.eventList) {
+                if (inst.filterHashMap[event.category.title]!!) {
+                    if (EventMethods.calcDistance(event.coordinates) < EventMethods.getMaxDistance(inst.currentDistanceFilter) || EventMethods.getMaxDistance(
+                            inst.currentDistanceFilter
+                        ) == 0
+                    ) {
+                        filteredList.add(event)
+                    }
                 }
             }
+        }
+        else{
+            for (event in inst!!.eventList) {
+                    if (EventMethods.calcDistance(event.coordinates) < EventMethods.getMaxDistance(inst.currentDistanceFilter) || EventMethods.getMaxDistance(
+                            inst.currentDistanceFilter
+                        ) == 0
+                    ) {
+                        filteredList.add(event)
+                    }
+                }
+            isFilteringPossible = true
         }
         val sortedList = filteredList.sortedBy { EventMethods.calcDistance(it.coordinates) }
         // RecyclerView node initialized here

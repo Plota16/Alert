@@ -66,7 +66,6 @@ AppLauncher {
         val sharedStore = Store(MyApplication.getAppContext())
         val currentActivity = Global.getInstance()!!.currentActivity!!
         sharedStore.removeToken()
-        sharedStore.removeDistance()
         sharedStore.removeProvider()
         Global.getInstance()!!.resetStateVariables()
 

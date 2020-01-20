@@ -47,7 +47,6 @@ object FetchCategoriesHandler {
                             Global.getInstance()!!.filterHashMap[category.title()] = true
                             Global.getInstance()!!.titleUUIDHashMap[category.title()] = category.uuid().toString()
                         }
-                        StatsHandler.fetchStats()
                         FetchEventsHandler.fetchEvents(activity = activity, startMain = true)
                     }
                 }

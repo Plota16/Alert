@@ -41,7 +41,7 @@ class Global {
     var listHashMap = HashMap<String, Event>()
     var categoryHashMap= HashMap<String, Category>()
     var reportHashMap= HashMap<String, String>()
-    val filterHashMap = HashMap<String, Boolean>()
+    var filterHashMap = HashMap<String, Boolean>()
     val titleUUIDHashMap = HashMap<String, String>()
 
     fun resetStateVariables(){

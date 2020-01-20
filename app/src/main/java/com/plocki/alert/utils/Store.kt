@@ -17,20 +17,6 @@ class Store(context: Context) {
     private val editor : SharedPreferences.Editor = pref.edit()
 
 
-    fun storeDistance(value: String){
-        editor.putString("filteredDistance",value)
-        editor.apply()
-        editor.commit()
-    }
-
-    fun retrieveDistance() : String?{
-        return pref.getString("filteredDistance","")
-    }
-
-    fun removeDistance() {
-        editor.remove("filteredDistance")
-        editor.commit()
-    }
 
     fun storeProvider(value: String){
         editor.putString("provider",value)

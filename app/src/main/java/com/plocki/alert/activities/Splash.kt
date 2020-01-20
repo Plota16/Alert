@@ -43,7 +43,6 @@ class Splash : Activity() {
         Global.getInstance()!!.currentActivity = this
         val store = Store(this)
         try {
-            Global.getInstance()!!.currentDistanceFilter = store.retrieveDistance()!!
             Global.getInstance()!!.userToken = store.retrieveToken()
         }catch (ex : Exception){
                 ex.printStackTrace()
