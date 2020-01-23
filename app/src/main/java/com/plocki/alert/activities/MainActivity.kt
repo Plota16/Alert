@@ -95,7 +95,6 @@ class MainActivity : AppCompatActivity() {
                 fetchEvents()
             }
         }
-
         if (id == R.id.action_more) {
             val menuItemView = findViewById<View>(R.id.action_more) // SAME ID AS MENU ID
             val popupMenu = PopupMenu(this, menuItemView)
@@ -103,10 +102,9 @@ class MainActivity : AppCompatActivity() {
             popupMenu.setOnMenuItemClickListener {
                 val moreMenuId = it.itemId
                 if (moreMenuId == R.id.action_info){
-                    Toast.makeText(this@MainActivity, "Info", Toast.LENGTH_LONG).show()
-                }
-                if (moreMenuId == R.id.action_settings){
-                    Toast.makeText(this@MainActivity, "Ustawienia", Toast.LENGTH_LONG).show()
+                    val intent = Intent(this@MainActivity, Authors::class.java)
+                    intent.putExtra("SHOW_WELCOME", true)
+                    startActivity(intent)
                 }
                 return@setOnMenuItemClickListener true
             }

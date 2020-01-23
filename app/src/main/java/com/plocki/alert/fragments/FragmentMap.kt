@@ -215,7 +215,7 @@ class FragmentMap : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickL
     }
 
     private fun setClusterManagerClickListener() {
-        clusterManager.setOnClusterClickListener { cluster ->
+        clusterManager.setOnClusterClickListener {
             true
         }
     }

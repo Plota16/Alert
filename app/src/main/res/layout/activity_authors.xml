@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".activities.Authors">
+
+    <TextView
+            android:id="@+id/authors_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="24dp"
+            android:fontFamily="@font/roboto"
+            android:text="Autorzy"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimary"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+    <TextView
+            android:id="@+id/authors_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:fontFamily="@font/roboto"
+            android:text="Aplikacja została wykonana jako praca inżynierska na Politechnice poznańskiej w 2020. Aplikacje wykonali:"
+            android:textAlignment="center"
+            android:textColor="@color/colorAccent" />
+
+    <TextView
+            android:id="@+id/mp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Michał Płocki"
+            android:textAlignment="center"
+            android:layout_margin="8dp"
+            android:textColor="@color/colorAccent"
+            android:fontFamily="@font/roboto"/>
+
+    <TextView
+            android:id="@+id/mk"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:layout_margin="8dp"
+            android:textColor="@color/colorAccent"
+            android:fontFamily="@font/roboto"
+            android:text="Maciej Kraśny"/>
+
+    <TextView
+            android:id="@+id/mt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:layout_margin="8dp"
+            android:textColor="@color/colorAccent"
+            android:fontFamily="@font/roboto"
+            android:text="Mateusz Tomkowiak"
+            />
+
+    <TextView
+            android:id="@+id/bz"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:layout_margin="8dp"
+            android:textColor="@color/colorAccent"
+            android:fontFamily="@font/roboto"
+            android:text="Bartosz Żywicki" />
+</LinearLayout>

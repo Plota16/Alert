@@ -144,7 +144,6 @@ class Filter : AppCompatActivity() {
     }
 
     private fun confirm(){
-        val store = Store(this)
         inst!!.currentDistanceFilter = inst.distanceList[distance]
         for(i in inst.categoryList){
             inst.filterHashMap[i] = filterList[inst.categoryList.indexOf(i)]
